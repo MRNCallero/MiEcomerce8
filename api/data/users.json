@@ -1,0 +1,47 @@
+[{
+    "id": 1,
+    "email": "admin@admin.com",
+    "username": "Admin",
+    "password": "admin",
+    "firstname": "Admin",
+    "lastname": "Admin",
+    "profilepic":"https://i.ibb.co/k428SKM/admin-Perfile.jpg"
+  },
+  {
+    "id": 2,
+    "email": "god@god.com",
+    "username": "Oh_my_god",
+    "password": "vosSosDios?",
+    "firstname": "Dios",
+    "lastname": "Creador",
+    "profilepic":"https://i.ibb.co/ZSKd5pw/dios.jpg"
+  },
+{
+    "id": 3,
+    "email": "tipocomun1@guest.com",
+    "username": "tipoComun1",
+    "password": "tipoComuUno",
+    "firstname": "tipoComun1",
+    "lastname": "tipoComunOn",
+    "profilepic":"https://i.ibb.co/q1qpS8b/tipocomun.jpg"
+  },
+  {
+    "id": 4,
+    "email": "tipocomun2@guest.com",
+    "username": "tipoComun2",
+    "password": "tipoComuDos",
+    "firstname": "tipoComun2",
+    "lastname": "tipoComuntwo",
+    "profilepic":"https://i.ibb.co/q1qpS8b/tipocomun.jpg"
+  },
+  {
+    "id": 5,
+    "email": "tipocomun3@guest.com",
+    "username": "tipoComun3",
+    "password": "tipoComuthree",
+    "firstname": "tipoComun3",
+    "lastname": "tipoComunthree",
+    "profilepic":"https://i.ibb.co/q1qpS8b/tipocomun.jpg"
+  }
+  ]
+  
