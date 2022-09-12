@@ -1,17 +1,22 @@
 const express = require('express');
-const productController = require('../controllers/productsController');
+const productController = require('../controllers/productController');
+const picturesController = require('../controllers/picturesControllers');
+const middlewareIDinBody = require('../middleware/middlewareIDinBody')
+//const { route } = require('./pictureRoutes');
 const router = express.Router();
 
-router.get('/', listProducts);
+//router.get('/', listProducts);
 
-router.get('/:id', findProduct);
+router.get('/:id/pictures',middlewareIDinBody,picturesController.listPictures)
 
-router.get('/mostwanted', findMostWanted)
+//router.get('/:id', findProduct);
 
-router.get('?category=ID', findCategory)
+//router.get('/mostwanted', findMostWanted)
 
-router.post('/', createProduct);
+//router.get('?category=ID', findCategory)
 
-router.delete('/delete/:id', deleteProduct);
+//router.post('/', createProduct);
+
+//router.delete('/delete/:id', deleteProduct);
 
 module.exports = router;
