@@ -46,7 +46,7 @@ const productController = {
         const productsJSON = JSON.parse(fs.readFileSync('./db/products.json', 'utf8'))
         try{
             let newProd = req.body
-            if(newProd.title != undefined && newProd.price != undefined){ //Preguntar como accedar a las cosas de imagen
+            if(newProd.title != undefined && newProd.price != undefined && newProd.gallery){ //Preguntar como accedar a las cosas de imagen
                 newProd.id = productsJSON.length + 1;
                 productsJSON.push(newProd) 
                  
@@ -63,7 +63,7 @@ const productController = {
             }}catch{
             res.status(500).json({
                 ok: false,
-                msg: 'Algo salio mal'
+                msg: 'Error interno del servidor'
            })
         }
     },
@@ -123,7 +123,7 @@ const productController = {
     findCategory: (req, res) => {
         try{
             const productsJSON = JSON.parse(fs.readFileSync('./data/products.json', 'utf8'));
-            const category = req.query.category;
+            const category = req.query
             finalList = productsJSON.filter(el => el.category == category)
             if(finalList != 0){
                 res.status(200).json({
