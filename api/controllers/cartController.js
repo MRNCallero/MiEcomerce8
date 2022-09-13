@@ -1,11 +1,11 @@
 const fs = require('fs');
-DB_PATH = "api/data/cart.json";
+DB_PATH = "api/data/users.json";
 
 const listCart = (req, res) => {
     const id = Number(req.params.id);
     try{
         const carts = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
-        const cart = carts.find((elem) => elem.user === id);
+        const cart = carts.find((elem) => elem.id === id);
         if(cart){
             res.status(200).json(cart.cart);
         }else{
@@ -30,7 +30,7 @@ const updateCart = (req, res) => {
         let exist = false;
         let index = 0;
         let updatedCart = carts.map((elem,i) => {
-            if(elem.user === id){
+            if(elem.id === id){
                 exist = true;
                 index = i;
                 elem.cart = req.body;
@@ -56,9 +56,9 @@ const updateCart = (req, res) => {
 
 }
 
-const removeFromCarts = (prodId) => {
+// const removeFromCarts = (prodId) => {
 
-}
+// }
 
 
 module.exports = {listCart, updateCart};
