@@ -8,7 +8,7 @@ const controllersPictures = {
             let db = JSON.parse(fs.readFileSync('../data/productos.json'),'utf8');
             const Producto = db.find(elem => elem.id === Number(idProducto));
             res.send(Producto.gallery);
-        }catch(console.error){
+        }catch(error){
 
         }
 

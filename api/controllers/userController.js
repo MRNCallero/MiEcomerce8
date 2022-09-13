@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 let readBaseUsers = ()=>JSON.parse(fs.readFileSync(path.join(__dirname, "/../db/users.json","utf8")));
 let writeBaseUsers = ()=>fs.writeFileSync(path.join(__dirname, "/../db/users.json"),JSON.stringify(u));
 let listaUsuarios = (req,res)=>{
