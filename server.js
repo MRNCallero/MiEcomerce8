@@ -22,6 +22,6 @@ app.use('/api/v1/pictures',pictureRoutes);
 
 
 app.listen(PORT,()=>{
-    console.log('Servidor corriendo en el puerto 8080');
+    console.log('Servidor corriendo en el puerto' + PORT);
 
 })
