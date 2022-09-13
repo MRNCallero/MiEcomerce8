@@ -1,6 +1,10 @@
+const e = require('express');
 const fs = require('fs');
 const readProdData = () => JSON.parse(fs.readFileSync('api/data/products.json', 'utf8'));
-//const helper = require('api/helpers/deletePictures')
+const removeFromCart= require('../../helpers/removeFromCart')
+const deletePictures = require('../../helpers/deletePictures')
+const searchPictures = require('../../helpers/searchPicture')
+
 
 const productController = {
     listProducts: (req, res) => {
@@ -54,11 +58,27 @@ const productController = {
         const productsJSON = readProdData();
         try{
             let newProd = req.body
-            if(newProd.title != undefined && newProd.price != undefined && newProd.gallery){ //Preguntar como accedar a las cosas de imagen
-                newProd.id = productsJSON.length + 1;
+            if(newProd.title != undefined && newProd.price != undefined && newProd.gallery.length > 0){ 
+                newProd.id = productsJSON.at(-1).id + 1;
+                if(newProd.image){
+                    if(!searchPictures(newProd.image)){
+                        return res.status(400).json({
+                            ok: false,
+                            msg: "Foto inexistente en la imagen principal"
+                        })
+                    }
+                }
+                newProd.gallery.forEach(el => {
+                    if(!searchPictures(Number(el))){
+                        return res.status(400).json({
+                            ok: false,
+                            msg: "Foto inexistente en el gallery"
+                        })
+                    }
+                })
                 productsJSON.push(newProd) 
-                 
-                fs.writeFileSync('./data/products.json', JSON.stringify(productsJSON))
+                
+                fs.writeFileSync('api/data/products.json', JSON.stringify(productsJSON))
                 res.status(201).json({
                    msg: "Producto agregado",
                    ok: true
@@ -68,10 +88,11 @@ const productController = {
                    ok: false,
                    msg: 'Producto inválido, debe agregar todos los parametros requeridos'
                 })
-            }}catch{
-            res.status(500).json({
-                ok: false,
-                msg: 'Error interno del servidor'
+            }}catch(err){
+                console.log(err);
+                res.status(500).json({
+                    ok: false,
+                    msg: 'Error interno del servidor'
            })
         }
     },
@@ -133,7 +154,18 @@ const productController = {
             let id = req.params.id
             const productsJSON = readProdData();
             if(id != Number){
-                const finalList = productsJSON.filter(el => el.id != id)
+                const finalList = productsJSON.filter(el => {
+                    if(el.id == id){
+                        if(el.image != undefined) deletePictures(el.image);
+                        el.gallery.forEach(elem => {
+                            deletePictures(Number(elem))
+                        })
+                    }
+                    return el.id != id
+                })
+
+                removeFromCart(Number(id));
+                fs.writeFileSync('api/data/products.json', JSON.stringify(finalList))
                 if(finalList.length != 0){
                     res.status(200).json({
                         ok: true,
@@ -150,7 +182,8 @@ const productController = {
                     msg: 'Escriba un id correcto'
                 })
             }
-        }catch{
+        }catch(err){
+            console.log(err);
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'
@@ -189,7 +222,7 @@ const productController = {
             console.log(keyWord);
             const productsJSON = readProdData();
             listaFiltrada = productsJSON.filter(el => {
-                return el.title.includes(keyWord) || el.description.includes(keyWord)
+                return el.title.includes(keyWord) || el.description.includes(keyWord) || el.category.includes(keyWord)
             })
             res.status(200).json({
                 ok: true,

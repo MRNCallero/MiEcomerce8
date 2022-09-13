@@ -22,4 +22,4 @@ const isGuest = ( req,res,next)=> {
     
 }
 
-module.exports = isAdmin;
+module.exports = isGuest;
