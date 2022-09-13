@@ -8,4 +8,4 @@ routes.post('/users',userController.crearUsuario);
 routes.put('/users/:id',userController.modificarUsuario);
 routes.delete('/users/:id',userController.eliminarUsuario);
 
-module.exports = {routes};
+module.exports = routes;
