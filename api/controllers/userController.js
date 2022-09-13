@@ -1,9 +1,7 @@
-const fs = require('fs');
-let readBaseUsers = ()=>JSON.parse(fs.readFileSync(path.join(__dirname, "/../db/users.json","utf8")));
-let writeBaseUsers = ()=>fs.writeFileSync(path.join(__dirname, "/../db/users.json"),JSON.stringify(u));
+const usersHelpers = require('../../helpers/usersHelpers')
 let listaUsuarios = (req,res)=>{
     try{
-        let users = readBaseUsers();
+        let users = usersHelpers.readBaseUsers();
         res.status(200).json({
             "ok": true,
             "users": users,
@@ -20,7 +18,7 @@ let listaUsuarios = (req,res)=>{
 let verUsuario = (req,res)=>{
     try{
         let id = req.params.id;
-        let users = readBaseUsers();
+        let users = usersHelpers.readBaseUsers();
         let ret = users.find((e)=> e.id == id);
         if(ret){
             res.status(200).json({
@@ -48,8 +46,8 @@ let verUsuario = (req,res)=>{
 let crearUsuario = (req,res)=>{
     try{
         let {email,username,password,firstname,lastname,profilepic}= req.body;
-        let users = readBaseUsers();
-        let id = users.lenght + 1;
+        let users = usersHelpers.readBaseUsers();
+        let id = Number(users[users.length-1].id )+ 1;
         if(email&&username&&password&&firstname&&lastname){
             u = {
                 "id":id,
@@ -61,7 +59,7 @@ let crearUsuario = (req,res)=>{
                 "profilepic":profilepic?profilepic:"sin foto"
             }
             users.push(u);
-            writeBaseUsers(users);
+            usersHelpers.writeBaseUsers(users);
             res.status(201).json({
                 "ok":false,
                 "msg": "Created."
@@ -84,9 +82,11 @@ let crearUsuario = (req,res)=>{
 let modificarUsuario = (req,res)=>{
     try{
         let {email,username,password,firstname,lastname,profilepic}= req.body;
-        let users = readBaseUsers();
-        let id = req.param.id;
+        let users = usersHelpers.readBaseUsers();
+        let id = req.params.id;
         let index = users.findIndex((e)=>e.id==id);
+        console.log("index " + index);
+        console.log("id " + id);
         if (index){
             if(email||username||firstname||lastname||profilepic){
                 email? users[index].email = email:users[index]=users[index];
@@ -94,7 +94,7 @@ let modificarUsuario = (req,res)=>{
                 firstname? users[index].firstname = firstname:users[index].firstname=users[index].firstname;
                 lastname? users[index].lastname = lastname:users[index].lastname = users[index].lastname;
                 profilepic? users[index].profilepic = profilepic: users[index].profilepic=users[index].profilepic;
-                writeBaseUsers(users);
+                usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok":false,
                     "msg": "Ok"
@@ -124,10 +124,10 @@ let eliminarUsuario = (req,res)=>{
     try{
         let id = req.params.id;
         if (id){
-            let aux = readBaseUsers();
+            let aux = usersHelpers.readBaseUsers();
             if(aux.include((e)=>e.id==id)){
                 let users = aux.filter((e)=>e.id !== id);
-                writeBaseUsers(users);
+                usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok": true,
                     "msg": "Ok"
