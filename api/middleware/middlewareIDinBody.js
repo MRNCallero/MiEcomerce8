@@ -1,14 +1,14 @@
 
 function middlewareIDinBody (req,res,next){
-
     let validacion = false;
-    if(req.query.producto && !req.params.id){
+    if(req.query.product && !req.params.id){
         validacion = true;
-        req.body.idProducto = req.query.producto; 
+        req.idProducto = req.query.product; 
     }
-    if(req.params.id && !req.query.productos) { 
+    if(req.params.id && !req.query.producto) { 
         validacion = true;
-        req.body.idProducto = req.params.id;       
+        req.idProducto = req.params.id; 
+   
     }
     if(validacion){
         next();
