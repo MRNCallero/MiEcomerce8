@@ -4,17 +4,20 @@ const productController = require('../controllers/productController');
 const picturesController = require('../controllers/picturesControllers');
 const middlewareIDinBody = require('../middleware/middlewareIDinBody');
 const router = express.Router();
+const isGuest = require('../middleware/isGuest');
+const isAdmin = require('../middleware/isAdmin');
+const isGod = require('../middleware/isGod');
 //const { route } = require('./pictureRoutes');
 
 router.get('/:id/pictures',middlewareIDinBody,picturesController.listPictures)
 
-router.get('/', productController.listProducts);
+router.get('/',isGuest, productController.listProducts);
 
-router.get('/search', productController.findKeyWord);
+router.get('/search',isGuest, productController.findKeyWord);
 
-router.get('/mostwanted', productController.findMostWanted);
+router.get('/mostwanted',isGuest, productController.findMostWanted);
 
-router.get('/:id', productController.findProduct);
+router.get('/:id',isGuest, productController.findProduct);
 
 router.put('/:id', productController.editProduct);
 

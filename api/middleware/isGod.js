@@ -22,4 +22,4 @@ const isGod = ( req,res,next)=> {
     
 }
 
-module.exports = isAdmin;
+module.exports = isGod;
