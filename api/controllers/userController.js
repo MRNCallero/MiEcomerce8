@@ -125,7 +125,7 @@ let eliminarUsuario = (req,res)=>{
         let id = req.params.id;
         if (id){
             let aux = usersHelpers.readBaseUsers();
-            if(aux.include((e)=>e.id==id)){
+            if(aux.filter((e)=>e.id)){
                 let users = aux.filter((e)=>e.id !== id);
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
