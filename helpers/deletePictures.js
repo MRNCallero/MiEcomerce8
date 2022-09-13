@@ -1,28 +1,14 @@
 const fs = require('fs');
 const path = require('node:path');
-const searchPicture = require('../helpers/searchPicture');
-let readBasePictures = ()=>JSON.parse(fs.readFileSync(path.join(__dirname, "/../api/data/pictures.json")));
-let writeBasePictures = (Pictures)=>fs.writeFileSync(path.join(__dirname, "/../api/data/pictures.json"), JSON.stringify(Pictures));
+let writeBasePictures = (Pictures) => fs.writeFileSync(path.join(__dirname, "/../api/data/pictures.json"), JSON.stringify(Pictures));
 
 
 
-function deletePicture(req,res,idPicture){
+function deletePicture( idPicture,pArray) {
 
-    try {
-        const Pictures = readBasePictures()
-
-        if(!searchPicture(Number(idPicture),Pictures)){
-            return res.status(404).json({
-                        msj:"Not Found"
-                    });
-        }
-       const PicturesFiltradas = Pictures.filter(el => el.id !== Number(idPicture));
-       writeBasePictures(PicturesFiltradas)
-       res.status(200).json({msj:"Ok", Pictures:PicturesFiltradas});
- 
-    } catch (error) {
-       console.log(error);
-       res.status(500).json({msj:"Server Error"});
-    }
+    console.log(pArray)
+    const PicturesFiltradas = pArray.filter(el => el.id !== Number(idPicture));
+    writeBasePictures(PicturesFiltradas)
+    return PicturesFiltradas
 }
-module.exports= deletePicture
+module.exports = deletePicture
