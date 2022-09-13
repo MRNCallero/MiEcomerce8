@@ -9,6 +9,7 @@ const cartRoutes = require('./api/routes/cartRoutes');
 const PORT = 8080;
 
 const app = express();
+
 app.use(express.json());
 
 
@@ -19,7 +20,4 @@ app.use('/api/v1/pictures',pictureRoutes);
 
 
 app.listen(PORT,()=>{
-    console.log('Servidor corriendo en el puerto' + PORT);
-
-
-})
+    console.log('Servidor corriendo en el puerto' + PORT);})

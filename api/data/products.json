@@ -1,20 +1,33 @@
-[{
-    "id":1,
-    "gallery":[2,3]
-},
-{
-    "id":2,
-    "gallery":[4,5,6]
-},
-{
-    "id":3,
-    "gallery":[1]
-},
-{
-    "id":4,
-    "gallery":[20]
-},{
-    "id":7,
-    "gallery":[20]
-}
+[
+  {
+    "id": 1,
+    "title": "Jabon",
+    "price": 200,
+    "description": "Jabon para manos de la marca elvive",
+    "category": "Higiene",
+    "mostwanted": false,
+    "gallery": [2, 3],
+    "stock": 3
+  },
+  {
+    "id": 2,
+    "title": "Galletas",
+    "price": 100,
+    "description": "Coca-Cola light",
+    "category": "Bebidas",
+    "mostwanted": true,
+    "gallery": [4, 5, 6],
+    "stock": 1
+  },
+  {
+    "id": 3,
+    "title": "Alfajor",
+    "price": 40,
+    "description": "Alfajor de dulce de leche marca portezuelo",
+    "category": "Dulce",
+    "mostwanted": true,
+    "gallery": [1],
+    "stock": 2
+  }
 ]
+
