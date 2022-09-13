@@ -26,7 +26,7 @@ const controllersPictures = {
             if (Producto) {
                 //recorro el Gallery del producto si un elemento de la base de datos de pictures tiene el mismo id que el del producto lo agrego a listaProducto
                 Producto.gallery.forEach(elem => {
-                    const thePicture = searchPicture(Number(elem), Pictures)
+                    const thePicture = searchPicture(Number(elem))
                     if (thePicture) listaPictures.push(thePicture);
 
                 })
@@ -60,7 +60,7 @@ const controllersPictures = {
             const Pictures = readBasePictures();
             console.log(Pictures)
             //encuentro la imagen segun el id
-            const Picture = searchPicture(Number(idPicture), Pictures);
+            const Picture = searchPicture(Number(idPicture));
 
             if (Picture) {
                 res.status(200).json({
@@ -118,7 +118,7 @@ const controllersPictures = {
         try {
             const Pictures = readBasePictures();
 
-            if (!searchPicture(Number(idPicture), Pictures)) {
+            if (!searchPicture(Number(idPicture))) {
                 return res.status(404).json({
                     msj: "Not Found"
                 });
@@ -157,12 +157,12 @@ const controllersPictures = {
 
             const Pictures = readBasePictures()
             console.log(Pictures)
-            if (!searchPicture(Number(idPicture), Pictures)) {
+            if (!searchPicture(Number(idPicture))) {
                 return res.status(404).json({
                     msj: "Not Found"
                 });
             }
-            const PicturesFiltradas = deletePicture(idPicture, Pictures);
+            const PicturesFiltradas = deletePicture(idPicture);
 
             res.status(200).json({ msj: "Ok", Pictures: PicturesFiltradas });
 

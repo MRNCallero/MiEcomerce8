@@ -23,7 +23,7 @@ router.put('/:id', productController.editProduct);
 
 router.post('/', productController.createProduct);
 
-router.delete('/delete/:id', productController.deleteProduct);
+router.delete('/:id', productController.deleteProduct);
 
 
 module.exports = router;
