@@ -4,10 +4,10 @@ const userRoutes = require('./api/routes/userRoutes');
 
 const productsRoutes = require('./api/routes/productRoutes');
 const cartRoutes = require('./api/routes/cartRoutes');
-const picturesRoutes = require('./api/routes/pictureRoutes')
+const pictureRoutes = require('./api/routes/pictureRoutes')
 const swaggerUi = require('swagger-ui-express');
-//const YAML = require('yamljs');
-//const swaggerDocument = YAML.load('./swagger.yaml');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml');
 //const cors = require('cors');
 
 
@@ -19,7 +19,7 @@ const app = express();
 
 app.use(express.json());
 
-
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get('/api/v1', (req,res) => {res.send(`<h1>Server funcionando en el puerto ${PORT} </h1>`)})
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/products',productsRoutes);
@@ -30,4 +30,4 @@ app.use('/api/v1/pictures',picturesRoutes);
 
 
 app.listen(PORT,()=>{
-    console.log('Servidor corriendo en el puerto' + PORT);})
+    console.log('Servidor corriendo en el puerto ' + PORT);})
