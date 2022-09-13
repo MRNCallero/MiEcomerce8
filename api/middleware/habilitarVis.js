@@ -1,12 +1,11 @@
 const jwt = require('jsonwebtoken');
 
-const isGuest = ( req,res,next)=> {
+const habilitarVis = ( req,res,next)=> {
     try{
         const token = req.headers.token;
         const {id,role} = jwt.verify(token, process.env.JWT_MIECOMMERCE);
         const idReq = req.params.id;
-  
-        if((role == "GUEST" && id == idReq) || role == "GOD"){
+        if(id == idReq|| role == "ADMIN" || role == "GOD"){
             console.log("Pasaste");
             next();
         }else{
@@ -15,12 +14,11 @@ const isGuest = ( req,res,next)=> {
     }catch(err){
         console.log(err);
         return res.status(401).json({
-           ok: false,
-           msg: "Token invalido"
+            ok: false,
+            msg: "Token invalido"
         })
     }
-   
     
 }
 
-module.exports = isGuest;
+module.exports = habilitarVis;
