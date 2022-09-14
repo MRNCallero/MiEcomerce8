@@ -2,9 +2,10 @@ const jwt = require('jsonwebtoken');
 const { request } = require('express')
 
 const verifyToken = async (req, res, next ) => {
-    console.log("entro verificarT");
+    
     const bearerHeader = req.headers['authorization']
-    if( bearerHeader !== 'undefined'){
+
+    if( bearerHeader){
         const bearer = bearerHeader.split(" ");
         const bearerToken = bearer[1];
         jwt.verify(bearerToken, process.env.JWT_MIECOMMERCE, (err, data) => {

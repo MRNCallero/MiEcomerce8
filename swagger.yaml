@@ -888,6 +888,82 @@ paths:
                     type: boolean
                   message:
                     type: string
+    post:
+      tags: 
+          - productos
+      summary: Crear producto
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - title
+              - price
+              - description
+              - category
+              - mostwanted
+              - image
+              - gallery
+              - stock
+              properties:
+                email:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                profilepic:
+                  type: string
+      responses: 
+          '201':
+            description: Created
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    username:
+                      type: string
+                    password:
+                      type: string
+                    firstname:
+                      type: string
+                    lastname:
+                      type: string
+                    profilepic:
+                      type: string
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    message:
+                      type: string  
+          '500':
+            description: Server Error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    message:
+                      type: string                
   /products/search:
     get:
       tags: 
@@ -960,6 +1036,7 @@ paths:
                     type: boolean
                   message:
                     type: string
+      
 
   /products/{id}:
     get:
@@ -1056,81 +1133,7 @@ paths:
                     type: boolean
                   message:
                     type: string
-  /products/:
-    post:
-      tags: 
-          - productos
-      summary: Modifica producto
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - title
-              - price
-              - description
-              - category
-              - mostwanted
-              - image
-              - gallery
-              - stock
-              properties:
-                email:
-                  type: string
-                username:
-                  type: string
-                password:
-                  type: string
-                firstname:
-                  type: string
-                lastname:
-                  type: string
-                profilepic:
-                  type: string
-      responses: 
-          '201':
-            description: Created
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    email:
-                      type: string
-                    username:
-                      type: string
-                    password:
-                      type: string
-                    firstname:
-                      type: string
-                    lastname:
-                      type: string
-                    profilepic:
-                      type: string
-          '400':
-            description: Bad Request
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    ok:
-                      type: boolean
-                    message:
-                      type: string  
-          '500':
-            description: Server Error
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    ok:
-                      type: boolean
-                    message:
-                      type: string
+  
 
   /delete/{id}:
     delete:

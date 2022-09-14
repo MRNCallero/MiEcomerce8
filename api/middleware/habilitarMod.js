@@ -6,7 +6,7 @@ const habilitarMod = ( req,res,next)=> {
         const idReq = req.params.id;
 
         if(((req.originalUrl.includes('users') || req.originalUrl.includes('cart')) && id == idReq) || ((req.originalUrl.includes('pictures') || req.originalUrl.includes('products')) && role == "ADMIN") || role == "GOD"){
-            console.log("Pasaste");
+
             next();
         }else{
             res.status(400).json({error: "No tienes las credenciales necesarias para acceder"})

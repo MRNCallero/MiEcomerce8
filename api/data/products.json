@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "title": "Jabon",
+    "title": "queso",
     "price": 200,
     "description": "Jabon para manos de la marca elvive",
     "category": "Higiene",
@@ -36,5 +36,15 @@
     "description": "Oreo",
     "gallery": [8, 9],
     "id": 4
+  },
+  {
+    "title": "otro Alfajor",
+    "price": 40,
+    "description": "vimbo",
+    "category": "Dulce",
+    "mostwanted": true,
+    "gallery": [1],
+    "stock": 2,
+    "id": 5
   }
 ]

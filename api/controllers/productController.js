@@ -111,7 +111,7 @@ const productController = {
             const productsJSON = readProdData();
             let prod = productsJSON.find(el => el.id == req.params.id)
             if(prod == undefined){
-                res.status(404).json({
+                return res.status(404).json({
                     ok: false,
                     msg: 'Producto no encontrado'
                 })
