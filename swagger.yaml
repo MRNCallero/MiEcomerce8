@@ -671,6 +671,7 @@ paths:
                     type: boolean
                   message:
                     type: string
+
   /products/{id}:
     get:
       tags:
@@ -694,6 +695,7 @@ paths:
                 type: object
         '404':    # status code
           description: El producto no se encontro
+
         '500':
           description: Server Error
           content:
@@ -753,7 +755,7 @@ paths:
               schema: 
                 type: object
         '404':    # status code
-          description: El producto no se encontro
+           description: El producto no se encontro
         '500':
           description: Server Error
           content:
