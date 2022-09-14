@@ -122,7 +122,8 @@ let crearUsuario = (req,res)=>{
             usersHelpers.writeBaseUsers(users);
             res.status(201).json({
                 "ok":false,
-                "msg": "Created."
+                "msg": "Created.",
+                "user": u
             })
         }else{
             res.status(400).json({
@@ -155,7 +156,8 @@ let modificarUsuario = (req,res)=>{
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok":false,
-                    "msg": "Ok"
+                    "msg": "Ok",
+                    "user": users[index]
                 })
             }else{
                 res.status(400).json({
