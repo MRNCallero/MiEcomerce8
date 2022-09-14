@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const habilitarMod = ( req,res,next)=> {
     try{
-        const token = req.headers.token;
-        const {id,role} = jwt.verify(token, process.env.JWT_MIECOMMERCE);
+        const {id,role}= req.jwtauth;
         const idReq = req.params.id;
     if(id == idReq || role == "GOD"){
             console.log("Pasaste");
