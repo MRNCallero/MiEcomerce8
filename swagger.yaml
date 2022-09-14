@@ -195,3 +195,4 @@ paths:
           description: Token válido
         '401':    # status code
           description: Usuario no autorizado
+          
