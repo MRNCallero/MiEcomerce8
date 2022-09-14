@@ -533,6 +533,8 @@ paths:
       tags:
         - pictures
       summary: Crea una picture
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:

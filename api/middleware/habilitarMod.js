@@ -4,7 +4,7 @@ const habilitarMod = ( req,res,next)=> {
     try{
         const {id,role}= req.jwtauth;
         const idReq = req.params.id;
-    if(id == idReq || role == "GOD"){
+        if(id == idReq || role == "GOD"){
             console.log("Pasaste");
             next();
         }else{

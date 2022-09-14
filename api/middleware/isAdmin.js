@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const isAdmin = ( req,res,next)=> {
     try{
-        const token = req.headers.token;
-        const {id,role} = jwt.verify(token, process.env.JWT_MIECOMMERCE);
+        const {role}= req.jwtauth;
     
         if(role == "ADMIN" || role == "GOD"){
             console.log("Pasaste");
