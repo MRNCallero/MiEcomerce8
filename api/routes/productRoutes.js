@@ -7,25 +7,28 @@ const router = express.Router();
 const isAdmin = require('../middleware/isAdmin');
 const habilitarMod = require('../middleware/habilitarMod');
 const habilitarVis = require('../middleware/habilitarVis');
-const isLogged = require('../middleware/isLogged');
+const verifyToken = require('../middleware/verifyToken');
+
 
 //const { route } = require('./pictureRoutes');
 
-router.get('/:id/pictures',isLogged,middlewareIDinBody,picturesController.listPictures)
+router.use(verifyToken);
 
-router.get('/',isLogged, productController.listProducts);
+router.get('/:id/pictures',middlewareIDinBody,picturesController.listPictures)
 
-router.get('/search',isLogged, productController.findKeyWord);
+router.get('/',productController.listProducts);
 
-router.get('/mostwanted',isLogged, productController.findMostWanted);
+router.get('/search', productController.findKeyWord);
 
-router.get('/:id',isLogged, productController.findProduct);
+router.get('/mostwanted', productController.findMostWanted);
 
-router.put('/:id',isLogged,isAdmin, productController.editProduct);
+router.get('/:id', productController.findProduct);
 
-router.post('/',isLogged,isAdmin, productController.createProduct);
+router.put('/:id',isAdmin, productController.editProduct);
 
-router.delete('/delete/:id',isLogged,isAdmin, productController.deleteProduct);
+router.post('/',isAdmin, productController.createProduct);
+
+router.delete('/delete/:id',isAdmin, productController.deleteProduct);
 
 
 module.exports = router;
