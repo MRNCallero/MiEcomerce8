@@ -16,7 +16,6 @@ const controllersPictures = {
             let listaPictures = [];
 
             const idProducto = Number(req.idProducto);
-
             //leo las bases de datos
             const Productos = readBaseProducts();
             const Pictures = readBasePictures();
@@ -53,6 +52,7 @@ const controllersPictures = {
                 ok: false,
                 msj: "Server Error"
             });
+
         }
     },
     listPictureID: (req, res) => {
