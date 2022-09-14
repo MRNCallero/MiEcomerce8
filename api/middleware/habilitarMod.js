@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 
-const isGod = ( req,res,next)=> {
+const habilitarMod = ( req,res,next)=> {
     try{
         const token = req.headers.token;
-        const {role} = jwt.verify(token, process.env.JWT_MIECOMMERCE);
-    
-        if(role == "GOD"){
+        const {id,role} = jwt.verify(token, process.env.JWT_MIECOMMERCE);
+        const idReq = req.params.id;
+    if(id == idReq || role == "GOD"){
             console.log("Pasaste");
             next();
         }else{
@@ -22,4 +22,4 @@ const isGod = ( req,res,next)=> {
     
 }
 
-module.exports = isAdmin;
+module.exports = habilitarMod;

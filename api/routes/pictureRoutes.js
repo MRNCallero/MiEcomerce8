@@ -1,18 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const pictureController = require('../controllers/picturesControllers');
-const middlewareIDinBody = require('../middleware/middlewareIDinBody')
+const middlewareIDinBody = require('../middleware/middlewareIDinBody');
+const isAdmin = require('../middleware/isAdmin');
+const isLogged = require('../middleware/isLogged');
 
 
-router.get('/:id',middlewareIDinBody,pictureController.listPictureID);
+router.get('/:id',isLogged,middlewareIDinBody,pictureController.listPictureID);
 
-router.get('/',middlewareIDinBody,pictureController.listPictures);
+router.get('/',isLogged,middlewareIDinBody,pictureController.listPictures);
 
-router.post('/',pictureController.create);
+router.post('/',isLogged,isAdmin,pictureController.create);
 
-router.put('/:id',pictureController.edit);
+router.put('/:id',isLogged,isAdmin,pictureController.edit);
 
-router.delete('/:id',pictureController.delete);
+router.delete('/:id',isLogged,isAdmin,pictureController.delete);
 
 
 module.exports = router;

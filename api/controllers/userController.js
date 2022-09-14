@@ -1,4 +1,42 @@
+const generateJWT = require('../../helpers/generateJWT');
 const usersHelpers = require('../../helpers/usersHelpers')
+
+let loginUsuario = async (req,res)=>{
+    try{
+        let info = req.body;
+        let users = usersHelpers.readBaseUsers();
+
+        let login = users.find(u => u.username == info.username && u.password === info.password);
+
+        if(login){
+            let aux = {
+                id: login.id,
+                username : login.username,
+                role : login.role
+            }   
+
+            const token = await generateJWT(aux);
+            
+            res.status(200).json({
+                success: true,
+                message: "Authorized",
+                user: {
+                    iduser: login.id,
+                    username: login.username
+                },
+                token: token
+            } )
+        }else{
+            res.status(500).json({
+                success: false,
+                message: "Unauthorized",
+            })
+        }
+    }catch(err){
+
+    }
+}
+
 let listaUsuarios = (req,res)=>{
     try{
         let users = usersHelpers.readBaseUsers();
@@ -154,4 +192,4 @@ let eliminarUsuario = (req,res)=>{
     
 }
 
-module.exports = {listaUsuarios,verUsuario,crearUsuario,modificarUsuario,eliminarUsuario}
+module.exports = {listaUsuarios,verUsuario,crearUsuario,modificarUsuario,eliminarUsuario,loginUsuario}
