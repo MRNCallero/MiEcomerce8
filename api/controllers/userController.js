@@ -11,9 +11,7 @@ let loginUsuario = async (req,res)=>{
         if(login){
             let aux = {
                 id: login.id,
-                email : login.email,
                 username : login.username,
-                profilepic : login.profilepic,
                 role : login.role
             }   
 

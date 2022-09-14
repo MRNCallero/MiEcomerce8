@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
 
-const isGuest = ( req,res,next)=> {
+const habilitarMod = ( req,res,next)=> {
     try{
         const token = req.headers.token;
-        const {role} = jwt.verify(token, process.env.JWT_MIECOMMERCE);
-    
-        if(role == "GUEST"){
+        const {id,role} = jwt.verify(token, process.env.JWT_MIECOMMERCE);
+        const idReq = req.params.id;
+  
+        if(id == idReq || role == "GOD"){
             console.log("Pasaste");
             next();
         }else{
@@ -22,4 +23,4 @@ const isGuest = ( req,res,next)=> {
     
 }
 
-module.exports = isGuest;
+module.exports = habilitarMod;

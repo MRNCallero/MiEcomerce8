@@ -24,7 +24,7 @@ app.get('/api/v1', (req,res) => {res.send(`<h1>Server funcionando en el puerto $
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/products',productsRoutes);
 app.use('/api/v1/carts',cartRoutes);
-app.use('/api/v1/pictures',picturesRoutes);
+app.use('/api/v1/pictures',pictureRoutes);
 
 
 
