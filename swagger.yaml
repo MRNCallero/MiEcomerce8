@@ -149,50 +149,334 @@ paths:
             application/json:
               schema: 
                 type: object
-        '409':
-          description: El usuario no ha sido eliminado
-
-    delete:
-      tags: 
+                properties:
+                  id:
+                    type: number
+                  email:
+                    type: string
+                  username:
+                    type: string
+                  password:
+                    type: string
+                  firstname:
+                    type: string
+                  lastname:
+                    type: string
+                  profilepic:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+    put:
+      tags:
         - usuarios
-      summary: Elimina un usuario
+      summary: Lista el usuario con el id recibido
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
-          name: username
+          name: id
           schema:
             type: string
           required: true
-          description: Nombre de usuario
-      
+          description: Id del usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                profilepic:
+                  type: string
+      responses: 
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: number
+                  email:
+                    type: string
+                  username:
+                    type: string
+                  password:
+                    type: string
+                  firstname:
+                    type: string
+                  lastname:
+                    type: string
+                  profilepic:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+    delete:
+      tags: 
+        - usuarios
+      summary: Elimina el usuario con Id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id del usuario
       responses: 
         '200':
           description: El usuario ha sido eliminado
-        '409':
-          description: El usuario no ha sido eliminado
-
-
-
-  /demo:
-    get:
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  id:
+                    type: number
+                  email:
+                    type: string
+                  username:
+                    type: string
+                  password:
+                    type: string
+                  firstname:
+                    type: string
+                  lastname:
+                    type: string
+                  profilepic:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+  /users/login:
+    post:
       tags: 
         - usuarios
-      summary: Retorna listado de usuario.
-      security:
-        - bearerAuth: []
+      summary: Retorna un token para utilizar en el endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
       responses:
         '200':    # status code
-          description: Un array de usuarios
-        '401':    # status code
-          description: Usuario no autorizado  
-          
+          description: Ok
+        '500':    # status code
+          description: Server Error
+
   /login:
     post:
       tags: 
         - usuarios
-      summary: Retorna un token para utilizar en el endpoint demo
+      summary: Retorna un token para utilizar en el endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
       responses:
         '200':    # status code
-          description: Token válido
-        '401':    # status code
-          description: Usuario no autorizado
-          
+          description: Ok
+        '500':    # status code
+          description: Server Error
+  /users/{id}/cart:
+    get:
+      tags:
+        - usuarios
+      summary: Lista el carrito del usuario con el id recibido
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id del usuario
+      responses: 
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    product:
+                      type: number
+                    quantity:
+                      type: number
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+    put:
+      tags:
+        - usuarios
+      summary: Edita el carrito del usuario con el id recibido
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id del usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  product:
+                    type: number
+                  quantity:
+                    type: number
+      responses: 
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product:
+                      type: number
+                    quantity:
+                      type: number
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
