@@ -347,8 +347,10 @@ paths:
               properties:
                 username:
                   type: string
+                  default: god
                 password:
                   type: string
+                  default: god
       responses:
         '200':    # status code
           description: Ok

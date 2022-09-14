@@ -22,7 +22,8 @@ let loginUsuario = async (req,res)=>{
                 message: "Authorized",
                 user: {
                     iduser: login.id,
-                    username: login.username
+                    username: login.username,
+                    role: login.role
                 },
                 token: token
             } )
@@ -144,8 +145,6 @@ let modificarUsuario = (req,res)=>{
         let users = usersHelpers.readBaseUsers();
         let id = req.params.id;
         let index = users.findIndex((e)=>e.id==id);
-        console.log("index " + index);
-        console.log("id " + id);
         if (index){
             if(email||username||firstname||lastname||profilepic){
                 email? users[index].email = email:users[index]=users[index];

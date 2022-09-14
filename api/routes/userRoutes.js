@@ -11,7 +11,7 @@ const router = require('./productRoutes');
 routes.post('/',userController.crearUsuario);
 routes.post('/login',userController.loginUsuario);
 
-router.use(verifyToken)
+routes.use(verifyToken)
 
 routes.get('/',userController.listaUsuarios);
 routes.get('/:id',habilitarVis,userController.verUsuario);
