@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const isGuest = ( req,res,next)=> {
     try{
         const token = req.headers.token;
-        const {role} = jwt.verify(token, process.env.JWT_MIECOMMERCE);
+        const {id,ole} = jwt.verify(token, process.env.JWT_MIECOMMERCE);
     
         if(role == "GUEST"){
             console.log("Pasaste");
