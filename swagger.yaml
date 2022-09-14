@@ -196,3 +196,208 @@ paths:
         '401':    # status code
           description: Usuario no autorizado
           
+  /products/{id}:
+    get:
+      tags:
+        - productos
+      summary: Retorna un productos
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id del producto
+      responses:
+        '200':    # status code
+          description: Retorna el producto buscado
+          content:
+            application/json:
+              schema: 
+                type: object
+        '404':    # status code
+           description: El producto no se encontro
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+    put:
+      tags:
+        - productos
+      summary: Modifica un productos
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - title
+              - price
+              - description
+              - category
+              - mostwanted
+              - image
+              - gallery
+              - stock
+              properties:
+                email:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                profilepic:
+                  type: string
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id del producto
+      responses:
+        '200':    # stats code
+          description: Retorna el producto modificado
+          content:
+            application/json:
+              schema: 
+                type: object
+        '404':    # status code
+           description: El producto no se encontro
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+  /products/:
+    post:
+      tags: 
+          - productos
+      summary: Modifica producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - title
+              - price
+              - description
+              - category
+              - mostwanted
+              - image
+              - gallery
+              - stock
+              properties:
+                email:
+                  type: string
+                username:
+                  type: string
+                password:
+                  type: string
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                profilepic:
+                  type: string
+      responses: 
+          '201':
+            description: Created
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    username:
+                      type: string
+                    password:
+                      type: string
+                    firstname:
+                      type: string
+                    lastname:
+                      type: string
+                    profilepic:
+                      type: string
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    message:
+                      type: string  
+          '500':
+            description: Server Error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    message:
+                      type: string
+
+  /delete/{id}:
+    delete:
+        tags:
+            - productos
+        summary: Retorna un productos
+        security:
+          - bearerAuth: []
+        parameters:
+          - in: path
+            name: id
+            schema:
+              type: string
+            required: true
+            description: Id del producto
+        responses:
+          '200':    # status code
+            description: El producto se elimino
+            content:
+              application/json:
+                schema: 
+                  type: object
+          '404':    # status code
+            description: El producto no se encontro
+          '500':
+            description: Server Error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    message:
+                      type: string
+

@@ -40,9 +40,22 @@ let loginUsuario = async (req,res)=>{
 let listaUsuarios = (req,res)=>{
     try{
         let users = usersHelpers.readBaseUsers();
+        let ret = [];
+        users.forEach(e =>{
+            let {id,email,username,firstname,lastname,profilepic} = e;
+            let aux = {
+                id: id,
+                email: email,
+                username: username,
+                firstname:firstname,
+                lastname:lastname,
+                profilepic:profilepic
+            }
+            ret.push(aux)
+        })
         res.status(200).json({
             "ok": true,
-            "users": users,
+            "users": ret,
             "msg": "Ok"
         });
     }catch(e){
@@ -55,9 +68,17 @@ let listaUsuarios = (req,res)=>{
 }
 let verUsuario = (req,res)=>{
     try{
-        let id = req.params.id;
+        let index = req.params.id;
         let users = usersHelpers.readBaseUsers();
-        let ret = users.find((e)=> e.id == id);
+        let {id,email,username,firstname,lastname,profilepic} = users.find((e)=> e.id == index);
+        let ret = {
+            id: id,
+            email: email,
+            username: username,
+            firstname:firstname,
+            lastname:lastname,
+            profilepic:profilepic
+        }
         if(ret){
             res.status(200).json({
                 "ok": true,
