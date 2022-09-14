@@ -4,7 +4,8 @@ const habilitarVis = ( req,res,next)=> {
     try{
         const {id,role}= req.jwtauth;
         const idReq = req.params.id;
-        if(id == idReq|| role == "ADMIN" || role == "GOD"){
+
+        if(((req.originalUrl.includes('users') || req.originalUrl.includes('cart')) && id == idReq) || role == "ADMIN" || role == "GOD"){
             console.log("Pasaste");
             next();
         }else{

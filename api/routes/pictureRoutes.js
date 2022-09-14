@@ -2,20 +2,22 @@ const express = require('express');
 const router = express.Router();
 const pictureController = require('../controllers/picturesControllers');
 const middlewareIDinBody = require('../middleware/middlewareIDinBody');
-const isAdmin = require('../middleware/isAdmin');
+const habilitarMod = require('../middleware/habilitarMod');
 const verifyToken = require('../middleware/verifyToken');
+const habilitarVis = require('../middleware/habilitarVis');
+
 
 router.use(verifyToken);
 
-router.get('/:id',middlewareIDinBody,pictureController.listPictureID);
+router.get('/:id',habilitarVis,middlewareIDinBody,pictureController.listPictureID);
 
-router.get('/',middlewareIDinBody,pictureController.listPictures);
+router.get('/',habilitarVis,middlewareIDinBody,pictureController.listPictures);
 
-router.post('/',isAdmin,pictureController.create);
+router.post('/',habilitarMod,pictureController.create);
 
-router.put('/:id',isAdmin,pictureController.edit);
+router.put('/:id',habilitarMod,pictureController.edit);
 
-router.delete('/:id',isAdmin,pictureController.delete);
+router.delete('/:id',habilitarMod,pictureController.delete);
 
 
 module.exports = router;
