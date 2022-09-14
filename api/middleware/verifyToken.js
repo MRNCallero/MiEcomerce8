@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { request } = require('express')
 
 const verifyToken = async (req, res, next ) => {
-    const bearerHeader = request.headers['authorization']
+    const bearerHeader = req.headers['authorization']
     if( bearerHeader !== 'undefined'){
         const bearer = bearerHeader.split(" ");
         const bearerToken = bearer[1];
@@ -17,7 +17,7 @@ const verifyToken = async (req, res, next ) => {
         });
     }
     else {
-        response.status(403).json({mensaje: "No permitido"});
+        res.status(403).json({mensaje: "No permitido"});
     }
 }
 
