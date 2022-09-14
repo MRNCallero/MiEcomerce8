@@ -4,13 +4,19 @@ const readProdData = () => JSON.parse(fs.readFileSync('api/data/products.json', 
 const removeFromCart= require('../../helpers/removeFromCart')
 const deletePictures = require('../../helpers/deletePictures')
 const searchPictures = require('../../helpers/searchPicture')
+const prodListViewer = require('../../helpers/prodListViewer')
+
+const productViewer = (prodList) => {
+    
+}
 
 
 const productController = {
     listProducts: (req, res) => {
         try{
             if(req.query.category == undefined){
-                const productsJSON = readProdData();
+                let productsJSON = readProdData();
+                productsJSON = prodListViewer(productsJSON)
                 res.status(200).json({
                 ok: true,
                 msg: productsJSON
@@ -34,7 +40,9 @@ const productController = {
             let foundProd = productsJSON.find(el => {
                 return el.id == prodId
             });
-            
+            let listaAux = []
+            listaAux.push(foundProd)
+            foundProd = prodListViewer(listaAux);
             if(foundProd == undefined){
                 res.status(404).json({
                     ok: false,
@@ -46,7 +54,8 @@ const productController = {
                     msg: foundProd
                 })
             }
-        }catch{
+        }catch(err){
+            console.log(err);
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'
@@ -136,6 +145,7 @@ const productController = {
         try{
             const productsJSON = readProdData();
             let finalList = productsJSON.filter(el => el.mostwanted)
+            finalList = prodListViewer(finalList);
             res.status(200).json({
                 ok: true,
                 msg: finalList
@@ -196,7 +206,7 @@ const productController = {
             const productsJSON = readProdData();
             const category = req.query.category;
             let finalList = productsJSON.filter(el => el.category == category)
-            console.log(category);
+            finalList = prodListViewer(finalList);
             if(finalList.length != 0){
                 res.status(200).json({
                     ok: true,
@@ -219,16 +229,21 @@ const productController = {
     findKeyWord: (req, res) => {
         try{
             keyWord = req.query.q;
-            console.log(keyWord);
             const productsJSON = readProdData();
-            listaFiltrada = productsJSON.filter(el => {
-                return el.title.includes(keyWord) || el.description.includes(keyWord) || el.category.includes(keyWord)
+            let listaFiltrada = productsJSON.filter(el => {
+                if(el.category){
+                    return (el.title.includes(keyWord) || el.description.includes(keyWord) || el.category.includes(keyWord))
+                }else{
+                   return (el.title.includes(keyWord) || el.description.includes(keyWord))
+                }
             })
+            listaFiltrada = prodListViewer(listaFiltrada);
             res.status(200).json({
                 ok: true,
                 msg: listaFiltrada
             })
-        }catch{
+        }catch(err){
+            console.log(err);
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'

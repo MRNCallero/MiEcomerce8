@@ -32,22 +32,25 @@ const controllersPictures = {
                 })
                 if (listaPictures.length > 0) {
                     res.status(200).json({
-                        msj: "OK",
+                        ok: true,
                         lista: listaPictures
                     });
                 } else {
                     res.status(500).json({
-                        msj: "Producto sin Imagenes",
+                        ok: false,
+                        msj: "Server Error"
                     });
                 }
             } else {
                 res.status(404).json({
+                    ok: false,
                     msj: "Not Found"
                 });
             }
         } catch (error) {
             console.log(error)
             res.status(500).json({
+                ok: false,
                 msj: "Server Error"
             });
         }
@@ -64,16 +67,18 @@ const controllersPictures = {
 
             if (Picture) {
                 res.status(200).json({
-                    msj: "OK",
+                    ok: true,
                     lista: Picture
                 });
             } else {
                 res.status(404).json({
+                    ok: false,
                     msj: "Not Found"
                 });
             }
         } catch (error) {
             res.status(500).json({
+                ok: false,
                 msj: "Server Error"
             });
             console.log(error)
@@ -86,7 +91,7 @@ const controllersPictures = {
             const id = Pictures.at(-1).id + 1
             const { url, description } = req.body;
 
-            if (!url) return res.status(400).json({ msj: "Bad Request" });
+            if (!url) return res.status(400).json({ ok: false,msj: "Bad Request" });
 
             const newPicture = { id, url }
             if (description) newPicture.description = description;
@@ -96,12 +101,13 @@ const controllersPictures = {
             writeBasePictures(Pictures);
 
             res.status(201).json({
-                msj: "Create",
+                ok: true,
                 picture: newPicture
             });
 
         } catch (error) {
             res.status(500).json({
+                ok: false,
                 msj: "Server Error "
             });
         }
@@ -112,6 +118,7 @@ const controllersPictures = {
         const idPicture = req.params.id;
         if (!idPicture || isNaN(idPicture)) {
             return res.status(400).json({
+                ok: false,
                 msj: "Bad Request"
             });
         }
@@ -120,6 +127,7 @@ const controllersPictures = {
 
             if (!searchPicture(Number(idPicture))) {
                 return res.status(404).json({
+                    ok: false,
                     msj: "Not Found"
                 });
             }
@@ -135,7 +143,7 @@ const controllersPictures = {
 
             writeBasePictures(PicturesActualizados);
             res.status(200).json({
-                msj: "OK",
+                ok: true,
                 picture: newEl
             });
 
@@ -150,6 +158,7 @@ const controllersPictures = {
         const idPicture = req.params.id;
         if (!idPicture || isNaN(idPicture)) {
             return res.status(400).json({
+                ok: false,
                 msj: "Bad Request"
             });
         }
@@ -159,16 +168,17 @@ const controllersPictures = {
             console.log(Pictures)
             if (!searchPicture(Number(idPicture))) {
                 return res.status(404).json({
+                    ok: false,
                     msj: "Not Found"
                 });
             }
             const PicturesFiltradas = deletePicture(idPicture);
 
-            res.status(200).json({ msj: "Ok", Pictures: PicturesFiltradas });
+            res.status(200).json({ ok: true, pictures: PicturesFiltradas });
 
         } catch (error) {
             console.log(error);
-            res.status(500).json({ msj: "Server Error" });
+            res.status(500).json({ ok: false,msj: "Server Error" });
         }
     }
 
