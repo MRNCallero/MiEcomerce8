@@ -170,8 +170,6 @@ paths:
         '409':
           description: El usuario no ha sido eliminado
 
-
-
   /demo:
     get:
       tags: 
@@ -195,7 +193,485 @@ paths:
           description: Token válido
         '401':    # status code
           description: Usuario no autorizado
-          
+        "500":
+          description: Server Error
+
+  /pictures:
+    get:
+      tags: 
+        - pictures
+      parameters:
+        - in: query
+          name: product
+          schema:
+            type: number
+      summary: Retorna la lista de pictures del product identificado con id.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Mensaje informando que se realizo con exito y la lista de pictures
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                  lista:
+                    type: array
+        '404':
+          description: Mensaje producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                  msj:
+                    type: string
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                  msj:
+                    type: string
+    post:
+      tags:
+        - pictures
+      summary: Crea una picture
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                  pictures:
+                    type: object
+                    required:
+                      - id
+                      - url
+                    properties:
+                      id:
+                        type: number
+                      url:
+                        type: string
+                      description:
+                        type: string
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                  msj:
+                    type: string
+
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                  msj:
+                    type: string
+
+  /pictures/{id}:
+    get:
+      tags:
+        - pictures
+      summary: Retornna la picture con el id solicitado
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id de picture
+      responses:
+        '200':
+          description: Mensaje true y el objeto picture
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  lista:
+                    type: object
+                    required:
+                      - id
+                      - url  
+                    properties:
+                      id: 
+                        type: number
+                      url:
+                        type: string
+                      description:
+                        type: string
+        '404':
+          description: Mensaje producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  msj:
+                    type: string
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  msj:
+                    type: string
+    put:
+      tags:
+        - 'pictures'
+      summary: Editar Picture
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id de picture
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Mensaje true y el objeto picture
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  picture:
+                    type: object
+                    required:
+                      - id
+                      - url  
+                    properties:
+                      id: 
+                        type: number
+                      url:
+                        type: string
+                      description:
+                        type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                  msj:
+                    type: string
+        '404':
+          description: Mensaje producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  msj:
+                    type: string
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  msj:
+                    type: string  
+    delete:
+      tags:
+          - 'pictures'
+      summary: Eliminar Picture
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id de picture
+      responses: 
+        '200':
+          description: Mensaje true y la lista de picture
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                    ok:
+                      type: boolean
+                    pictures:
+                      type: array
+                      items: 
+                        type: object
+                        properties:
+                          ok:
+                            type: boolean
+                          pictures:
+                            type: array
+                            required:
+                              - id
+                              - url  
+                            properties:
+                              id: 
+                                type: number
+                              url:
+                                type: string
+                              description:
+                                type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: 
+                    type: boolean
+                  msj:
+                    type: string
+        '404':
+          description: Mensaje producto no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  msj:
+                    type: string
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  msj:
+                    type: string  
+  /products/{id}/pictures:
+    get:
+      tags: 
+        - productos
+      summary: Retorna las imagenes de un producto.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id del usuario
+      responses:
+        '200':    # status code
+          description: Ok
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+        '404':    # status code
+          description: Not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+        '500':    # status code
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+  /products:
+    get:
+      tags: 
+        - productos
+      summary: Retorna el listado de productos. Si envia categoria filtra por ella.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+          required: false
+          description: Categoria del producto
+      responses:
+        '200':    # status code
+          description: Ok
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+        '500':    # status code
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+  /products/search:
+    get:
+      tags: 
+        - productos
+      summary: Retorna un listado de productos con una palabra clave.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: keyWord
+          schema:
+            type: string
+          required: true
+          description: Keyword a buscar
+      responses:
+        '200':    # status code
+          description: Ok
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+        '404':    # status code
+          description: Not found
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+        '500':    # status code
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+  /products/mostwanted:
+    get:
+      tags: 
+        - productos
+      summary: Retorna un listado de los productos mas requeridos.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':    # status code
+          description: Ok
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+        '500':    # status code
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+
   /products/{id}:
     get:
       tags:
@@ -218,7 +694,8 @@ paths:
               schema: 
                 type: object
         '404':    # status code
-           description: El producto no se encontro
+          description: El producto no se encontro
+
         '500':
           description: Server Error
           content:
@@ -400,4 +877,3 @@ paths:
                       type: boolean
                     message:
                       type: string
-
