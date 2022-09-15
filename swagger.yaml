@@ -973,7 +973,7 @@ paths:
         - bearerAuth: []
       parameters:
         - in: query
-          name: keyWord
+          name: q
           schema:
             type: string
           required: true

@@ -8,7 +8,12 @@
     "lastname": "Admin",
     "role": "ADMIN",
     "profilepic": "https://i.ibb.co/k428SKM/admin-Perfile.jpg",
-    "cart": [{ "product": 1, "quantity": 3 }]
+    "cart": [
+      {
+        "product": 1,
+        "quantity": 3
+      }
+    ]
   },
   {
     "id": 2,
@@ -20,8 +25,14 @@
     "profilepic": "https://i.ibb.co/ZSKd5pw/dios.jpg",
     "role": "GOD",
     "cart": [
-      { "product": 4, "quantity": 2 },
-      { "product": 5, "quantity": 7 }
+      {
+        "product": 4,
+        "quantity": 2
+      },
+      {
+        "product": 5,
+        "quantity": 7
+      }
     ]
   },
   {
@@ -29,13 +40,15 @@
     "email": "tipocomun1@guest.com",
     "username": "tipoComun1",
     "password": "tipoComuUno",
-    "firstname": "tipoComun1",
+    "firstname": "primernombre",
     "lastname": "tipoComunOn",
     "profilepic": "https://i.ibb.co/q1qpS8b/tipocomun.jpg",
     "role": "GUEST",
     "cart": [
-      { "product": 4, "quantity": 2 },
-      { "product": 6, "quantity": 2 }
+      {
+        "product": 2,
+        "quantity": 1
+      }
     ]
   },
   {
@@ -47,7 +60,12 @@
     "lastname": "tipoComuntwo",
     "role": "GUEST",
     "profilepic": "https://i.ibb.co/q1qpS8b/tipocomun.jpg",
-    "cart": [{ "product": 2, "quantity": 2 }]
+    "cart": [
+      {
+        "product": 2,
+        "quantity": 2
+      }
+    ]
   },
   {
     "id": 5,
@@ -58,7 +76,12 @@
     "lastname": "tipoComunthree",
     "role": "GUEST",
     "profilepic": "https://i.ibb.co/q1qpS8b/tipocomun.jpg",
-    "cart": [{ "product": 2, "quantity": 2 }]
+    "cart": [
+      {
+        "product": 2,
+        "quantity": 2
+      }
+    ]
   },
   {
     "id": 6,

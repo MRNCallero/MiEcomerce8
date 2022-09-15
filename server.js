@@ -8,7 +8,7 @@ const pictureRoutes = require('./api/routes/pictureRoutes')
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
-//const cors = require('cors');
+const cors = require('cors');
 
 
 //PUERTO
@@ -18,7 +18,7 @@ const app = express();
 
 
 app.use(express.json());
-
+app.use(cors());
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get('/api/v1', (req,res) => {res.send(`<h1>Server funcionando en el puerto ${PORT} </h1>`)})
 app.use('/api/v1/users',userRoutes);
