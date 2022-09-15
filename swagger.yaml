@@ -910,18 +910,24 @@ paths:
               - gallery
               - stock
               properties:
-                email:
+                title:
                   type: string
-                username:
+                price:
+                  type: number
+                description:
                   type: string
-                password:
+                category:
                   type: string
-                firstname:
-                  type: string
-                lastname:
-                  type: string
-                profilepic:
-                  type: string
+                mostwanted:
+                  type: boolean
+                image:
+                  type: number
+                gallery:
+                  type: array
+                  items:
+                    type: number
+                stock:
+                  type: number
       responses: 
           '201':
             description: Created
