@@ -1182,7 +1182,7 @@ paths:
                       type: boolean
                     message:
                       type: string
-  /cart/{id}:
+  /carts/{id}:
     get:
       tags:
         - cart
