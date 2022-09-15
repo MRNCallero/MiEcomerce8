@@ -1,13 +1,33 @@
 const fs = require('fs');
 DB_PATH = "api/data/users.json";
+const readProdData = () => JSON.parse(fs.readFileSync('api/data/products.json', 'utf8'));
+const prodListViewer = require('../../helpers/prodListViewer')
+
 
 const listCart = (req, res) => {
     const id = Number(req.params.id);
     try{
         const carts = JSON.parse(fs.readFileSync(DB_PATH, 'utf-8'));
+        let productsJSON = readProdData();
         const cart = carts.find((elem) => elem.id === id);
         if(cart){
-            res.status(200).json(cart.cart);
+            let foundProd = [];
+
+            cart.cart.forEach(elem =>{
+                    foundProd.push(productsJSON.find(el => {
+                        return el.id == elem.product
+                    }));
+                }
+            )
+            if(foundProd == undefined){
+                res.status(404).json({
+                    ok: false,
+                    msg: 'Producto no encontrado'
+                })
+            }else{
+                res.status(200).json(foundProd);
+            }
+
         }else{
             res.status(404).json({
                 ok: false,
