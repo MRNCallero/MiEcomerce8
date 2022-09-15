@@ -16,10 +16,14 @@ const listCart = (req, res) => {
             cart.cart.forEach(elem =>{
                     foundProd.push(productsJSON.find(el => {
                         return el.id == elem.product
-                    }));
+                    }));})
+            listaAux = prodListViewer(foundProd);
+            listaAux = listaAux.map((ele,i)=>{
+                return {
+                    producto:ele,
+                    quantity:cart.cart[i].quantity
                 }
-                )
-                listaAux = prodListViewer(foundProd);
+            })
             if(foundProd == undefined){
                 res.status(404).json({
                     ok: false,
