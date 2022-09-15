@@ -86,9 +86,12 @@ const controllersPictures = {
     },
     create: (req, res) => {
         try {
-            const Pictures = JSON.parse(fs.readFileSync("/Volumes/GoogleDrive-105055649622972425912/Mi unidad/Capacitacion/bootCampl/spreen1/MiEcomerce8/api/data/pictures.json", 'utf8'));
+            let Pictures = readBasePictures();
 
-            const id = Pictures.at(-1).id + 1
+            let id = 1;
+            if(Pictures.length>0){
+                id = Number(Pictures[Pictures.length-1].id)+ 1;
+            }
             const { url, description } = req.body;
 
             if (!url) return res.status(400).json({ ok: false,msj: "Bad Request" });

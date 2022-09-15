@@ -56,9 +56,5 @@ const updateCart = (req, res) => {
 
 }
 
-// const removeFromCarts = (prodId) => {
-
-// }
-
 
 module.exports = {listCart, updateCart};
