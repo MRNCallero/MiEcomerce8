@@ -6,10 +6,6 @@ const deletePictures = require('../../helpers/deletePictures')
 const searchPictures = require('../../helpers/searchPicture')
 const prodListViewer = require('../../helpers/prodListViewer')
 
-const productViewer = (prodList) => {
-    
-}
-
 
 const productController = {
     listProducts: (req, res) => {
@@ -36,7 +32,7 @@ const productController = {
     findProduct: (req, res) => {
         try{
             const prodId = req.params.id
-            const productsJSON = readProdData();
+            let productsJSON = readProdData();
             let foundProd = productsJSON.find(el => {
                 return el.id == prodId
             });
@@ -64,11 +60,16 @@ const productController = {
     },
 
     createProduct: (req, res) => {
-        const productsJSON = readProdData();
+        
         try{
-            let newProd = req.body
+            let newProd = req.body;
+            let productsJSON = readProdData();
             if(newProd.title != undefined && newProd.price != undefined && newProd.gallery.length > 0){ 
-                newProd.id = productsJSON.at(-1).id + 1;
+                let id = 1;
+                if(productsJSON.length>0){
+                    id = Number(productsJSON[productsJSON.length-1].id)+ 1;
+                }
+                newProd.id = id
                 if(newProd.image){
                     if(!searchPictures(newProd.image)){
                         return res.status(400).json({
@@ -85,7 +86,7 @@ const productController = {
                         })
                     }
                 })
-                productsJSON.push(newProd) 
+                productsJSON.push(newProd);
                 
                 fs.writeFileSync('api/data/products.json', JSON.stringify(productsJSON))
                 res.status(201).json({
@@ -108,7 +109,7 @@ const productController = {
 
     editProduct: (req, res) => {
         try {
-            const productsJSON = readProdData();
+            let productsJSON = readProdData();
             let prod = productsJSON.find(el => el.id == req.params.id)
             if(prod == undefined){
                 return res.status(404).json({
@@ -162,7 +163,7 @@ const productController = {
     deleteProduct: (req, res) => {
         try{
             let id = req.params.id
-            const productsJSON = readProdData();
+            let productsJSON = readProdData();
             if(id != Number){
                 const finalList = productsJSON.filter(el => {
                     if(el.id == id){

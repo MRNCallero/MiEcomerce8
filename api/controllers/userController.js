@@ -107,7 +107,10 @@ let crearUsuario = (req,res)=>{
     try{
         let {email,username,password,firstname,lastname,profilepic}= req.body;
         let users = usersHelpers.readBaseUsers();
-        let id = Number(users[users.length-1].id )+ 1;
+        let id = 1;
+        if(users.length>0){
+            id = Number(users[users.length-1].id)+ 1;
+        }
         if(email&&username&&password&&firstname&&lastname){
             u = {
                 "id":id,
@@ -116,6 +119,7 @@ let crearUsuario = (req,res)=>{
                 "password":password,
                 "firstname":firstname,
                 "lastname":lastname,
+                "role":"GUEST",
                 "profilepic":profilepic?profilepic:"sin foto",
                 "cart":[]
             }
