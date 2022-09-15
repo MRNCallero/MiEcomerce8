@@ -78,14 +78,18 @@ const productController = {
                         })
                     }
                 }
+                let existelaFoto = true;
                 newProd.gallery.forEach(el => {
                     if(!searchPictures(Number(el))){
-                        return res.status(400).json({
-                            ok: false,
-                            msg: "Foto inexistente en el gallery"
-                        })
+                        existelaFoto = false;
+
                     }
                 })
+                if(!existelaFoto){
+                   return res.status(400).json({
+                        ok: false,
+                        msg: "Foto inexistente en el gallery"
+                })}
                 if(!newProd.stock) newProd.stock = 0;
                 productsJSON.push(newProd);
                 

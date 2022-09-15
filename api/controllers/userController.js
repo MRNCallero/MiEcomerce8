@@ -126,7 +126,7 @@ let crearUsuario = (req,res)=>{
             users.push(u);
             usersHelpers.writeBaseUsers(users);
             res.status(201).json({
-                "ok":false,
+                "ok":true,
                 "msg": "Created.",
                 "user": u
             })
