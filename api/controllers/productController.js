@@ -78,14 +78,19 @@ const productController = {
                         })
                     }
                 }
+                let existelaFoto = true;
                 newProd.gallery.forEach(el => {
                     if(!searchPictures(Number(el))){
-                        return res.status(400).json({
-                            ok: false,
-                            msg: "Foto inexistente en el gallery"
-                        })
+                        existelaFoto = false;
+
                     }
                 })
+                if(!existelaFoto){
+                   return res.status(400).json({
+                        ok: false,
+                        msg: "Foto inexistente en el gallery"
+                })}
+                if(!newProd.stock) newProd.stock = 0;
                 productsJSON.push(newProd);
                 
                 fs.writeFileSync('api/data/products.json', JSON.stringify(productsJSON))
@@ -164,18 +169,19 @@ const productController = {
         try{
             let id = req.params.id
             let productsJSON = readProdData();
-            if(id != Number){
+        if(!isNaN(id)){
                 const finalList = productsJSON.filter(el => {
                     if(el.id == id){
                         if(el.image != undefined) deletePictures(el.image);
                         el.gallery.forEach(elem => {
-                            deletePictures(Number(elem))
+                            let i = Number(elem)
+                            deletePictures( i)
                         })
                     }
                     return el.id != id
                 })
 
-                removeFromCart(Number(id));
+                removeFromCart( Number(id)  );
                 fs.writeFileSync('api/data/products.json', JSON.stringify(finalList))
                 if(finalList.length != 0){
                     res.status(200).json({
