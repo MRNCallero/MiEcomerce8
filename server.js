@@ -18,7 +18,8 @@ const app = express();
 
 
 app.use(express.json());
-app.use(cors());
+app.use(cors())
+
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get('/api/v1', (req,res) => {res.send(`<h1>Server funcionando en el puerto ${PORT} </h1>`)})
 app.use('/api/v1/users',userRoutes);
