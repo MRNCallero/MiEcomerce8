@@ -12,20 +12,21 @@ const listCart = (req, res) => {
         const cart = carts.find((elem) => elem.id === id);
         if(cart){
             let foundProd = [];
-
+            let listaAux = [];
             cart.cart.forEach(elem =>{
                     foundProd.push(productsJSON.find(el => {
                         return el.id == elem.product
                     }));
                 }
-            )
+                )
+                listaAux = prodListViewer(foundProd);
             if(foundProd == undefined){
                 res.status(404).json({
                     ok: false,
                     msg: 'Producto no encontrado'
                 })
             }else{
-                res.status(200).json(foundProd);
+                res.status(200).json(listaAux);
             }
 
         }else{
