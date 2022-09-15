@@ -151,7 +151,7 @@ let modificarUsuario = (req,res)=>{
         let users = usersHelpers.readBaseUsers();
         let id = req.params.id;
         let index = users.findIndex((e)=>e.id==id);
-        if (index){
+        if (index != undefined){
             if(email||username||firstname||lastname||profilepic){
                 email? users[index].email = email:users[index]=users[index];
                 username? users[index].username = username:users[index].username=users[index].username;
@@ -191,7 +191,7 @@ let eliminarUsuario = (req,res)=>{
         if (id){
             let aux = usersHelpers.readBaseUsers();
             if(aux.filter((e)=>e.id)){
-                let users = aux.filter((e)=>e.id !== id);
+                let users = aux.filter((e)=>e.id != id);
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok": true,
