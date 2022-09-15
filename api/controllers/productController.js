@@ -234,11 +234,11 @@ const productController = {
             const productsJSON = readProdData();
             console.log(productsJSON);
             let listaFiltrada = productsJSON.filter(el => {
-                //if(el.category){
-                  //  return (el.title.includes(keyWord) || el.description.includes(keyWord) || el.category.includes(keyWord))
-                //}else{
+                if(el.category){
+                    return (el.title.includes(keyWord) || el.description.includes(keyWord) || el.category.includes(keyWord))
+                }else{
                    return (el.title.includes(keyWord) || el.description.includes(keyWord))
-                //}
+                }
             })
             console.log(listaFiltrada);
             listaFiltrada = prodListViewer(listaFiltrada);
