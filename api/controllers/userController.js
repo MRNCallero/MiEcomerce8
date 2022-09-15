@@ -195,7 +195,8 @@ let eliminarUsuario = (req,res)=>{
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok": true,
-                    "msg": "Ok"
+                    "msg": "Ok",
+                    "users": users[id]
                 });
             }else{
                 res.status(404).json({
