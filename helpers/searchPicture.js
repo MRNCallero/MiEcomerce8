@@ -5,8 +5,8 @@ const readBasePictures = () => JSON.parse(fs.readFileSync(path.join(__dirname, "
 function buscador(pId){
     const picturesJSON = readBasePictures();
     const theObject = picturesJSON.find(elem => elem.id === pId);
-    
-    return theObject;
+    return theObject
+
 }
 
 module.exports = buscador

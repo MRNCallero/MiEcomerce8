@@ -2,18 +2,13 @@
   {
     "id": 1,
     "email": "editado",
-    "username": "Admin",
+    "username": "admin",
     "password": "admin",
     "firstname": "Admin",
     "lastname": "Admin",
     "role": "ADMIN",
     "profilepic": "https://i.ibb.co/k428SKM/admin-Perfile.jpg",
-    "cart": [
-      {
-        "product": 1,
-        "quantity": 3
-      }
-    ]
+    "cart": []
   },
   {
     "id": 2,
@@ -24,94 +19,6 @@
     "lastname": "Creador",
     "profilepic": "https://i.ibb.co/ZSKd5pw/dios.jpg",
     "role": "GOD",
-    "cart": [
-      {
-        "product": 4,
-        "quantity": 2
-      },
-      {
-        "product": 5,
-        "quantity": 7
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "email": "tipocomun1@guest.com",
-    "username": "tipoComun1",
-    "password": "tipoComuUno",
-    "firstname": "primernombre",
-    "lastname": "tipoComunOn",
-    "profilepic": "https://i.ibb.co/q1qpS8b/tipocomun.jpg",
-    "role": "GUEST",
-    "cart": [
-      {
-        "product": 2,
-        "quantity": 1
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "email": "tipocomun2@guest.com",
-    "username": "tipoComun2",
-    "password": "tipoComuDos",
-    "firstname": "dios me la chupa",
-    "lastname": "tipoComuntwo",
-    "role": "GUEST",
-    "profilepic": "https://i.ibb.co/q1qpS8b/tipocomun.jpg",
-    "cart": [
-      {
-        "product": 2,
-        "quantity": 2
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "email": "tipocomun3@guest.com",
-    "username": "tipoComun3",
-    "password": "tipoComuthree",
-    "firstname": "tipoComun3",
-    "lastname": "tipoComunthree",
-    "role": "GUEST",
-    "profilepic": "https://i.ibb.co/q1qpS8b/tipocomun.jpg",
-    "cart": [
-      {
-        "product": 2,
-        "quantity": 2
-      }
-    ]
-  },
-  {
-    "id": 6,
-    "email": "mariano",
-    "username": "string",
-    "password": "string",
-    "firstname": "string",
-    "lastname": "string",
-    "profilepic": "string"
-  },
-  {
-    "id": 7,
-    "email": "mariano",
-    "username": "string",
-    "password": "string",
-    "firstname": "string",
-    "lastname": "string",
-    "role": "GUEST",
-    "profilepic": "string",
-    "cart": []
-  },
-  {
-    "id": 8,
-    "email": "string",
-    "username": "string",
-    "password": "string",
-    "firstname": "string",
-    "lastname": "string",
-    "role": "GUEST",
-    "profilepic": "string",
     "cart": []
   }
 ]
