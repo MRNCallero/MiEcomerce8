@@ -116,7 +116,8 @@ let crearUsuario = (req,res)=>{
                 "password":password,
                 "firstname":firstname,
                 "lastname":lastname,
-                "profilepic":profilepic?profilepic:"sin foto"
+                "profilepic":profilepic?profilepic:"sin foto",
+                "cart":[]
             }
             users.push(u);
             usersHelpers.writeBaseUsers(users);
@@ -190,7 +191,8 @@ let eliminarUsuario = (req,res)=>{
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok": true,
-                    "msg": "Ok"
+                    "msg": "Ok",
+                    "users": users[id]
                 });
             }else{
                 res.status(404).json({
