@@ -120,7 +120,8 @@ let crearUsuario = (req,res)=>{
                 "firstname":firstname,
                 "lastname":lastname,
                 "role":"GUEST",
-                "profilepic":profilepic?profilepic:"sin foto"
+                "profilepic":profilepic?profilepic:"sin foto",
+                "cart":[]
             }
             users.push(u);
             usersHelpers.writeBaseUsers(users);
