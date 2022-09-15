@@ -1134,12 +1134,10 @@ paths:
                   message:
                     type: string
   
-
-  /delete/{id}:
     delete:
         tags:
             - productos
-        summary: Retorna un productos
+        summary: Borra un producto
         security:
           - bearerAuth: []
         parameters:

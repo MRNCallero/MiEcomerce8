@@ -1,7 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const userRoutes = require('./api/routes/userRoutes');
-
+const userController = require('./api/controllers/userController');
 const productsRoutes = require('./api/routes/productRoutes');
 const cartRoutes = require('./api/routes/cartRoutes');
 const pictureRoutes = require('./api/routes/pictureRoutes')
@@ -27,7 +27,7 @@ app.use('/api/v1/products',productsRoutes);
 app.use('/api/v1/carts',cartRoutes);
 app.use('/api/v1/pictures',pictureRoutes);
 
-app.post('/api/v1/login', userRoutes);
+app.post('/api/v1/login', userController.loginUsuario);
 
 
 
