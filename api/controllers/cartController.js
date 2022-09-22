@@ -1,7 +1,9 @@
-const fs = require('fs');
-DB_PATH = "api/data/users.json";
-const readProdData = () => JSON.parse(fs.readFileSync('api/data/products.json', 'utf8'));
 const prodListViewer = require('../../helpers/prodListViewer')
+//sequelize
+const db = require('../database/models/index');
+const { sequelize } = require('../database/models');
+const { where } = require('sequelize');
+const Op = db.Sequelize.Op
 
 
 const listCart = (req, res) => {

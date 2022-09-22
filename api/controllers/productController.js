@@ -1,10 +1,13 @@
 const e = require('express');
-const fs = require('fs');
-const readProdData = () => JSON.parse(fs.readFileSync('api/data/products.json', 'utf8'));
 const removeFromCart= require('../../helpers/removeFromCart')
 const deletePictures = require('../../helpers/deletePictures')
 const searchPictures = require('../../helpers/searchPicture')
 const prodListViewer = require('../../helpers/prodListViewer')
+//sequelize
+const db = require('../database/models/index');
+const { sequelize } = require('../database/models');
+const { where } = require('sequelize');
+const Op = db.Sequelize.Op
 
 
 const productController = {
