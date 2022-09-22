@@ -152,12 +152,13 @@ let modificarUsuario = (req,res)=>{
         let id = req.params.id;
         let index = users.findIndex((e)=>e.id==id);
         if (index != undefined){
-            if(email||username||firstname||lastname||profilepic){
-                email? users[index].email = email:users[index]=users[index];
+            if(email||username||firstname||lastname||profilepic||role){
+                email? users[index].email = email:users[index].email=users[index].email;
                 username? users[index].username = username:users[index].username=users[index].username;
                 firstname? users[index].firstname = firstname:users[index].firstname=users[index].firstname;
                 lastname? users[index].lastname = lastname:users[index].lastname = users[index].lastname;
                 profilepic? users[index].profilepic = profilepic: users[index].profilepic=users[index].profilepic;
+                role? users[index].role = role: users[index].role=users[index].role;
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok":false,
