@@ -13,7 +13,7 @@ module.exports = (sequelize,DataTypes)=>{
         }, 
     }
     const extra = {   
-        tableName: 'User',
+        tableName: 'Category',
         timestamps: true,
         createdAt: "created_at",
         updatedAt: "updated_at"
