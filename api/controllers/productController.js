@@ -6,10 +6,6 @@ const deletePictures = require('../../helpers/deletePictures')
 const searchPictures = require('../../helpers/searchPicture')
 const prodListViewer = require('../../helpers/prodListViewer')
 
-const productViewer = (prodList) => {
-    
-}
-
 
 const productController = {
     listProducts: (req, res) => {
@@ -36,7 +32,7 @@ const productController = {
     findProduct: (req, res) => {
         try{
             const prodId = req.params.id
-            const productsJSON = readProdData();
+            let productsJSON = readProdData();
             let foundProd = productsJSON.find(el => {
                 return el.id == prodId
             });
@@ -64,11 +60,16 @@ const productController = {
     },
 
     createProduct: (req, res) => {
-        const productsJSON = readProdData();
+        
         try{
-            let newProd = req.body
+            let newProd = req.body;
+            let productsJSON = readProdData();
             if(newProd.title != undefined && newProd.price != undefined && newProd.gallery.length > 0){ 
-                newProd.id = productsJSON.at(-1).id + 1;
+                let id = 1;
+                if(productsJSON.length>0){
+                    id = Number(productsJSON[productsJSON.length-1].id)+ 1;
+                }
+                newProd.id = id
                 if(newProd.image){
                     if(!searchPictures(newProd.image)){
                         return res.status(400).json({
@@ -77,15 +78,20 @@ const productController = {
                         })
                     }
                 }
+                let existelaFoto = true;
                 newProd.gallery.forEach(el => {
                     if(!searchPictures(Number(el))){
-                        return res.status(400).json({
-                            ok: false,
-                            msg: "Foto inexistente en el gallery"
-                        })
+                        existelaFoto = false;
+
                     }
                 })
-                productsJSON.push(newProd) 
+                if(!existelaFoto){
+                   return res.status(400).json({
+                        ok: false,
+                        msg: "Foto inexistente en el gallery"
+                })}
+                if(!newProd.stock) newProd.stock = 0;
+                productsJSON.push(newProd);
                 
                 fs.writeFileSync('api/data/products.json', JSON.stringify(productsJSON))
                 res.status(201).json({
@@ -108,10 +114,10 @@ const productController = {
 
     editProduct: (req, res) => {
         try {
-            const productsJSON = readProdData();
+            let productsJSON = readProdData();
             let prod = productsJSON.find(el => el.id == req.params.id)
             if(prod == undefined){
-                res.status(404).json({
+                return res.status(404).json({
                     ok: false,
                     msg: 'Producto no encontrado'
                 })
@@ -162,19 +168,20 @@ const productController = {
     deleteProduct: (req, res) => {
         try{
             let id = req.params.id
-            const productsJSON = readProdData();
-            if(id != Number){
+            let productsJSON = readProdData();
+        if(!isNaN(id)){
                 const finalList = productsJSON.filter(el => {
                     if(el.id == id){
                         if(el.image != undefined) deletePictures(el.image);
                         el.gallery.forEach(elem => {
-                            deletePictures(Number(elem))
+                            let i = Number(elem)
+                            deletePictures( i)
                         })
                     }
                     return el.id != id
                 })
 
-                removeFromCart(Number(id));
+                removeFromCart( Number(id)  );
                 fs.writeFileSync('api/data/products.json', JSON.stringify(finalList))
                 if(finalList.length != 0){
                     res.status(200).json({
@@ -229,7 +236,9 @@ const productController = {
     findKeyWord: (req, res) => {
         try{
             keyWord = req.query.q;
+            console.log(keyWord);
             const productsJSON = readProdData();
+            console.log(productsJSON);
             let listaFiltrada = productsJSON.filter(el => {
                 if(el.category){
                     return (el.title.includes(keyWord) || el.description.includes(keyWord) || el.category.includes(keyWord))
@@ -237,7 +246,9 @@ const productController = {
                    return (el.title.includes(keyWord) || el.description.includes(keyWord))
                 }
             })
+            console.log(listaFiltrada);
             listaFiltrada = prodListViewer(listaFiltrada);
+            console.log(listaFiltrada);
             res.status(200).json({
                 ok: true,
                 msg: listaFiltrada

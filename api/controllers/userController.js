@@ -107,7 +107,10 @@ let crearUsuario = (req,res)=>{
     try{
         let {email,username,password,firstname,lastname,profilepic}= req.body;
         let users = usersHelpers.readBaseUsers();
-        let id = Number(users[users.length-1].id )+ 1;
+        let id = 1;
+        if(users.length>0){
+            id = Number(users[users.length-1].id)+ 1;
+        }
         if(email&&username&&password&&firstname&&lastname){
             u = {
                 "id":id,
@@ -116,12 +119,14 @@ let crearUsuario = (req,res)=>{
                 "password":password,
                 "firstname":firstname,
                 "lastname":lastname,
-                "profilepic":profilepic?profilepic:"sin foto"
+                "role":"GUEST",
+                "profilepic":profilepic?profilepic:"sin foto",
+                "cart":[]
             }
             users.push(u);
             usersHelpers.writeBaseUsers(users);
             res.status(201).json({
-                "ok":false,
+                "ok":true,
                 "msg": "Created.",
                 "user": u
             })
@@ -146,13 +151,14 @@ let modificarUsuario = (req,res)=>{
         let users = usersHelpers.readBaseUsers();
         let id = req.params.id;
         let index = users.findIndex((e)=>e.id==id);
-        if (index){
-            if(email||username||firstname||lastname||profilepic){
-                email? users[index].email = email:users[index]=users[index];
+        if (index != undefined){
+            if(email||username||firstname||lastname||profilepic||role){
+                email? users[index].email = email:users[index].email=users[index].email;
                 username? users[index].username = username:users[index].username=users[index].username;
                 firstname? users[index].firstname = firstname:users[index].firstname=users[index].firstname;
                 lastname? users[index].lastname = lastname:users[index].lastname = users[index].lastname;
                 profilepic? users[index].profilepic = profilepic: users[index].profilepic=users[index].profilepic;
+                role? users[index].role = role: users[index].role=users[index].role;
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok":false,
@@ -186,11 +192,12 @@ let eliminarUsuario = (req,res)=>{
         if (id){
             let aux = usersHelpers.readBaseUsers();
             if(aux.filter((e)=>e.id)){
-                let users = aux.filter((e)=>e.id !== id);
+                let users = aux.filter((e)=>e.id != id);
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok": true,
-                    "msg": "Ok"
+                    "msg": "Ok",
+                    "users": users[id]
                 });
             }else{
                 res.status(404).json({

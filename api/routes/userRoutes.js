@@ -1,17 +1,22 @@
 const {Router} = require('express');
-const verifyUser = require('../middleware/userMiddleware');
 const userController = require('../controllers/userController');
 const routes = Router();
 const habilitarMod = require('../middleware/habilitarMod');
 const habilitarVis = require('../middleware/habilitarVis');
 const verifyToken = require('../middleware/verifyToken');
-const router = require('./productRoutes');
+const cartController = require('./../controllers/cartController');
+
+
+
 
 
 routes.post('/',userController.crearUsuario);
 routes.post('/login',userController.loginUsuario);
 
 routes.use(verifyToken)
+
+routes.get('/:id/cart', habilitarVis, cartController.listCart);
+routes.put('/:id/cart', habilitarMod,cartController.updateCart);
 
 routes.get('/',userController.listaUsuarios);
 routes.get('/:id',habilitarVis,userController.verUsuario);

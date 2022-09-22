@@ -12,4 +12,6 @@ const prodListViewer = (productsJSON) => {
     return listAux;
 }
 
+
+
 module.exports = prodListViewer;

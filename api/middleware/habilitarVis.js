@@ -4,8 +4,9 @@ const habilitarVis = ( req,res,next)=> {
     try{
         const {id,role}= req.jwtauth;
         const idReq = req.params.id;
-        if(id == idReq|| role == "ADMIN" || role == "GOD"){
-            console.log("Pasaste");
+
+        if(((req.originalUrl.includes('users') || req.originalUrl.includes('cart')) && id == idReq) || role == "ADMIN" || role == "GOD"){
+
             next();
         }else{
             res.status(400).json({error: "No tienes las credenciales necesarias para acceder"})

@@ -19,6 +19,8 @@ tags:
     description: Todos los endpoints de productos
   - name: pictures
     description: Todos los endpoints de imagenes
+  - name: cart
+    description: Todos los endpoints de cart
 
 components:
   securitySchemes:
@@ -74,16 +76,23 @@ paths:
               properties:
                 email:
                   type: string
+                  default: emaildeRodrigo@gmail.com
                 username:
                   type: string
+                  default: Rodrigo
                 password:
                   type: string
+                  default: Rodrigo
                 firstname:
                   type: string
+                  default: Rodrigo
                 lastname:
                   type: string
+                  default: Apellido de Rodrigo
                 profilepic:
                   type: string
+                  default: una URL
+
       responses: 
         '201':
           description: Created
@@ -533,6 +542,8 @@ paths:
       tags:
         - pictures
       summary: Crea una picture
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -886,6 +897,88 @@ paths:
                     type: boolean
                   message:
                     type: string
+    post:
+      tags: 
+          - productos
+      summary: Crear producto
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - title
+              - price
+              - description
+              - category
+              - mostwanted
+              - image
+              - gallery
+              - stock
+              properties:
+                title:
+                  type: string
+                price:
+                  type: number
+                description:
+                  type: string
+                category:
+                  type: string
+                mostwanted:
+                  type: boolean
+                image:
+                  type: number
+                gallery:
+                  type: array
+                  items:
+                    type: number
+                stock:
+                  type: number
+      responses: 
+          '201':
+            description: Created
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    username:
+                      type: string
+                    password:
+                      type: string
+                    firstname:
+                      type: string
+                    lastname:
+                      type: string
+                    profilepic:
+                      type: string
+          '400':
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    message:
+                      type: string  
+          '500':
+            description: Server Error
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    ok:
+                      type: boolean
+                    message:
+                      type: string                
   /products/search:
     get:
       tags: 
@@ -895,7 +988,7 @@ paths:
         - bearerAuth: []
       parameters:
         - in: query
-          name: keyWord
+          name: q
           schema:
             type: string
           required: true
@@ -958,6 +1051,7 @@ paths:
                     type: boolean
                   message:
                     type: string
+      
 
   /products/{id}:
     get:
@@ -1054,87 +1148,11 @@ paths:
                     type: boolean
                   message:
                     type: string
-  /products/:
-    post:
-      tags: 
-          - productos
-      summary: Modifica producto
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-              - title
-              - price
-              - description
-              - category
-              - mostwanted
-              - image
-              - gallery
-              - stock
-              properties:
-                email:
-                  type: string
-                username:
-                  type: string
-                password:
-                  type: string
-                firstname:
-                  type: string
-                lastname:
-                  type: string
-                profilepic:
-                  type: string
-      responses: 
-          '201':
-            description: Created
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    email:
-                      type: string
-                    username:
-                      type: string
-                    password:
-                      type: string
-                    firstname:
-                      type: string
-                    lastname:
-                      type: string
-                    profilepic:
-                      type: string
-          '400':
-            description: Bad Request
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    ok:
-                      type: boolean
-                    message:
-                      type: string  
-          '500':
-            description: Server Error
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    ok:
-                      type: boolean
-                    message:
-                      type: string
-
-  /delete/{id}:
+  
     delete:
         tags:
             - productos
-        summary: Retorna un productos
+        summary: Borra un producto
         security:
           - bearerAuth: []
         parameters:
@@ -1164,3 +1182,104 @@ paths:
                       type: boolean
                     message:
                       type: string
+  /carts/{id}:
+    get:
+      tags:
+        - cart
+      summary: Lista el carrito del usuario con el id recibido
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id del usuario
+      responses: 
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    product:
+                      type: number
+                    quantity:
+                      type: number
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+    put:
+      tags:
+        - cart
+      summary: Edita el carrito del usuario con el id recibido
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id del usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  product:
+                    type: number
+                  quantity:
+                    type: number
+      responses: 
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product:
+                      type: number
+                    quantity:
+                      type: number
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  message:
+                    type: string
