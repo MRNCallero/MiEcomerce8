@@ -8,7 +8,7 @@ module.exports = (sequelize, dataTypes) => {
             autoIncrement: true
         },
         title: {
-            type: dataTypes.VARCHAR(255),
+            type: dataTypes.STRING,
             allowNull: false
         },
         price: {
@@ -24,7 +24,7 @@ module.exports = (sequelize, dataTypes) => {
             defaultValue: 0
         },
         description: {
-            type: dataTypes.VARCHAR(255)
+            type: dataTypes.STRING
         }
     };
     let config = {
