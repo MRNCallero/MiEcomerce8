@@ -40,13 +40,13 @@ module.exports = (sequelize,DataTypes)=>{
        
     }
     const extra = {   
-        tableName: 'movies',
+        tableName: 'User',
         timestamps: true,
         createdAt: "created_at",
         updatedAt: "updated_at"
     }
-    const Movie = sequelize.define(alias,cols,extra);
+    const Usiario = sequelize.define(alias,cols,extra);
 
-    return Movie;
+    return Usuario;
 
 }
