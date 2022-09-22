@@ -1,7 +1,7 @@
 
 
 
-    module.exports = (sequelize, dataTypes) =>{
+    module.exports = (sequelize, DataTypes) =>{
 
         const alias = "Picture";
         const col ={

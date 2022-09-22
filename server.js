@@ -29,8 +29,10 @@ app.use('/api/v1/pictures',pictureRoutes);
 
 app.post('/api/v1/login', userController.loginUsuario);
 
-app.get('*',res.status(404).json({ok:false,
-    msg:"Ruta incorrecta"}));
+app.get('*',(req,res) => res.status(404).json({
+    ok:false,
+    msg:"Ruta incorrecta"
+}));
 
 
 
