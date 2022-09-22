@@ -26,7 +26,6 @@ const config = {
 }
 <<<<<<< HEAD
 
-module.exports = config;
 =======
-module.exports = config
->>>>>>> Story5
+>>>>>>> 4266b1325b8f3ea4b6010b983d032f8764dcd7f2
+module.exports = config;
