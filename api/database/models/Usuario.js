@@ -45,7 +45,7 @@ module.exports = (sequelize,DataTypes)=>{
         createdAt: "created_at",
         updatedAt: "updated_at"
     }
-    const Usiario = sequelize.define(alias,cols,extra);
+    const Usuario = sequelize.define(alias,cols,extra);
 
     return Usuario;
 
