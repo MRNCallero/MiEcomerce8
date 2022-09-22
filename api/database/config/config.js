@@ -24,9 +24,4 @@ const config = {
     "dialect": "mysql"
   }
 }
-<<<<<<< HEAD
-
 module.exports = config;
-=======
-module.exports = config
->>>>>>> Story5
