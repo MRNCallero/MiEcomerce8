@@ -25,15 +25,13 @@ module.exports = (sequelize, dataTypes) => {
         },
         description: {
             type: dataTypes.VARCHAR(255)
-        },
-        id_category: dataTypes.INTEGER
+        }
     };
     let config = {
         timestamps: false,
         deletedAt: false
     }
     const Product = sequelize.define(alias,cols,config);
-
 
     return Product;
 };
