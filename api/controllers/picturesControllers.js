@@ -1,10 +1,11 @@
-const fs = require('fs');
-const path = require('node:path');
 const searchPicture = require('../../helpers/searchPicture');
 const deletePicture = require('../../helpers/deletePictures');
-let readBaseProducts = () => JSON.parse(fs.readFileSync(path.join(__dirname, "/../data/products.json")));
-let readBasePictures = () => JSON.parse(fs.readFileSync(path.join(__dirname, "/../data/pictures.json")));
-let writeBasePictures = (Pictures) => fs.writeFileSync(path.join(__dirname, "/../data/pictures.json"), JSON.stringify(Pictures));
+//sequelize
+const db = require('../database/models/index');
+const { sequelize } = require('../database/models');
+const { where } = require('sequelize');
+const Op = db.Sequelize.Op
+
 
 
 

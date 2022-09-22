@@ -1,5 +1,9 @@
 const generateJWT = require('../../helpers/generateJWT');
-const usersHelpers = require('../../helpers/usersHelpers')
+const usersHelpers = require('../../helpers/usersHelpers');
+const db = require('../database/models/index');
+const { sequelize } = require('../database/models');
+const { where } = require('sequelize');
+const Op = db.Sequelize.Op
 
 let loginUsuario = async (req,res)=>{
     try{

@@ -1,18 +1,22 @@
 const express = require('express');
 require('dotenv').config();
-const userRoutes = require('./api/routes/userRoutes');
 const userController = require('./api/controllers/userController');
-const productsRoutes = require('./api/routes/productRoutes');
-const cartRoutes = require('./api/routes/cartRoutes');
-const pictureRoutes = require('./api/routes/pictureRoutes')
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 const cors = require('cors');
+//sequelize
+const { sequelize } = require('./api/database/models/index');
 
+
+//rutas
+const userRoutes = require('./api/routes/userRoutes');
+const productsRoutes = require('./api/routes/productRoutes');
+const cartRoutes = require('./api/routes/cartRoutes');
+const pictureRoutes = require('./api/routes/pictureRoutes');
 
 //PUERTO
-const PORT = 8080;
+const PORT = 3000;
 
 const app = express();
 
@@ -29,11 +33,17 @@ app.use('/api/v1/pictures',pictureRoutes);
 
 app.post('/api/v1/login', userController.loginUsuario);
 
-app.get('*',res.status(404).json({ok:false,
-    msg:"Ruta incorrecta"}));
+app.get('*',(req,res) => {res.status(404).json({ok:false,
+    msg:"Ruta incorrecta"})});
 
 
 
 
-app.listen(PORT,()=>{
-    console.log('Servidor corriendo en el puerto ' + PORT);})
+    app.listen(PORT,async() => {
+        try {
+            await sequelize.authenticate();
+            console.log('Connection has been established successfully. Al puerto '+ PORT);
+        } catch (error) {
+            console.error('Unable to connect to the database:', error);
+        }
+    })
