@@ -8,9 +8,12 @@ const Op = db.Sequelize.Op
 let loginUsuario = async (req,res)=>{
     try{
         let info = req.body;
-        let users = usersHelpers.readBaseUsers();
-
-        let login = users.find(u => u.username == info.username && u.password === info.password);
+        let login = db.Usuario.findOne({
+            where: {
+                email: info.email,
+                password: info.password,
+            }
+        });
 
         if(login){
             let aux = {
@@ -82,8 +85,7 @@ let listaUsuarios = (req,res)=>{
 let verUsuario = (req,res)=>{
     try{
         let index = req.params.id;
-        let users = usersHelpers.readBaseUsers();
-        let {id,email,username,firstname,lastname,profilepic} = users.find((e)=> e.id == index);
+        let {id,email,username,firstname,lastname,profilepic} = db.Usuario.findByPk(index);
         let ret = {
             id: id,
             email: email,
@@ -118,14 +120,8 @@ let verUsuario = (req,res)=>{
 let crearUsuario = (req,res)=>{
     try{
         let {email,username,password,firstname,lastname,profilepic}= req.body;
-        let users = usersHelpers.readBaseUsers();
-        let id = 1;
-        if(users.length>0){
-            id = Number(users[users.length-1].id)+ 1;
-        }
-        if(email&&username&&password&&firstname&&lastname){
-            u = {
-                "id":id,
+       if(email&&username&&password&&firstname&&lastname){
+            let u = db.Usuario.create({
                 "email":email,
                 "username":username,
                 "password":password,
@@ -134,9 +130,7 @@ let crearUsuario = (req,res)=>{
                 "role":"GUEST",
                 "profilepic":profilepic?profilepic:"sin foto",
                 "cart":[]
-            }
-            users.push(u);
-            usersHelpers.writeBaseUsers(users);
+            })
             res.status(201).json({
                 "ok":true,
                 "msg": "Usuario creado",
@@ -159,13 +153,10 @@ let crearUsuario = (req,res)=>{
 
 let modificarUsuario = (req,res)=>{
     try{
-        let {email,username,password,firstname,lastname,profilepic}= req.body;
-        let users = usersHelpers.readBaseUsers();
+        let {email,username,firstname,lastname,profilepic,role}= req.body;
         let id = req.params.id;
-        let index = users.findIndex((e)=>e.id==id);
-        if (index != undefined){
             if(email||username||firstname||lastname||profilepic||role){
-                email? users[index].email = email:users[index].email=users[index].email;
+                email? db.Usuario.update({email:email},{where:{id : id}}):{};
                 username? users[index].username = username:users[index].username=users[index].username;
                 firstname? users[index].firstname = firstname:users[index].firstname=users[index].firstname;
                 lastname? users[index].lastname = lastname:users[index].lastname = users[index].lastname;
@@ -183,12 +174,6 @@ let modificarUsuario = (req,res)=>{
                     "msg": "Debe pasr al menos una campo que actualizar"
                 });
             }
-        }else{
-            res.status(404).json({
-                "ok": false,
-                "msg": "No se encobntro el Usuario "+id,
-            });
-        }
     }catch(e){
         console.log(e);
         res.status(500).json({
