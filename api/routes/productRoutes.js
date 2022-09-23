@@ -11,7 +11,7 @@ const verifyToken = require('../middleware/verifyToken');
 
 //const { route } = require('./pictureRoutes');
 
-router.use(verifyToken);
+//router.use(verifyToken);
 
 router.get('/:id/pictures',middlewareIDinBody,picturesController.listPictures)
 
@@ -25,7 +25,7 @@ router.get('/:id', productController.findProduct);
 
 router.put('/:id',habilitarMod, productController.editProduct);
 
-router.post('/',habilitarMod, productController.createProduct);
+router.post('/', productController.createProduct);
 
 router.delete('/:id',habilitarMod, productController.deleteProduct);
 
