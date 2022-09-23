@@ -8,9 +8,12 @@ const Op = db.Sequelize.Op
 let loginUsuario = async (req,res)=>{
     try{
         let info = req.body;
-        let users = usersHelpers.readBaseUsers();
-
-        let login = users.find(u => u.username == info.username && u.password === info.password);
+        let login = db.Usuario.findOne({
+            where: {
+                email: info.email,
+                password: info.password,
+            }
+        });
 
         if(login){
             let aux = {
@@ -44,25 +47,33 @@ let loginUsuario = async (req,res)=>{
 
 let listaUsuarios = (req,res)=>{
     try{
-        let users = usersHelpers.readBaseUsers();
-        let ret = [];
-        users.forEach(e =>{
-            let {id,email,username,firstname,lastname,profilepic} = e;
-            let aux = {
-                id: id,
-                email: email,
-                username: username,
-                firstname:firstname,
-                lastname:lastname,
-                profilepic:profilepic
-            }
-            ret.push(aux)
-        })
-        res.status(200).json({
-            "ok": true,
-            "users": ret,
-            "msg": "Ok"
-        });
+        let users = db.Usuario.findAll();
+        if(users){
+            let ret = [];
+            users.forEach(e =>{
+                let {id,email,username,firstname,lastname,profilepic} = e;
+                let aux = {
+                    id: id,
+                    email: email,
+                    username: username,
+                    firstname:firstname,
+                    lastname:lastname,
+                    profilepic:profilepic
+                }
+                ret.push(aux)
+            })
+            res.status(200).json({
+                "ok": true,
+                "msg": "Lsita de usuarios",
+                "users": ret
+                
+            });
+        }else{
+            res.status(404).json({
+                "ok": false,
+                "msg": "No se encontro lista de usuarios"
+            });
+        }
     }catch(e){
         console.log(e);
         res.status(500).json({
@@ -74,8 +85,7 @@ let listaUsuarios = (req,res)=>{
 let verUsuario = (req,res)=>{
     try{
         let index = req.params.id;
-        let users = usersHelpers.readBaseUsers();
-        let {id,email,username,firstname,lastname,profilepic} = users.find((e)=> e.id == index);
+        let {id,email,username,firstname,lastname,profilepic} = db.Usuario.findByPk(index);
         let ret = {
             id: id,
             email: email,
@@ -87,13 +97,13 @@ let verUsuario = (req,res)=>{
         if(ret){
             res.status(200).json({
                 "ok": true,
-                "msg": "Ok",
+                "msg": "Usuario "+id,
                 "user": ret
             });
         }else{
             res.status(404).json({
                 "ok": false,
-                "msg": "Not Found"
+                "msg": "No se encontro usuario"
             });
         }
         
@@ -110,14 +120,8 @@ let verUsuario = (req,res)=>{
 let crearUsuario = (req,res)=>{
     try{
         let {email,username,password,firstname,lastname,profilepic}= req.body;
-        let users = usersHelpers.readBaseUsers();
-        let id = 1;
-        if(users.length>0){
-            id = Number(users[users.length-1].id)+ 1;
-        }
-        if(email&&username&&password&&firstname&&lastname){
-            u = {
-                "id":id,
+       if(email&&username&&password&&firstname&&lastname){
+            let u = db.Usuario.create({
                 "email":email,
                 "username":username,
                 "password":password,
@@ -126,18 +130,16 @@ let crearUsuario = (req,res)=>{
                 "role":"GUEST",
                 "profilepic":profilepic?profilepic:"sin foto",
                 "cart":[]
-            }
-            users.push(u);
-            usersHelpers.writeBaseUsers(users);
+            })
             res.status(201).json({
                 "ok":true,
-                "msg": "Created.",
+                "msg": "Usuario creado",
                 "user": u
             })
         }else{
             res.status(400).json({
                 "ok": false,
-                "msg": "Bad Request"
+                "msg": "Dato requeridos incompletos"
             });
         }
     }catch(e){
@@ -151,13 +153,10 @@ let crearUsuario = (req,res)=>{
 
 let modificarUsuario = (req,res)=>{
     try{
-        let {email,username,password,firstname,lastname,profilepic}= req.body;
-        let users = usersHelpers.readBaseUsers();
+        let {email,username,firstname,lastname,profilepic,role}= req.body;
         let id = req.params.id;
-        let index = users.findIndex((e)=>e.id==id);
-        if (index != undefined){
             if(email||username||firstname||lastname||profilepic||role){
-                email? users[index].email = email:users[index].email=users[index].email;
+                email? db.Usuario.update({email:email},{where:{id : id}}):{};
                 username? users[index].username = username:users[index].username=users[index].username;
                 firstname? users[index].firstname = firstname:users[index].firstname=users[index].firstname;
                 lastname? users[index].lastname = lastname:users[index].lastname = users[index].lastname;
@@ -166,21 +165,15 @@ let modificarUsuario = (req,res)=>{
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok":false,
-                    "msg": "Ok",
+                    "msg": "Usuario modificado correctamente",
                     "user": users[index]
                 })
             }else{
                 res.status(400).json({
                     "ok": false,
-                    "msg": "Bad Request"
+                    "msg": "Debe pasr al menos una campo que actualizar"
                 });
             }
-        }else{
-            res.status(404).json({
-                "ok": false,
-                "msg": "Not Found"
-            });
-        }
     }catch(e){
         console.log(e);
         res.status(500).json({
@@ -200,19 +193,19 @@ let eliminarUsuario = (req,res)=>{
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok": true,
-                    "msg": "Ok",
+                    "msg": "Usuario eliminado correctamente",
                     "users": users[id]
                 });
             }else{
                 res.status(404).json({
                     "ok": false,
-                    "msg": "Not Found"
+                    "msg": "No se encontro el usuario"
                 });
             }
         }else{
             res.status(400).json({
                 "ok": false,
-                "msg": "Bad Request"
+                "msg": "Debe ingresar un id valido"
             });
         }
     }catch(e){
