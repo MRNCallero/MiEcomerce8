@@ -47,6 +47,10 @@ module.exports = (sequelize,DataTypes)=>{
     }
     const Usuario = sequelize.define(alias,cols,extra);
 
+    Usuario.associate = (models) => {   
+        Usuario.belongsTo(models.Cart)
+    }
+
     return Usuario;
 
 }

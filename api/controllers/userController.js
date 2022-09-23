@@ -44,25 +44,33 @@ let loginUsuario = async (req,res)=>{
 
 let listaUsuarios = (req,res)=>{
     try{
-        let users = usersHelpers.readBaseUsers();
-        let ret = [];
-        users.forEach(e =>{
-            let {id,email,username,firstname,lastname,profilepic} = e;
-            let aux = {
-                id: id,
-                email: email,
-                username: username,
-                firstname:firstname,
-                lastname:lastname,
-                profilepic:profilepic
-            }
-            ret.push(aux)
-        })
-        res.status(200).json({
-            "ok": true,
-            "users": ret,
-            "msg": "Ok"
-        });
+        let users = db.Usuario.findAll();
+        if(users){
+            let ret = [];
+            users.forEach(e =>{
+                let {id,email,username,firstname,lastname,profilepic} = e;
+                let aux = {
+                    id: id,
+                    email: email,
+                    username: username,
+                    firstname:firstname,
+                    lastname:lastname,
+                    profilepic:profilepic
+                }
+                ret.push(aux)
+            })
+            res.status(200).json({
+                "ok": true,
+                "msg": "Lsita de usuarios",
+                "users": ret
+                
+            });
+        }else{
+            res.status(404).json({
+                "ok": false,
+                "msg": "No se encontro lista de usuarios"
+            });
+        }
     }catch(e){
         console.log(e);
         res.status(500).json({
@@ -87,13 +95,13 @@ let verUsuario = (req,res)=>{
         if(ret){
             res.status(200).json({
                 "ok": true,
-                "msg": "Ok",
+                "msg": "Usuario "+id,
                 "user": ret
             });
         }else{
             res.status(404).json({
                 "ok": false,
-                "msg": "Not Found"
+                "msg": "No se encontro usuario"
             });
         }
         
@@ -131,13 +139,13 @@ let crearUsuario = (req,res)=>{
             usersHelpers.writeBaseUsers(users);
             res.status(201).json({
                 "ok":true,
-                "msg": "Created.",
+                "msg": "Usuario creado",
                 "user": u
             })
         }else{
             res.status(400).json({
                 "ok": false,
-                "msg": "Bad Request"
+                "msg": "Dato requeridos incompletos"
             });
         }
     }catch(e){
@@ -166,19 +174,19 @@ let modificarUsuario = (req,res)=>{
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok":false,
-                    "msg": "Ok",
+                    "msg": "Usuario modificado correctamente",
                     "user": users[index]
                 })
             }else{
                 res.status(400).json({
                     "ok": false,
-                    "msg": "Bad Request"
+                    "msg": "Debe pasr al menos una campo que actualizar"
                 });
             }
         }else{
             res.status(404).json({
                 "ok": false,
-                "msg": "Not Found"
+                "msg": "No se encobntro el Usuario "+id,
             });
         }
     }catch(e){
@@ -200,19 +208,19 @@ let eliminarUsuario = (req,res)=>{
                 usersHelpers.writeBaseUsers(users);
                 res.status(200).json({
                     "ok": true,
-                    "msg": "Ok",
+                    "msg": "Usuario eliminado correctamente",
                     "users": users[id]
                 });
             }else{
                 res.status(404).json({
                     "ok": false,
-                    "msg": "Not Found"
+                    "msg": "No se encontro el usuario"
                 });
             }
         }else{
             res.status(400).json({
                 "ok": false,
-                "msg": "Bad Request"
+                "msg": "Debe ingresar un id valido"
             });
         }
     }catch(e){

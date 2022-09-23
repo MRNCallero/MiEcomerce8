@@ -19,17 +19,17 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: "date"
     };
     const Cart = sequelize.define(alias, cols, config);
-    // Cart.associate = (models) => {
-    //     Cart.belongsTo(models.User,{
-    //         as: "cartuser",
-    //         foreignKey: "id_user",
-    //     });
-    //     Cart.associate = (models) => {
-    //         Cart.belongsTo(models.Product,{
-    //             as: "cartproduct",
-    //             foreignKey: "id_product",
-    //         })
-    //     }
-   // }
+    Cart.associate = (models) => {
+        Cart.hasMany(models.Usuario,{
+            as: "cartuser",
+            foreignKey: "id_user",
+        });
+        // Cart.associate = (models) => {
+        //     Cart.belongsTo(models.Product,{
+        //         as: "cartproduct",
+        //         foreignKey: "id_product",
+        //     })
+        // }
+   }
     return Cart;
 }
