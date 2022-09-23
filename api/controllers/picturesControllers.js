@@ -11,42 +11,38 @@ const Op = db.Sequelize.Op
 
 const controllersPictures = {
 
-    listPictures: (req, res) => {
-
+    listPicturesOfProduct:async (req, res) => {
         try {
-            let listaPictures = [];
-
             const idProducto = Number(req.idProducto);
-            //leo las bases de datos
-            const Productos = readBaseProducts();
-            const Pictures = readBasePictures();
-            //encuentro el producto segun el id
-            const Producto = Productos.find(elem => elem.id === idProducto);
 
-            if (Producto) {
-                //recorro el Gallery del producto si un elemento de la base de datos de pictures tiene el mismo id que el del producto lo agrego a listaProducto
-                Producto.gallery.forEach(elem => {
-                    const thePicture = searchPicture(Number(elem))
-                    if (thePicture) listaPictures.push(thePicture);
-
-                })
-                if (listaPictures.length > 0) {
-                    res.status(200).json({
-                        ok: true,
-                        lista: listaPictures
-                    });
-                } else {
-                    res.status(500).json({
-                        ok: false,
-                        msj: "Server Error"
-                    });
-                }
-            } else {
-                res.status(404).json({
+            const exist = await db.Product.findOne({
+                where: { id: idProducto }
+             });
+             
+             if (exist) {
+                res.status(500).json({
                     ok: false,
-                    msj: "Not Found"
+                    msj: `ID:${idProducto} no esta asociado a ningun producto`
+                });
+             }
+            let listOfPictures = await db.Picture.findAll({
+                where:{
+                    id_Product: idProducto
+                }
+            })
+            if(listOfPictures.length > 0){
+                res.status(200).json({
+                    ok: true,
+                    msj: "Lista de fotos del producto con id " + idProducto,
+                    lista: listOfPictures
+                });
+            }else{
+                res.status(200).json({
+                    ok: true,
+                    msj: "Lista de fotos del producto con id " + idProducto + " esta vacia",
                 });
             }
+
         } catch (error) {
             console.log(error)
             res.status(500).json({
@@ -57,6 +53,7 @@ const controllersPictures = {
         }
     },
     listPictureID: (req, res) => {
+        console.log("nooo acaaaars");
 
         try {
             const idPicture = req.params.id;
