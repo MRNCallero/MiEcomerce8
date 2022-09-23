@@ -28,6 +28,7 @@ module.exports = (sequelize, dataTypes) => {
         }
     };
     let config = {
+        tableName: 'Product',
         timestamps: false,
         deletedAt: false
     }
@@ -36,19 +37,20 @@ module.exports = (sequelize, dataTypes) => {
     Product.associate = models => {
         Product.belongsTo(models.Categoria, {
             as: 'productocategoria',
-            foreignKey: 'id_categoria'
+            foreignKey: 'id_category'
         }),
         
         Product.hasMany(models.Picture, {
-            as: "picturesproduct"
+            as: "picturesproduct",
+            foreignKey: 'id'
         }),
 
-        Product.belongsToMany(models.User, {
+        Product.belongsToMany(models.Usuario, {
             foreignKey: 'id_product',
             otherKey: "id_user",
-            through: 'Cart'
+            through: 'Cart',
+            as: "productscarrito"
         })
-
 
     }
 
