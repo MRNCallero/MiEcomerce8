@@ -151,23 +151,30 @@ let crearUsuario = (req,res)=>{
     }
 }
 
-let modificarUsuario = (req,res)=>{
+let modificarUsuario = async(req,res)=>{
     try{
         let {email,username,firstname,lastname,profilepic,role}= req.body;
         let id = req.params.id;
             if(email||username||firstname||lastname||profilepic||role){
-                email? db.Usuario.update({email:email},{where:{id : id}}):{};
-                username? users[index].username = username:users[index].username=users[index].username;
-                firstname? users[index].firstname = firstname:users[index].firstname=users[index].firstname;
-                lastname? users[index].lastname = lastname:users[index].lastname = users[index].lastname;
-                profilepic? users[index].profilepic = profilepic: users[index].profilepic=users[index].profilepic;
-                role? users[index].role = role: users[index].role=users[index].role;
-                usersHelpers.writeBaseUsers(users);
-                res.status(200).json({
-                    "ok":false,
-                    "msg": "Usuario modificado correctamente",
-                    "user": users[index]
-                })
+                email? await db.Usuario.update({email:email},{where:{id : id}}):{};
+                username? await db.Usuario.update({username:username},{where:{id : id}}):{};
+                firstname? await db.Usuario.update({firstname:firstname},{where:{id : id}}):{};
+                lastname? await db.Usuario.update({lastname:lastname},{where:{id : id}}):{};
+                profilepic? await db.Usuario.update({profilepic:profilepic},{where:{id : id}}):{};
+                role? await db.Usuario.update({role:role},{where:{id : id}}):{};
+                let mod = await db.Usuario.findByPK(id);
+                if(mod){
+                    res.status(200).json({
+                        "ok":true,
+                        "msg": "Usuario modificado correctamente",
+                        "user": mod
+                    })
+                }else{
+                    res.status(404).json({
+                        "ok":false,
+                        "msg": "Usuario no encontrado"
+                    })
+                }
             }else{
                 res.status(400).json({
                     "ok": false,
@@ -183,25 +190,16 @@ let modificarUsuario = (req,res)=>{
     }
 }
 
-let eliminarUsuario = (req,res)=>{
+let eliminarUsuario = async (req,res)=>{
     try{
         let id = req.params.id;
         if (id){
-            let aux = usersHelpers.readBaseUsers();
-            if(aux.filter((e)=>e.id)){
-                let users = aux.filter((e)=>e.id != id);
-                usersHelpers.writeBaseUsers(users);
+                let dest = await db.Usuario.destroy({where:{id:id}})
                 res.status(200).json({
                     "ok": true,
                     "msg": "Usuario eliminado correctamente",
-                    "users": users[id]
+                    "users": dest
                 });
-            }else{
-                res.status(404).json({
-                    "ok": false,
-                    "msg": "No se encontro el usuario"
-                });
-            }
         }else{
             res.status(400).json({
                 "ok": false,
