@@ -30,7 +30,8 @@ module.exports = (sequelize, dataTypes) => {
     let config = {
         tableName: 'Product',
         timestamps: false,
-        deletedAt: false
+        deletedAt: false,
+        tableName: "Product",
     }
     const Product = sequelize.define(alias,cols,config);
 
@@ -44,7 +45,6 @@ module.exports = (sequelize, dataTypes) => {
             as: "picturesproduct",
             foreignKey: 'id'
         }),
-
 
         Product.belongsToMany(models.Usuario, {
             foreignKey: 'id_product',
