@@ -14,14 +14,12 @@ module.exports = (sequelize,DataTypes)=>{
     }
     const extra = {   
         tableName: 'Category',
-        timestamps: true,
-        createdAt: "created_at",
-        updatedAt: "updated_at"
+        timestamps: false
     }
     const Categoria = sequelize.define(alias,cols,extra);
     Categoria.associate = models => {
         Categoria.hasMany(models.Product, {
-            foreignKey: 'id_categoria'
+            foreignKey: 'id_category'
         })
     }
 

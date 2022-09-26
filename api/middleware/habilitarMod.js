@@ -4,9 +4,13 @@ const habilitarMod = ( req,res,next)=> {
     try{
         const {id,role}= req.jwtauth;
         const idReq = req.params.id;
-
-        if(((req.originalUrl.includes('users') || req.originalUrl.includes('cart')) && id == idReq) || ((req.originalUrl.includes('pictures') || req.originalUrl.includes('products')) && role == "ADMIN") || role == "GOD"){
-
+        console.log('id '+ id);
+        console.log('role '+role);
+        if(role == "GOD"){
+            next()
+        }else if(((req.originalUrl.includes('users') || req.originalUrl.includes('cart')) && id == idReq)){
+            next()
+        } else if (((req.originalUrl.includes('pictures') || req.originalUrl.includes('products')) && role == "ADMIN")){
             next();
         }else{
             res.status(400).json({error: "No tienes las credenciales necesarias para acceder"})

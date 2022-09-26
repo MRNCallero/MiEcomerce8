@@ -38,9 +38,6 @@ app.get('*',(req,res) => res.status(404).json({
     msg:"Ruta incorrecta"
 }));
 
-
-
-
     app.listen(PORT,async() => {
         try {
             await sequelize.authenticate();
