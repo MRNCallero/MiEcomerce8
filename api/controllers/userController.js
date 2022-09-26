@@ -8,7 +8,7 @@ const Op = db.Sequelize.Op
 let loginUsuario = async (req,res)=>{
     try{
         let info = req.body;
-        let login = db.Usuario.findOne({
+        let login = await db.Usuario.findOne({
             where: {
                 email: info.email,
                 password: info.password,
@@ -16,6 +16,7 @@ let loginUsuario = async (req,res)=>{
         });
 
         if(login){
+            console.log('login '+ login)
             let aux = {
                 id: login.id,
                 username : login.username,
@@ -45,27 +46,14 @@ let loginUsuario = async (req,res)=>{
     }
 }
 
-let listaUsuarios = (req,res)=>{
+let listaUsuarios =  async(req,res)=>{
     try{
-        let users = db.Usuario.findAll();
+        let users = await db.Usuario.findAll();
         if(users){
-            let ret = [];
-            users.forEach(e =>{
-                let {id,email,username,firstname,lastname,profilepic} = e;
-                let aux = {
-                    id: id,
-                    email: email,
-                    username: username,
-                    firstname:firstname,
-                    lastname:lastname,
-                    profilepic:profilepic
-                }
-                ret.push(aux)
-            })
             res.status(200).json({
                 "ok": true,
                 "msg": "Lsita de usuarios",
-                "users": ret
+                "users": users
                 
             });
         }else{
@@ -82,10 +70,11 @@ let listaUsuarios = (req,res)=>{
         });
     }
 }
-let verUsuario = (req,res)=>{
+let verUsuario = async (req,res)=>{
     try{
         let index = req.params.id;
-        let {id,email,username,firstname,lastname,profilepic} = db.Usuario.findByPk(index);
+        let u = await db.Usuario.findByPk(index);
+        if(u){
         let ret = {
             id: id,
             email: email,
@@ -94,7 +83,6 @@ let verUsuario = (req,res)=>{
             lastname:lastname,
             profilepic:profilepic
         }
-        if(ret){
             res.status(200).json({
                 "ok": true,
                 "msg": "Usuario "+id,
@@ -117,19 +105,21 @@ let verUsuario = (req,res)=>{
 }
 
 
-let crearUsuario = (req,res)=>{
+let crearUsuario = async (req,res)=>{
     try{
-        let {email,username,password,firstname,lastname,profilepic}= req.body;
+        let {email,username,password,firstname,lastname,profilepic,role}= req.body;
        if(email&&username&&password&&firstname&&lastname){
-            let u = db.Usuario.create({
+            console.log("email: ",email);
+            console.log("username ",username);
+            role? role : role = "GUEST"
+            let u =  await db.Usuario.create({
                 "email":email,
                 "username":username,
                 "password":password,
-                "firstname":firstname,
-                "lastname":lastname,
-                "role":"GUEST",
+                "first_name":firstname,
+                "last_name":lastname,
                 "profilepic":profilepic?profilepic:"sin foto",
-                "cart":[]
+                "role": role
             })
             res.status(201).json({
                 "ok":true,
@@ -162,7 +152,7 @@ let modificarUsuario = async(req,res)=>{
                 lastname? await db.Usuario.update({lastname:lastname},{where:{id : id}}):{};
                 profilepic? await db.Usuario.update({profilepic:profilepic},{where:{id : id}}):{};
                 role? await db.Usuario.update({role:role},{where:{id : id}}):{};
-                let mod = await db.Usuario.findByPK(id);
+                let mod = await db.Usuario.findByPk(id);
                 if(mod){
                     res.status(200).json({
                         "ok":true,
@@ -178,7 +168,7 @@ let modificarUsuario = async(req,res)=>{
             }else{
                 res.status(400).json({
                     "ok": false,
-                    "msg": "Debe pasr al menos una campo que actualizar"
+                    "msg": "Debe ingresaer al menos una campo que actualizar"
                 });
             }
     }catch(e){
@@ -195,11 +185,17 @@ let eliminarUsuario = async (req,res)=>{
         let id = req.params.id;
         if (id){
                 let dest = await db.Usuario.destroy({where:{id:id}})
-                res.status(200).json({
+                if(dest){res.status(200).json({
                     "ok": true,
                     "msg": "Usuario eliminado correctamente",
                     "users": dest
-                });
+                    });
+                }else{
+                    res.status(404).json({
+                        "ok": false,
+                        "msg": "No se encontro lista de usuarios"
+                    });        
+                }
         }else{
             res.status(400).json({
                 "ok": false,

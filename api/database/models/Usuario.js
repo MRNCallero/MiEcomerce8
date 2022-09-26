@@ -43,9 +43,7 @@ module.exports = (sequelize,DataTypes)=>{
     }
     const extra = {   
         tableName: 'User',
-        timestamps: true,
-        createdAt: "created_at",
-        updatedAt: "updated_at"
+        timestamps: false
     }
     const Usuario = sequelize.define(alias,cols,extra);
 
@@ -53,7 +51,8 @@ module.exports = (sequelize,DataTypes)=>{
         Usuario.belongsToMany(models.Product,{
                 foreignKey : 'id_user',
                 otherKey: 'id_product',
-                through: 'Cart'
+                through: 'Cart',
+                as: 'UserCart'
         })
     }
 
