@@ -1,5 +1,4 @@
 const generateJWT = require('../../helpers/generateJWT');
-const usersHelpers = require('../../helpers/usersHelpers');
 const db = require('../database/models/index');
 const { sequelize } = require('../database/models');
 const { where } = require('sequelize');
@@ -116,7 +115,7 @@ let crearUsuario = async (req,res)=>{
                 "email":email,
                 "username":username,
                 "password":password,
-                "first_name":firstname,
+                "first_name":res,
                 "last_name":lastname,
                 "profilepic":profilepic?profilepic:"sin foto",
                 "role": role
