@@ -1,13 +1,5 @@
-const searchPicture = require('../../helpers/searchPicture');
-const deletePicture = require('../../helpers/deletePictures');
-
 //sequelize
 const db = require('../database/models/index');
-const { sequelize } = require('../database/models');
-const { where } = require('sequelize');
-const Op = db.Sequelize.Op
-
-
 
 const controllersPictures = {
 
@@ -15,16 +7,6 @@ const controllersPictures = {
         try {
             const idProduct = Number(req.idProducto);
             if (isNaN(idProduct)) return res.status(400).json({ msj: "ID del producto incorrecto" });
-            
-            const exist = await db.Product.findByPk(idProduct);
-             
-            if (!exist) {
-               return res.status(404).json({
-                   ok: false,
-                   msj: `ID:${idProduct} no esta asociado a ningun producto`
-               });
-            }
-
                 
                 let listOfPictures = await db.Picture.findAll({
                     where:{
@@ -54,16 +36,15 @@ const controllersPictures = {
                 
             }
         },
-        listPictureID: async (req, res) => {
+    listPictureID: async (req, res) => {
             
-
         try {
             const idPicture = req.params.id;
             if (isNaN(idPicture)) return res.status(400).json({ msj: "ID de picture incorrecto" });
 
             const Picture = await db.Picture.findOne({
                 where:{
-                    id_Product: idProducto
+                    id: idPicture
                 }
             })
             if (Picture) {
@@ -152,7 +133,6 @@ const controllersPictures = {
             res.status(500).json({ msj: "Server Error" });
         }
     },
-
     delete:async (req, res) => {
         const idPicture = req.params.id;
         if (!idPicture || isNaN(idPicture)) {
@@ -176,7 +156,7 @@ const controllersPictures = {
                 })
             }
             const listaPictures = await db.Picture.findAll();
-            res.status(200).json({ ok: true, pictures: listaPictures });
+            res.status(200).json({ ok: true, msj: "Picture eliminada",pictures: listaPictures });
 
         } catch (error) {
             console.log(error);
