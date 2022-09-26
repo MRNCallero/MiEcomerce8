@@ -7,6 +7,7 @@ const prodListViewer = require('../../helpers/prodListViewer')
 const db = require('../database/models/index');
 const { sequelize } = require('../database/models');
 const { where } = require('sequelize');
+const Categoria = require('../database/models/Categoria');
 const Op = db.Sequelize.Op
 
 
@@ -197,22 +198,23 @@ const productController = {
     },
 
     findCategory: (req, res) => {
-        try{
-            const productsJSON = readProdData();
-            const category = req.query.category;
-            let finalList = productsJSON.filter(el => el.category == category)
-            finalList = prodListViewer(finalList);
-            if(finalList.length != 0){
-                res.status(200).json({
-                    ok: true,
-                    msg: finalList
-                })
-            }else{
-                res.status(404).json({
-                    ok: false,
-                    msg: 'No se encontraron productos'
-                })
-            }
+        try{    
+            const cat = req.query.category;
+            db.Product.findAll({
+                include: [{association: 'productocategoria', where: {name: cat}}]
+            }).then(result => {
+                if(result.length > 0){
+                    res.status(200).json({
+                        ok: true,
+                        msg: result
+                    })  
+                }else{
+                    res.status(404).json({
+                        ok:false,
+                        msg: 'No se encontraron productos con esa categoria'
+                    })
+                }
+            })
         }catch{
             res.status(500).json({
                 ok: false,
