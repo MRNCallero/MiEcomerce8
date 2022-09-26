@@ -1,5 +1,6 @@
 const searchPicture = require('../../helpers/searchPicture');
 const deletePicture = require('../../helpers/deletePictures');
+
 //sequelize
 const db = require('../database/models/index');
 const { sequelize } = require('../database/models');
@@ -8,64 +9,63 @@ const Op = db.Sequelize.Op
 
 
 
-
 const controllersPictures = {
 
-    listPictures: (req, res) => {
-
+    listPicturesOfProduct:async (req, res) => {
         try {
-            let listaPictures = [];
+            const idProduct = Number(req.idProducto);
+            if (isNaN(idProduct)) return res.status(400).json({ msj: "ID del producto incorrecto" });
+            
+            const exist = await db.Product.findByPk(idProduct);
+             
+            if (!exist) {
+               return res.status(404).json({
+                   ok: false,
+                   msj: `ID:${idProduct} no esta asociado a ningun producto`
+               });
+            }
 
-            const idProducto = Number(req.idProducto);
-            //leo las bases de datos
-            const Productos = readBaseProducts();
-            const Pictures = readBasePictures();
-            //encuentro el producto segun el id
-            const Producto = Productos.find(elem => elem.id === idProducto);
-
-            if (Producto) {
-                //recorro el Gallery del producto si un elemento de la base de datos de pictures tiene el mismo id que el del producto lo agrego a listaProducto
-                Producto.gallery.forEach(elem => {
-                    const thePicture = searchPicture(Number(elem))
-                    if (thePicture) listaPictures.push(thePicture);
-
+                
+                let listOfPictures = await db.Picture.findAll({
+                    where:{
+                        id_Product: idProduct
+                    }
                 })
-                if (listaPictures.length > 0) {
+                if(listOfPictures.length > 0){
                     res.status(200).json({
                         ok: true,
-                        lista: listaPictures
+                        msj: "Lista de fotos del producto con id " + idProduct,
+                        lista: listOfPictures
                     });
-                } else {
-                    res.status(500).json({
-                        ok: false,
-                        msj: "Server Error"
+                }else{
+                    res.status(404).json({
+                        ok: true,
+                        msj: "Lista de fotos del producto con id " + idProduct + " esta vacia",
                     });
                 }
-            } else {
-                res.status(404).json({
+            
+                
+            } catch (error) {
+                console.log(error)
+                res.status(500).json({
                     ok: false,
-                    msj: "Not Found"
+                    msj: "Server Error"
                 });
+                
             }
-        } catch (error) {
-            console.log(error)
-            res.status(500).json({
-                ok: false,
-                msj: "Server Error"
-            });
-
-        }
-    },
-    listPictureID: (req, res) => {
+        },
+        listPictureID: async (req, res) => {
+            
 
         try {
             const idPicture = req.params.id;
-            if (isNaN(idPicture)) return res.status(400).json({ msj: "Bad Request" });
-            const Pictures = readBasePictures();
-            console.log(Pictures)
-            //encuentro la imagen segun el id
-            const Picture = searchPicture(Number(idPicture));
+            if (isNaN(idPicture)) return res.status(400).json({ msj: "ID de picture incorrecto" });
 
+            const Picture = await db.Picture.findOne({
+                where:{
+                    id_Product: idProducto
+                }
+            })
             if (Picture) {
                 res.status(200).json({
                     ok: true,
@@ -74,7 +74,7 @@ const controllersPictures = {
             } else {
                 res.status(404).json({
                     ok: false,
-                    msj: "Not Found"
+                    msj: "Foto no encontrada"
                 });
             }
         } catch (error) {
@@ -85,24 +85,15 @@ const controllersPictures = {
             console.log(error)
         }
     },
-    create: (req, res) => {
+    create: async (req, res) => {
         try {
-            let Pictures = readBasePictures();
+            
+            const { url, id_product, description } = req.body;
 
-            let id = 1;
-            if(Pictures.length>0){
-                id = Number(Pictures[Pictures.length-1].id)+ 1;
-            }
-            const { url, description } = req.body;
-
-            if (!url) return res.status(400).json({ ok: false,msj: "Bad Request" });
-
-            const newPicture = { id, url }
+            const newPicture = { url, id_product }
             if (description) newPicture.description = description;
-
-            Pictures.push(newPicture);
-
-            writeBasePictures(Pictures);
+            
+            await db.Picture.create(newPicture);
 
             res.status(201).json({
                 ok: true,
@@ -110,45 +101,49 @@ const controllersPictures = {
             });
 
         } catch (error) {
+            console.log(error)
             res.status(500).json({
                 ok: false,
-                msj: "Server Error "
+                msj: "Server Error Picture Create"
             });
         }
     },
-    edit: (req, res) => {
+    edit: async (req, res) => {
 
-        const { id, ...restoDeElementos } = req.body;
+        const {...elementos } = req.body;
         const idPicture = req.params.id;
         if (!idPicture || isNaN(idPicture)) {
             return res.status(400).json({
                 ok: false,
-                msj: "Bad Request"
+                msj: "ID Picture formato incorrecto"
             });
         }
-        try {
-            const Pictures = readBasePictures();
 
-            if (!searchPicture(Number(idPicture))) {
+        try {
+           
+            const pictureBuscada = await db.Picture.findByPk(Number(idPicture))
+            if(!pictureBuscada){
                 return res.status(404).json({
                     ok: false,
-                    msj: "Not Found"
+                    msj: "Picture no encontrada"
                 });
             }
-            let newEl;
-            const PicturesActualizados = Pictures.map(picture => {
-                if (picture.id === Number(idPicture)) {
-                    newEl = { ...picture, ...restoDeElementos };
-                    return newEl;
-                } else {
-                    return picture;
+            if(req.body.id_product){
+                const productExist = await db.Product.findByPk(req.body.id_product);
+                if(!productExist){
+                    return res.status(404).json({
+                        ok: false,
+                        msj: `producto con ID:${req.body.id_product} no encontrado`
+                    });
                 }
-            });
-
-            writeBasePictures(PicturesActualizados);
+            }
+            await db.Picture.update({
+                ...elementos,
+            },{where:{id:idPicture}});
+            const pictureEditada = await db.Picture.findByPk(Number(idPicture))
             res.status(200).json({
                 ok: true,
-                picture: newEl
+                picture: pictureEditada
             });
 
 
@@ -158,27 +153,30 @@ const controllersPictures = {
         }
     },
 
-    delete: (req, res) => {
+    delete:async (req, res) => {
         const idPicture = req.params.id;
         if (!idPicture || isNaN(idPicture)) {
             return res.status(400).json({
                 ok: false,
-                msj: "Bad Request"
+                msj: "ID Picture formato incorrecto"
             });
         }
         try {
-
-            const Pictures = readBasePictures()
-            console.log(Pictures)
-            if (!searchPicture(Number(idPicture))) {
+            
+            const pictureBuscada = await db.Picture.findByPk(Number(idPicture))
+            if(!pictureBuscada){
                 return res.status(404).json({
                     ok: false,
-                    msj: "Not Found"
+                    msj: "Picture no encontrada"
                 });
             }
-            const PicturesFiltradas = deletePicture(idPicture);
-
-            res.status(200).json({ ok: true, pictures: PicturesFiltradas });
+            if(pictureBuscada){
+                await db.Picture.destroy({
+                    where: {id:idPicture}
+                })
+            }
+            const listaPictures = await db.Picture.findAll();
+            res.status(200).json({ ok: true, pictures: listaPictures });
 
         } catch (error) {
             console.log(error);

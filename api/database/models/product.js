@@ -28,29 +28,30 @@ module.exports = (sequelize, dataTypes) => {
         }
     };
     let config = {
+        tableName: 'Product',
         timestamps: false,
-        deletedAt: false
+        deletedAt: false,
+        tableName: "Product",
     }
     const Product = sequelize.define(alias,cols,config);
 
     Product.associate = models => {
         Product.belongsTo(models.Categoria, {
             as: 'productocategoria',
-            foreignKey: 'id_categoria'
+            foreignKey: 'id_category'
         }),
         
         Product.hasMany(models.Picture, {
             as: "picturesproduct",
             foreignKey: 'id'
-
         }),
 
         Product.belongsToMany(models.Usuario, {
             foreignKey: 'id_product',
             otherKey: "id_user",
-            through: 'Cart'
+            through: 'Cart',
+            as: "productscarrito"
         })
-
 
     }
 

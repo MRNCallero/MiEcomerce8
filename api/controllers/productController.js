@@ -7,6 +7,7 @@ const prodListViewer = require('../../helpers/prodListViewer')
 const db = require('../database/models/index');
 const { sequelize } = require('../database/models');
 const { where } = require('sequelize');
+const Categoria = require('../database/models/Categoria');
 const Op = db.Sequelize.Op
 
 
@@ -14,11 +15,11 @@ const productController = {
     listProducts: (req, res) => {
         try{
             if(req.query.category == undefined){
-                let productsJSON = readProdData();
-                productsJSON = prodListViewer(productsJSON)
-                res.status(200).json({
-                ok: true,
-                msg: productsJSON
+                db.Product.findAll({
+                    include: [{association: "picturesproduct"}]
+                })
+                .then(resultado => {
+                    res.status(200).json(resultado)
                 })
             }else{
                 productController.findCategory(req, res);
@@ -63,43 +64,23 @@ const productController = {
     },
 
     createProduct: (req, res) => {
-        
+        let newProd = req.body;
         try{
-            let newProd = req.body;
-            let productsJSON = readProdData();
-            if(newProd.title != undefined && newProd.price != undefined && newProd.gallery.length > 0){ 
-                let id = 1;
-                if(productsJSON.length>0){
-                    id = Number(productsJSON[productsJSON.length-1].id)+ 1;
-                }
-                newProd.id = id
-                if(newProd.image){
-                    if(!searchPictures(newProd.image)){
-                        return res.status(400).json({
-                            ok: false,
-                            msg: "Foto inexistente en la imagen principal"
-                        })
-                    }
-                }
-                let existelaFoto = true;
-                newProd.gallery.forEach(el => {
-                    if(!searchPictures(Number(el))){
-                        existelaFoto = false;
-
-                    }
+            if(newProd.title != undefined && newProd.price != undefined){ 
+               
+                db.Product.create({
+                    title: req.body.title,
+                    price: req.body.price,
+                    mostwanted: req.body.mostwanted,
+                    stock: req.body.stock,
+                    description: req.body.description,
+                    id_category: req.body.id_category
                 })
-                if(!existelaFoto){
-                   return res.status(400).json({
-                        ok: false,
-                        msg: "Foto inexistente en el gallery"
-                })}
-                if(!newProd.stock) newProd.stock = 0;
-                productsJSON.push(newProd);
-                
-                fs.writeFileSync('api/data/products.json', JSON.stringify(productsJSON))
-                res.status(201).json({
-                   msg: "Producto agregado",
-                   ok: true
+                .then(resultado => {
+                    res.status(200).json({
+                        ok: true,
+                        msg: "El producto fue agregado correctamente"
+                    })
                 })
             }else{
                 res.status(400).json({
@@ -152,13 +133,18 @@ const productController = {
 
     findMostWanted: (req, res) => {
         try{
-            const productsJSON = readProdData();
-            let finalList = productsJSON.filter(el => el.mostwanted)
-            finalList = prodListViewer(finalList);
-            res.status(200).json({
-                ok: true,
-                msg: finalList
-        })}catch(err){
+            db.Product.findAll({
+                where: {
+                    mostwanted: 1
+                }
+            }).then(resultado => {
+                res.status(200).json({
+                    ok: true,
+                    msg: resultado
+                })
+            })
+            
+        }catch(err){
             console.log(err);
             res.status(500).json({
                 ok: false,
@@ -212,22 +198,23 @@ const productController = {
     },
 
     findCategory: (req, res) => {
-        try{
-            const productsJSON = readProdData();
-            const category = req.query.category;
-            let finalList = productsJSON.filter(el => el.category == category)
-            finalList = prodListViewer(finalList);
-            if(finalList.length != 0){
-                res.status(200).json({
-                    ok: true,
-                    msg: finalList
-                })
-            }else{
-                res.status(404).json({
-                    ok: false,
-                    msg: 'No se encontraron productos'
-                })
-            }
+        try{    
+            const cat = req.query.category;
+            db.Product.findAll({
+                include: [{association: 'productocategoria', where: {name: cat}}]
+            }).then(result => {
+                if(result.length > 0){
+                    res.status(200).json({
+                        ok: true,
+                        msg: result
+                    })  
+                }else{
+                    res.status(404).json({
+                        ok:false,
+                        msg: 'No se encontraron productos con esa categoria'
+                    })
+                }
+            })
         }catch{
             res.status(500).json({
                 ok: false,
