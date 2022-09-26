@@ -1,4 +1,4 @@
-const prodListViewer = require('../../helpers/prodListViewer')
+//const prodListViewer = require('../../helpers/prodListViewer')
 //sequelize
 const db = require('../database/models/index');
 const { sequelize } = require('../database/models');
