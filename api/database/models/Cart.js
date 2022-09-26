@@ -9,14 +9,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        date: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
         quantity: {
             type: DataTypes.INTEGER,
-            allowNull: true
+            allowNull: false
         }
     }
     const config = {
-        timestamps: true,
-        createdAt: "date"
+        timestamps: false,
+        createdAt: "date",
+        tableName: "Cart",
     };
     const Cart = sequelize.define(alias, cols, config);
     
