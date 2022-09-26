@@ -133,7 +133,6 @@ const controllersPictures = {
             res.status(500).json({ msj: "Server Error" });
         }
     },
-
     delete:async (req, res) => {
         const idPicture = req.params.id;
         if (!idPicture || isNaN(idPicture)) {
