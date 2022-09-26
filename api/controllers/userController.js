@@ -76,16 +76,16 @@ let verUsuario = async (req,res)=>{
         let u = await db.Usuario.findByPk(index);
         if(u){
         let ret = {
-            id: id,
-            email: email,
-            username: username,
-            firstname:firstname,
-            lastname:lastname,
-            profilepic:profilepic
+            id: u.id,
+            email: u.email,
+            username: u.username,
+            firstname: u.firstname,
+            lastname: u.lastname,
+            profilepic: u.profilepic
         }
             res.status(200).json({
                 "ok": true,
-                "msg": "Usuario "+id,
+                "msg": "Usuario "+index,
                 "user": ret
             });
         }else{
