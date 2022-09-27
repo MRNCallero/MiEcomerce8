@@ -14,6 +14,8 @@ const handleErrors = require('../middleware/handleErrors');
 //const { route } = require('./pictureRoutes');
 
 
+//ACORDARSE DE DESCOMENTAR ESTO
+
 router.use(verifyToken);
 
 
