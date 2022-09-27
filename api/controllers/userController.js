@@ -49,11 +49,24 @@ let loginUsuario = async (req,res)=>{
 let listaUsuarios =  async(req,res)=>{
     try{
         let users = await db.Usuario.findAll();
+        let ret = [];
+        let aux = undefinde;
         if(users){
+            users.forEach(e =>{
+               aux = {
+                    id : e.id,
+                    email: e.email,
+                    username: e.username,
+                    firstname: e.firstname,
+                    lastname: e.lastname,
+                    profilepic: e.profilepic
+               }
+               ret.push(aux);
+            })
             res.status(200).json({
                 "ok": true,
                 "msg": "Lsita de usuarios",
-                "users": users
+                "users": ret
                 
             });
         }else{
@@ -116,7 +129,7 @@ let crearUsuario = async (req,res)=>{
                 "email":email,
                 "username":username,
                 "password":password,
-                "first_name":res,
+                "first_name":firstname,
                 "last_name":lastname,
                 "profilepic":profilepic?profilepic:"sin foto",
                 "role": role
