@@ -36,14 +36,9 @@ const productController = {
     findProduct: async (req, res) => {
         try{
             const prodId = req.params.id
-            // let productsJSON = readProdData();
-            // let foundProd = productsJSON.find(el => {
-            //     return el.id == prodId
-            // });
+ 
             const foundProd = await db.Product.findByPk(prodId);
-            let listaAux = []
-            listaAux.push(foundProd)
-            foundProd = prodListViewer(listaAux);
+
             if(foundProd == undefined){
                 res.status(404).json({
                     ok: false,
@@ -99,9 +94,8 @@ const productController = {
 
     editProduct: async (req, res) => {
         try {
-            // let productsJSON = readProdData();
-            // let prod = productsJSON.find(el => el.id == req.params.id)
-            const idprod = req.params.id;
+     
+            const idProd = req.params.id;
             let prod = await db.Product.findByPk(idProd);
             if(prod == undefined){
                 return res.status(404).json({
@@ -110,15 +104,16 @@ const productController = {
                 })
             }
             let {title, price, description, category, mostwanted, stock} = req.body;
-            if(category){const cat = await db.Categoria.findByPk(category);}
+            let cat;
+            if(category){ cat = await db.Categoria.findByPk(category);}
             if(title||price||description||cat||mostwanted||stock){
                 title? prod.title = title: prod.title=prod.title;
                 price? prod.price = price: prod.price=prod.price;
-                mostwanted? prod.mostwanted = mostwanted: prod.mostwanted = prod.mostwanted;
+                mostwanted && mostwanted == 1||mostwanted == 0? prod.mostwanted = Number(mostwanted): prod.mostwanted = Number(prod.mostwanted);
                 stock? prod.stock = stock: prod.stock = prod.stock;
                 description? prod.description = description: prod.description = prod.description;
                 cat != undefined? prod.category = category: prod.category = prod.category;
-                const res = await db.Product.update({
+                const resp = await db.Product.update({
                     title : prod.title,
                     price : prod.price,
                     mostwanted : prod.mostwanted,
@@ -173,39 +168,34 @@ const productController = {
         }
     },
 
-    //Falta borrar las imagenes tambien y quitarse el producto de todos los carritos
     deleteProduct: async (req, res) => {
         try{
-            let idParam = req.params.id
-            //let productsJSON = readProdData();
-        if(!isNaN(idParam)){
-                // const finalList = productsJSON.filter(el => {
-                //     if(el.id == id){
-                //         if(el.image != undefined) deletePictures(el.image);
-                //         el.gallery.forEach(elem => {
-                //             let i = Number(elem)
-                //             deletePictures( i)
-                //         })
-                //     }
-                //     return el.id != id
-                // })
+            let idParam = req.params.id;
+            if(!isNaN(idParam)){               
+                const fromCart = await db.Cart.findAll({where:{id_product: idParam}});
+                if (fromCart.length == 0){
+                    const deleteImg = await db.Picture.destroy({where:{id_product : idParam}});
+                    const toDelete = await db.Product.destroy({where:{id : idParam}});
 
-                const toDelete = await db.Product.destroy({where:{id : idParam}});
-                const deleteImg = await db.Picture.destroy({where:{id_product : idParam}});
-                const deleteCart = await db.Cart.destroy({where:{id_product: idParam}});
-
-                // removeFromCart( Number(id)  );
-                // fs.writeFileSync('api/data/products.json', JSON.stringify(finalList))
-                if(toDelete.rowsAfected != 0){
-                    res.status(200).json({
-                        ok: true,
-                        msg: finalList
-                })}else{
+                    if(toDelete.rowsAfected != 0){
+                        res.status(200).json({
+                            ok: true,
+                            msg: "Producto borrado correctamente " + toDelete
+                        })
+                    }else{
+                        res.status(404).json({
+                            ok:false,
+                            msg: 'Producto no encontrado'
+                        })
+                    }
+                }else{
                     res.status(404).json({
-                        ok:false,
-                        msg: 'Producto no encontrado'
+                        ok: false,
+                        msg: 'Imposible borrar producto. Un usuario o mas lo tiene en su carrito'
                     })
                 }
+                
+                
             }else{
                 res.status(400).json({
                     ok:false,
@@ -214,6 +204,12 @@ const productController = {
             }
         }catch(err){
             console.log(err);
+            /*if (err.parent.code.includes("REFERENCED")){
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'Imposible borrar producto. Un usuario o mas lo tiene en su carrito'
+                })
+            }*/
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'
@@ -225,7 +221,7 @@ const productController = {
         try{    
             const cat = req.query.category;
             db.Product.findAll({
-                include: [{association: 'productocategoria', where: {name: cat}}]
+                include: [{association: 'productocategoria', where: {name: {[Op.like] :'%' + cat + '%'}}}]
             }).then(result => {
                 if(result.length > 0){
                     res.status(200).json({
@@ -251,23 +247,18 @@ const productController = {
         try{
             keyWord = req.query.q;
             console.log(keyWord);
-            //const productsJSON = readProdData();
-            const retByKey = await db.Product.findAll({where : {[Op.or]: [
-                {title : keyWord},
-                {description : keyWord}]},
-                include: [{association: 'productocategoria', 
-                        where: {name: keyWord}}]})
-            // console.log(productsJSON);
-            // let listaFiltrada = productsJSON.filter(el => {
-            //     if(el.category){
-            //         return (el.title.includes(keyWord) || el.description.includes(keyWord) || el.category.includes(keyWord))
-            //     }else{
-            //         return (el.title.includes(keyWord) || el.description.includes(keyWord))
-            //     }
-            // })
-            //console.log(listaFiltrada);
-            //listaFiltrada = prodListViewer(listaFiltrada);
-            //console.log(listaFiltrada);
+
+            const retByKey = await db.Product.findAll(
+                
+                {where : {[Op.or]: [
+                {title : {[Op.like] :'%' + keyWord + '%'}},
+                {description : {[Op.like] :'%' + keyWord + '%'}}
+                ]}
+            }
+
+            )
+
+
             res.status(200).json({
                 ok: true,
                 msg: retByKey

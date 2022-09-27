@@ -12,7 +12,7 @@ const verifyToken = require('../middleware/verifyToken');
 //const { route } = require('./pictureRoutes');
 
 //ACORDARSE DE DESCOMENTAR ESTO
-//router.use(verifyToken);
+router.use(verifyToken);
 
 
 router.get('/:id/pictures',middlewareIDinBody,picturesController.listPicturesOfProduct)
