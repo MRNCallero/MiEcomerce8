@@ -6,7 +6,7 @@ const config = {
     "password": process.env.DB_PASS || null,
     "database": process.env.DB_NAME || "miEcommerce",
     "host": process.env.DB_HOST || "127.0.0.1",
-    "port": process.env.DB_PORT || "3456",
+    "port": process.env.DB_PORT || "6543",
     "dialect": "mysql"
   },
   "test": {

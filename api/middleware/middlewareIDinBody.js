@@ -14,7 +14,7 @@ function middlewareIDinBody (req,res,next){
         next();
     }else{
         res.status(404).json({
-            msj: "Not Found"
+            msj: "ID del producto ingresada en formato incorrecto"
         });
     }
 }
