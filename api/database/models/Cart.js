@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     const config = {
         timestamps: false,
         createdAt: "date",
-        tableName: "Cart",
+        tableName: "Cart"
     };
     const Cart = sequelize.define(alias, cols, config);
     
