@@ -184,7 +184,7 @@ const productController = {
                     const deleteImg = await db.Picture.destroy({where:{id_product : idParam}});
                     const toDelete = await db.Product.destroy({where:{id : idParam}});
 
-                    if(toDelete.rowsAfected != 0){
+                    if(toDelete != 0){
                         res.status(200).json({
                             ok: true,
                             msg: "Producto borrado correctamente " + toDelete

@@ -123,7 +123,7 @@ let crearUsuario = async (req,res)=>{
                 "email":email,
                 "username":username,
                 "password":password,
-                "first_name":res,
+                "first_name":firstname,
                 "last_name":lastname,
                 "profilepic":profilepic?profilepic:"sin foto",
                 "role": role
