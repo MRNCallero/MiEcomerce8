@@ -48,25 +48,12 @@ let loginUsuario = async (req,res)=>{
 
 let listaUsuarios =  async(req,res)=>{
     try{
-        let users = await db.Usuario.findAll();
-        let ret = [];
-        let aux = undefinde;
+        let users = await db.Usuario.findAll({attributes: ['id','email','username','first_name','last_name','profilepic']});
         if(users){
-            users.forEach(e =>{
-               aux = {
-                    id : e.id,
-                    email: e.email,
-                    username: e.username,
-                    firstname: e.firstname,
-                    lastname: e.lastname,
-                    profilepic: e.profilepic
-               }
-               ret.push(aux);
-            })
-            res.status(200).json({
+                    res.status(200).json({
                 "ok": true,
                 "msg": "Lsita de usuarios",
-                "users": ret
+                "users": users
                 
             });
         }else{
