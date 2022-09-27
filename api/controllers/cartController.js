@@ -6,35 +6,37 @@ const e = require('cors');
 const Op = db.Sequelize.Op
 
 const checkUser = async (user_id) => {
-    const user = await db.Cart.findByPk(user_id);
+    const user = await db.Usuario.findByPk(user_id);
     return user;
 }
 
+const getCart = async (id_user) => {
+    const uCart = await db.Cart.findAll({
+        where: {
+            id_user: id_user
+        }
+    });
+    let retList = [];
+    for(let index in uCart ){
+        let elem = uCart[index]
+        let prod = await db.Product.findByPk(elem.id_product);
+        retList[index] = {
+            product: prod,
+            date: elem.date,
+            quantity: elem.quantity
+        };
+    }
+    return retList;
+}
 
 const listCart = async (req, res) => {
     const id = Number(req.params.id);
     try{
         let user = await checkUser(id); 
         if(user){
-            const uCart = await db.Cart.findAll({
-                where: {
-                    id_user: id
-                }
-            });
+            const uCart = await getCart(id);
             if(uCart.length){
-                let retList = [];
-                // let index = 0
-                for(let index in uCart ){
-                    let elem = uCart[index]
-                    let prod = await db.Product.findByPk(elem.id_product);
-                    retList[index] = {
-                        product: prod,
-                        date: elem.date,
-                        quantity: elem.quantity
-                    };
-                }
-                res.status(200).json(retList);
-
+                res.status(200).json(uCart);
             }else{
                 res.status(200).json({
                     ok: true,
@@ -113,7 +115,6 @@ const updateCart = async (req, res) => {
                     });
                 }
             }
-
             // si hay que borrar el elemento del carrito
             for (let del in uCart){
                 exist = newCart.filter((item) => item.product === uCart[del].id_product);
@@ -126,11 +127,8 @@ const updateCart = async (req, res) => {
                     });
                 }
             }
-
-            res.status(201).json({
-                ok: true,
-                message: "Cart Updated"
-            });
+            const retList = await getCart(id);
+            res.status(201).json(retList);
         }else{
             res.status(404).json({
                 ok: false,
