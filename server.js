@@ -38,6 +38,23 @@ app.get('*',(req,res) => res.status(404).json({
     msg:"Ruta incorrecta"
 }));
 
+app.post('*',(req,res) => res.status(404).json({
+    ok:false,
+    msg:"Ruta incorrecta"
+}));
+
+app.put('*',(req,res) => res.status(404).json({
+    ok:false,
+    msg:"Ruta incorrecta"
+}));
+
+app.delete('*',(req,res) => res.status(404).json({
+    ok:false,
+    msg:"Ruta incorrecta"
+}));
+
+
+
     app.listen(PORT,async() => {
         try {
             await sequelize.authenticate();
