@@ -63,11 +63,17 @@ const productController = {
         }
     },
 
-    createProduct: (req, res) => {
+    createProduct: async(req, res) => {
         let newProd = req.body;
+        let cat = await db.Categoria.findByPk(newProd.id_category);
+        if(cat == undefined && newProd.id_category != undefined){
+            return res.status(400).json({
+                ok: false,
+                msg: 'El id_category debe existir en la base de datos'
+            })
+        }
         try{
-            if(newProd.title != undefined && newProd.price != undefined){ 
-               
+            if(newProd.title != undefined && newProd.price != undefined){            
                 db.Product.create({
                     title: req.body.title,
                     price: req.body.price,
