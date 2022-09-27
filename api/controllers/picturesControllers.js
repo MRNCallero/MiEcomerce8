@@ -50,6 +50,7 @@ const controllersPictures = {
             if (Picture) {
                 res.status(200).json({
                     ok: true,
+                    msj: "Foto encontrada",
                     lista: Picture
                 });
             } else {
@@ -78,6 +79,7 @@ const controllersPictures = {
 
             res.status(201).json({
                 ok: true,
+                msj: "Foto creada correctamente",
                 picture: newPicture
             });
 
@@ -124,6 +126,7 @@ const controllersPictures = {
             const pictureEditada = await db.Picture.findByPk(Number(idPicture))
             res.status(200).json({
                 ok: true,
+                msj: "Picture editada correctamente",
                 picture: pictureEditada
             });
 
@@ -156,7 +159,7 @@ const controllersPictures = {
                 })
             }
             const listaPictures = await db.Picture.findAll();
-            res.status(200).json({ ok: true, msj: "Picture eliminada",pictures: listaPictures });
+            res.status(200).json({ ok: true, msj: "Picture eliminada, te muestro las fotos de todas las pictures",pictures: listaPictures });
 
         } catch (error) {
             console.log(error);
