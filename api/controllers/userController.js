@@ -2,6 +2,7 @@ const generateJWT = require('../../helpers/generateJWT');
 const db = require('../database/models/index');
 const { sequelize } = require('../database/models');
 const { where } = require('sequelize');
+const cart = require('../controllers/cartController')
 const Op = db.Sequelize.Op
 
 let loginUsuario = async (req,res)=>{
@@ -190,8 +191,10 @@ let eliminarUsuario = async (req,res)=>{
     try{
         let id = req.params.id;
         if (id){
+                cart.deleteCart(id);
                 let dest = await db.Usuario.destroy({where:{id:id}})
-                if(dest){res.status(200).json({
+                if(dest){
+                    res.status(200).json({
                     "ok": true,
                     "msg": "Usuario eliminado correctamente",
                     "users": dest
