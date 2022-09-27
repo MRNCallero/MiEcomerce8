@@ -16,7 +16,7 @@ const productController = {
         try{
             if(req.query.category == undefined){
                 db.Product.findAll({
-                    include: [{association: "picturesproduct"}]
+                    include: [{association: "productocategoria", attributes:["name"]},{association: "picturesproduct", attributes: ['id','url', 'description']}]
                 })
                 .then(resultado => {
                     res.status(200).json(resultado)
@@ -157,7 +157,8 @@ const productController = {
             db.Product.findAll({
                 where: {
                     mostwanted: 1
-                }
+                },
+                include: [{association: "productocategoria", attributes:["name"]},{association: "picturesproduct"}]
             }).then(resultado => {
                 res.status(200).json({
                     ok: true,
@@ -227,7 +228,7 @@ const productController = {
         try{    
             const cat = req.query.category;
             db.Product.findAll({
-                include: [{association: 'productocategoria', where: {name: {[Op.like] :'%' + cat + '%'}}}]
+                include: [{association: 'productocategoria', where: {name: {[Op.like] :'%' + cat + '%'}}},{association: 'picturesproduct'}]
             }).then(result => {
                 if(result.length > 0){
                     res.status(200).json({

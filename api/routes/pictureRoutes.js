@@ -19,7 +19,7 @@ router.get('/',habilitarVis,[
     handleErrors
 ], middlewareIDinBody, pictureController.listPicturesOfProduct);
 
-router.post('/',habilitarMod
+router.post('/',habilitarMod,
     [
         check('url', 'Es necesaria una url en la creacion de imagenes').not().isEmpty(),
         check('id_product', 'Es necesario ingresar la id de un producto').not().isEmpty(),
