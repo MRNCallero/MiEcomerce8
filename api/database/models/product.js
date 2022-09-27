@@ -16,8 +16,8 @@ module.exports = (sequelize, dataTypes) => {
             allowNull: false
         },
         mostwanted: {
-            type: dataTypes.BOOLEAN,
-            defaultValue: false
+            type: dataTypes.TINYINT(1),
+            defaultValue: 0
         },
         stock: {
             type: dataTypes.INTEGER,

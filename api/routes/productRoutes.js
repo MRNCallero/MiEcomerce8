@@ -7,19 +7,26 @@ const router = express.Router();
 const habilitarMod = require('../middleware/habilitarMod');
 const habilitarVis = require('../middleware/habilitarVis');
 const verifyToken = require('../middleware/verifyToken');
-
+const { check } = require('express-validator');
+const { query } = require('express-validator');
+const handleErrors = require('../middleware/handleErrors');
 
 //const { route } = require('./pictureRoutes');
 
+
 //ACORDARSE DE DESCOMENTAR ESTO
-//router.use(verifyToken);
+
+router.use(verifyToken);
 
 
 router.get('/:id/pictures',middlewareIDinBody,picturesController.listPicturesOfProduct)
 
 router.get('/',productController.listProducts);
 
-router.get('/search', productController.findKeyWord);
+router.get('/search', [
+    query('q', 'Se necesita una KeyWord para hacer la busqueda').not().isEmpty(),
+    handleErrors
+],productController.findKeyWord);
 
 router.get('/mostwanted', productController.findMostWanted);
 
@@ -27,7 +34,11 @@ router.get('/:id', productController.findProduct);
 
 router.put('/:id',habilitarMod, productController.editProduct);
 
-router.post('/',habilitarMod, productController.createProduct);
+router.post('/',habilitarMod, [
+    check('title', 'Es necesario que el producto tenga un title').not().isEmpty(),
+    check('price','Es necesario que el producto tenga un price').not().isEmpty(),
+    handleErrors,  
+],productController.createProduct);
 
 router.delete('/:id',habilitarMod, productController.deleteProduct);
 
