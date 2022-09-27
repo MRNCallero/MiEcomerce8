@@ -61,7 +61,7 @@ const controllersPictures = {
         } catch (error) {
             res.status(500).json({
                 ok: false,
-                msj: "Server Error"
+                msj: "Server Error List ID"
             });
             console.log(error)
         }

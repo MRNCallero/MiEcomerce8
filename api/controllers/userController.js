@@ -8,6 +8,13 @@ const Op = db.Sequelize.Op
 let loginUsuario = async (req,res)=>{
     try{
         let info = req.body;
+
+        if(!info.email || !info.password){
+            return res.status(500).json({
+                success: false,
+                message: "Es necesario el email y la contraseña",
+            })
+        }
         let login = await db.Usuario.findOne({
             where: {
                 email: info.email,
