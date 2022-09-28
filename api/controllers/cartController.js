@@ -10,6 +10,11 @@ const checkUser = async (user_id) => {
     return user;
 }
 
+const checkProd = async (prod_id) => {
+    const prod = await db.Product.findByPk(prod_id);
+    return prod;
+}
+
 const getCart = async (id_user) => {
     const uCart = await db.Cart.findAll({
         where: {
@@ -104,15 +109,24 @@ const updateCart = async (req, res) => {
                         });
                     }
                 } else {
-                    // updateStock
-                    quant = await updateStock(newCart[elem].product, newCart[elem].quantity);
-                    // si hay que agregar el elemento en el carrito
-                    await db.Cart.create({
-                        id_user: id,
-                        id_product: newCart[elem].product,
-                        date: today.toISOString(),
-                        quantity: quant
-                    });
+                    // check if prod exist
+                    let prod = await checkProd(newCart[elem].product);
+                    if(prod){
+                        // updateStock
+                        quant = await updateStock(newCart[elem].product, newCart[elem].quantity);
+                        // si hay que agregar el elemento en el carrito
+                        await db.Cart.create({
+                            id_user: id,
+                            id_product: newCart[elem].product,
+                            date: today.toISOString(),
+                            quantity: quant
+                        });
+                    } else {
+                        return res.status(400).json({
+                            ok: false,
+                            message: "Some products does not exist"
+                        });
+                    }
                 }
             }
             // si hay que borrar el elemento del carrito
