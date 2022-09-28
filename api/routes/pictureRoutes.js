@@ -28,6 +28,7 @@ router.post('/',habilitarMod,
     ],
     productExist,
     pictureController.create);
+router.put('/:id',habilitarMod,pictureController.edit);
 
 router.put('/:id',habilitarMod,pictureController.edit);
 
