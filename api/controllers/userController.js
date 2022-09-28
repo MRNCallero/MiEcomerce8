@@ -8,6 +8,13 @@ const Op = db.Sequelize.Op
 let loginUsuario = async (req,res)=>{
     try{
         let info = req.body;
+
+        if(!info.email || !info.password){
+            return res.status(500).json({
+                success: false,
+                message: "Es necesario el email y la contraseña",
+            })
+        }
         let login = await db.Usuario.findOne({
             where: {
                 email: info.email,
@@ -48,9 +55,9 @@ let loginUsuario = async (req,res)=>{
 
 let listaUsuarios =  async(req,res)=>{
     try{
-        let users = await db.Usuario.findAll();
+        let users = await db.Usuario.findAll({attributes: ['id','email','username','first_name','last_name','profilepic']});
         if(users){
-            res.status(200).json({
+                res.status(200).json({
                 "ok": true,
                 "msg": "Lsita de usuarios",
                 "users": users
@@ -116,7 +123,7 @@ let crearUsuario = async (req,res)=>{
                 "email":email,
                 "username":username,
                 "password":password,
-                "first_name":res,
+                "first_name":firstname,
                 "last_name":lastname,
                 "profilepic":profilepic?profilepic:"sin foto",
                 "role": role
