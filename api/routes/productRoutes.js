@@ -36,7 +36,8 @@ router.put('/:id',habilitarMod, productController.editProduct);
 
 router.post('/',habilitarMod, [
     check('title', 'Es necesario que el producto tenga un title').not().isEmpty(),
-    check('price','Es necesario que el producto tenga un price').not().isEmpty(),
+    check('price','Es necesario que el producto tenga un price y sea un numero').isInt(),
+    check('id_category', 'Es necesario ingresar un id_categoria').isInt(),
     handleErrors,  
 ],productController.createProduct);
 

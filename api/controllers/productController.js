@@ -19,7 +19,11 @@ const productController = {
                     include: [{association: "productocategoria", attributes:["name"]},{association: "picturesproduct", attributes: ['id','url', 'description']}]
                 })
                 .then(resultado => {
-                    res.status(200).json(resultado)
+                    res.status(200).json({
+                        ok: true,
+                        msg: 'Listado de usuarios',
+                        lista: resultado
+                    })
                 })
             }else{
                 productController.findCategory(req, res);
@@ -47,7 +51,8 @@ const productController = {
             }else{
                 res.status(200).json({
                     ok: true,
-                    msg: foundProd
+                    msg: 'Producto encontrado', 
+                    producto: foundProd
                 })
             }
         }catch(err){
@@ -133,7 +138,8 @@ const productController = {
                 )
                 res.status(200).json({
                     ok: true,
-                    msg: prod
+                    msg: 'El producto ha sido editado',
+                    prdoucto: prod
                 })
             }
         } catch (error) {
@@ -162,7 +168,8 @@ const productController = {
             }).then(resultado => {
                 res.status(200).json({
                     ok: true,
-                    msg: resultado
+                    msg: 'Listado de productos con mostwanted en 1',
+                    listado: resultado
                 })
             })
             
@@ -184,7 +191,7 @@ const productController = {
                     const deleteImg = await db.Picture.destroy({where:{id_product : idParam}});
                     const toDelete = await db.Product.destroy({where:{id : idParam}});
 
-                    if(toDelete.rowsAfected != 0){
+                    if(toDelete != 0){
                         res.status(200).json({
                             ok: true,
                             msg: "Producto borrado correctamente " + toDelete
@@ -233,7 +240,8 @@ const productController = {
                 if(result.length > 0){
                     res.status(200).json({
                         ok: true,
-                        msg: result
+                        msg: 'Productos encontrados correctamente',
+                        listado: result
                     })  
                 }else{
                     res.status(404).json({
@@ -268,7 +276,8 @@ const productController = {
 
             res.status(200).json({
                 ok: true,
-                msg: retByKey
+                msg: 'Productos encontrados correctamente',
+                listado: retByKey
             })
         }catch(err){
             console.log(err);
