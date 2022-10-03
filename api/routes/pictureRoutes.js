@@ -30,7 +30,8 @@ router.post('/',habilitarMod,
     pictureController.create);
 router.put('/:id',habilitarMod,pictureController.edit);
 
-router.delete('/:id',habilitarMod,pictureController.delete);
+router.put('/:id',habilitarMod,pictureController.edit);
 
+router.delete('/:id',habilitarMod,pictureController.delete);
 
 module.exports = router;
