@@ -155,8 +155,8 @@ let modificarUsuario = async(req,res)=>{
             if(email||username||firstname||lastname||profilepic||role){
                 email? await db.Usuario.update({email:email},{where:{id : id}}):{};
                 username? await db.Usuario.update({username:username},{where:{id : id}}):{};
-                firstname? await db.Usuario.update({firstname:firstname},{where:{id : id}}):{};
-                lastname? await db.Usuario.update({lastname:lastname},{where:{id : id}}):{};
+                firstname? await db.Usuario.update({first_name:firstname},{where:{id : id}}):{};
+                lastname? await db.Usuario.update({last_name:lastname},{where:{id : id}}):{};
                 profilepic? await db.Usuario.update({profilepic:profilepic},{where:{id : id}}):{};
                 role? await db.Usuario.update({role:role},{where:{id : id}}):{};
                 let mod = await db.Usuario.findByPk(id);
@@ -191,7 +191,7 @@ let eliminarUsuario = async (req,res)=>{
     try{
         let id = req.params.id;
         if (id){
-                cart.deleteCart(id);
+                await cart.deleteCart(id);
                 let dest = await db.Usuario.destroy({where:{id:id}})
                 if(dest){
                     res.status(200).json({
