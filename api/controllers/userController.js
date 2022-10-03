@@ -10,7 +10,7 @@ let loginUsuario = async (req,res)=>{
         let info = req.body;
 
         if(!info.email || !info.password){
-            return res.status(500).json({
+            return res.status(400).json({
                 success: false,
                 message: "Es necesario el email y la contraseña",
             })
@@ -43,13 +43,17 @@ let loginUsuario = async (req,res)=>{
                 token: token
             } )
         }else{
-            res.status(500).json({
+            res.status(401).json({
                 success: false,
                 message: "Unauthorized",
             })
         }
     }catch(err){
-
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            message: "Server Error",
+        })
     }
 }
 
@@ -59,7 +63,7 @@ let listaUsuarios =  async(req,res)=>{
         if(users){
                 res.status(200).json({
                 "ok": true,
-                "msg": "Lsita de usuarios",
+                "msg": "Lista de usuarios",
                 "users": users
                 
             });
@@ -136,7 +140,7 @@ let crearUsuario = async (req,res)=>{
         }else{
             res.status(400).json({
                 "ok": false,
-                "msg": "Dato requeridos incompletos"
+                "msg": "Datos requeridos incompletos"
             });
         }
     }catch(e){
@@ -202,7 +206,7 @@ let eliminarUsuario = async (req,res)=>{
                 }else{
                     res.status(404).json({
                         "ok": false,
-                        "msg": "No se encontro lista de usuarios"
+                        "msg": "No se encontro el usuario " + id
                     });        
                 }
         }else{
