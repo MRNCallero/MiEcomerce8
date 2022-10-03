@@ -117,11 +117,11 @@ const productController = {
             let {title, price, description, category, mostwanted, stock} = req.body;
             let cat;
             if(category){ cat = await db.Categoria.findByPk(category);}
-            if(title||price||description||cat||mostwanted||stock){
+            if(title||price||description||cat||mostwanted||stock!= undefined){
                 title? prod.title = title: prod.title=prod.title;
                 price? prod.price = price: prod.price=prod.price;
                 mostwanted && mostwanted == 1||mostwanted == 0? prod.mostwanted = Number(mostwanted): prod.mostwanted = Number(prod.mostwanted);
-                stock? prod.stock = stock: prod.stock = prod.stock;
+                stock>=0? prod.stock = stock: prod.stock = prod.stock;
                 description? prod.description = description: prod.description = prod.description;
                 cat != undefined? prod.category = category: prod.category = prod.category;
                 const resp = await db.Product.update({

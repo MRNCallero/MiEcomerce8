@@ -13,9 +13,9 @@ const { query } = require('express-validator');
 
 router.use(verifyToken);
 
-router.get('/:id',habilitarVis,productExist,pictureController.listPictureID);
+router.get('/:id',productExist,pictureController.listPictureID);
 
-router.get('/',habilitarVis,[
+router.get('/',[
     query('product', 'Se necesita el id del producto').not().isEmpty(),
     handleErrors
 ], middlewareIDinBody, productExist,pictureController.listPicturesOfProduct);
@@ -30,7 +30,8 @@ router.post('/',habilitarMod,
     pictureController.create);
 router.put('/:id',habilitarMod,pictureController.edit);
 
-router.delete('/:id',habilitarMod,pictureController.delete);
+router.put('/:id',habilitarMod,pictureController.edit);
 
+router.delete('/:id',habilitarMod,pictureController.delete);
 
 module.exports = router;
