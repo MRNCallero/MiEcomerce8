@@ -6,7 +6,7 @@ const controllersPictures = {
     listPicturesOfProduct:async (req, res) => {
         try {
             const idProduct = Number(req.idProducto);
-            if (isNaN(idProduct)) return res.status(400).json({ msj: "ID del producto incorrecto" });
+            if (isNaN(idProduct)) return res.status(400).json({ ok: false,msj: "ID del producto incorrecto" });
                 
                 let listOfPictures = await db.Picture.findAll({
                     where:{
@@ -20,17 +20,17 @@ const controllersPictures = {
                         lista: listOfPictures
                     });
                 }else{
-                    res.status(404).json({
+                    res.status(200).json({
                         ok: true,
                         msj: "Lista de fotos del producto con id " + idProduct + " esta vacia",
                     });
                 }
             
                 
-            } catch (error) {
-                console.log(error)
-                res.status(500).json({
-                    ok: false,
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                                ok: false,
                     msj: "Server Error"
                 });
                 
