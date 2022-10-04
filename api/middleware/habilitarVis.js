@@ -9,7 +9,7 @@ const habilitarVis = ( req,res,next)=> {
 
             next();
         }else{
-            res.status(400).json({error: "No tienes las credenciales necesarias para acceder"})
+            res.status(403).json({error: "No tienes las credenciales necesarias para acceder"})
         }
     
     }catch(err){
