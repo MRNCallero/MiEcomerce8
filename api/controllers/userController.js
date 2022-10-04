@@ -59,8 +59,9 @@ let loginUsuario = async (req,res)=>{
 
 let listaUsuarios =  async(req,res)=>{
     try{
-        let users = await db.Usuario.findAll({attributes: ['id','email','username','first_name','last_name','profilepic']});
-        if(users){
+        let users = []
+        users = await db.Usuario.findAll({attributes: ['id','email','username','first_name','last_name','profilepic']});
+        if(users!==[]){
                 res.status(200).json({
                 "ok": true,
                 "msg": "Lista de usuarios",
@@ -84,7 +85,7 @@ let listaUsuarios =  async(req,res)=>{
 let verUsuario = async (req,res)=>{
     try{
         let index = req.params.id;
-        let u = await db.Usuario.findByPk(index);
+        let u =  await db.Usuario.findByPk(index);
         if(u){
         let ret = {
             id: u.id,
@@ -156,6 +157,7 @@ let modificarUsuario = async(req,res)=>{
     try{
         let {email,username,firstname,lastname,profilepic,role}= req.body;
         let id = req.params.id;
+        if(id >= 0){
             if(email||username||firstname||lastname||profilepic||role){
                 email? await db.Usuario.update({email:email},{where:{id : id}}):{};
                 username? await db.Usuario.update({username:username},{where:{id : id}}):{};
@@ -177,11 +179,17 @@ let modificarUsuario = async(req,res)=>{
                     })
                 }
             }else{
-                res.status(400).json({
+                res.status(401).json({
                     "ok": false,
                     "msg": "Debe ingresaer al menos una campo que actualizar"
                 });
             }
+        }else{
+            res.status(400).json({
+                "ok": false,
+                "msg": "Debe ingresar un id valido"
+            });
+        }
     }catch(e){
         console.log(e);
         res.status(500).json({
@@ -194,14 +202,13 @@ let modificarUsuario = async(req,res)=>{
 let eliminarUsuario = async (req,res)=>{
     try{
         let id = req.params.id;
-        if (id){
+        if (id>=0){
                 await cart.deleteCart(id);
                 let dest = await db.Usuario.destroy({where:{id:id}})
                 if(dest){
                     res.status(200).json({
                     "ok": true,
-                    "msg": "Usuario eliminado correctamente",
-                    "users": dest
+                    "msg": "Usuario eliminado correctamente"
                     });
                 }else{
                     res.status(404).json({
