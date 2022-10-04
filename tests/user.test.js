@@ -3,7 +3,6 @@ const {app, server} = require ('../server');
 const db = require ('../api/database/models');
 const generateToken = require('../helpers/generateJWT');
 const verificarToken = require('../api/middleware/verifyToken');
-const { and } = require('sequelize');
 
 describe('POST /', () => {
     test('Debe devolver un código de estado 201, ok : true, msg : Usuario creado y el usuario creado ', async () => {
@@ -48,13 +47,45 @@ describe('POST /', () => {
 });
 describe('POST /login', () => {
     test('Debe devolver un código de estado 200, succes : true, message : Authorized, id, username y role del usuario, y el token generado', async () => {
-
+        const data = {
+            "email":"guest@guest.com",
+            "password":"guest"
+        }
+        const { statusCode, body } = await request(app).post('/api/v1/users/login').send(data);
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            success:expect.any(Boolean),
+            message:expect.any(String),
+            user:expect.objectContaining({
+                    iduser: expect.any(Number),
+                    username: expect.any(String),
+                    role: expect.any(String)
+                }),
+            token: expect.any(String)
+        }));
     });
     test('Debe devolver un código de estado 401, succes : false, message : Unuthorized', async () => {
-
+        const data = {
+            "email":"guest@guest.com",
+            "password":"12345"
+        }
+        const { statusCode, body } = await request(app).post('/api/v1/users/login').send(data);
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(expect.objectContaining({
+            success:expect.any(Boolean),
+            message:expect.any(String)
+        }))
     });
     test('Debe devolver un código de estado 400, succes : false, message : Es necesario el email y la contraseña', async () => {
-
+        const data = {
+            "email":"guest@guest.com"
+        }
+        const { statusCode, body } = await request(app).post('/api/v1/users/login').send(data);
+        expect(statusCode).toEqual(400);
+        expect(body).toEqual(expect.objectContaining({
+            success:expect.any(Boolean),
+            message:expect.any(String)
+        }))
     });
 });
 describe('GET /', () => {
