@@ -3,13 +3,47 @@ const {app, server} = require ('../server');
 const db = require ('../api/database/models');
 const generateToken = require('../helpers/generateJWT');
 const verificarToken = require('../api/middleware/verifyToken');
+const { and } = require('sequelize');
 
 describe('POST /', () => {
     test('Debe devolver un código de estado 201, ok : true, msg : Usuario creado y el usuario creado ', async () => {
-
+        const data = {
+            "email":"guest@guest.com",
+            "username":"guest",
+            "password":"guest",
+            "firstname":"guest",
+            "lastname":"guest"
+        }
+        const { statusCode, body } = await request(app).post('/api/v1/users/').send(data);
+        expect(statusCode).toEqual(201);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            user:expect.objectContaining({
+                    id: expect.any(Number),
+                    email: expect.any(String),
+                    username: expect.any(String),
+                    password: expect.any(String),
+                    first_name: expect.any(String),
+                    last_name: expect.any(String),
+                    profilepic: expect.any(String)
+                })
+        }));
     });
     test('Debe devolver un código de estado 400, ok : false, msg : Datos requeridos incompletos', async () => {
-
+        const data = {
+            "email":"guest@guest.com",
+            "username":"guest",
+            "password":"guest",
+            "firstname":"guest",
+            "lastname":"guest"
+        }
+        const { statusCode, body } = await request(app).post('/api/v1/users/').send(data);
+        expect(statusCode).toEqual(400);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String)
+        }));
     });
 });
 describe('POST /login', () => {
@@ -61,6 +95,6 @@ describe('DELETE /:id', () => {
 
     });
     test('Debe devolver un código de estado 400, ok : false, msg : Debe ingresar un id valido', async () => {
-        
+
     });
 });
