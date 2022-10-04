@@ -13,7 +13,11 @@ describe('POST /', () => {
             "firstname":"guest",
             "lastname":"guest"
         }
+        let cantI = await db.Usuario.findAll();
         const { statusCode, body } = await request(app).post('/api/v1/users/').send(data);
+        const cantF = await db.Usuario.findAll();
+        console.log(cantI.length);
+        expect(cantF.length).toEqual(cantI.length+1);
         expect(statusCode).toEqual(201);
         expect(body).toEqual(expect.objectContaining({
             ok:expect.any(Boolean),
