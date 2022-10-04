@@ -14,6 +14,7 @@ function middlewareIDinBody (req,res,next){
         next();
     }else{
         res.status(404).json({
+            ok:false,
             msj: "ID del producto ingresada en formato incorrecto"
         });
     }

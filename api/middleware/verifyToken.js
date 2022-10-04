@@ -23,7 +23,7 @@ const verifyToken = async (req, res, next ) => {
         });
     }
     else {
-        res.status(403).json({mensaje: "No permitido"});
+        res.status(403).json({mensaje: "Token invalido"});
     }
 }
 

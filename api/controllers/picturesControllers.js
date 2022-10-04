@@ -35,12 +35,12 @@ const controllersPictures = {
                 });
                 
             }
-        },
+    },
     listPictureID: async (req, res) => {
             
         try {
-            const idPicture = req.params.id;
-            if (isNaN(idPicture)) return res.status(400).json({ msj: "ID de picture incorrecto" });
+            if (isNaN(req.params.id)) return res.status(400).json({ msj: "ID de picture incorrecto" });
+            const idPicture = Number(req.params.id);
 
             const Picture = await db.Picture.findOne({
                 where:{
@@ -87,7 +87,7 @@ const controllersPictures = {
             console.log(error)
             res.status(500).json({
                 ok: false,
-                msj: "Server Error Picture Create"
+                msj: "Server Error"
             });
         }
     },
