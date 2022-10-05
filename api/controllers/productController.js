@@ -1,8 +1,4 @@
 const e = require('express');
-const removeFromCart= require('../../helpers/removeFromCart')
-const deletePictures = require('../../helpers/deletePictures')
-const searchPictures = require('../../helpers/searchPicture')
-const prodListViewer = require('../../helpers/prodListViewer')
 //sequelize
 const db = require('../database/models/index');
 const { sequelize } = require('../database/models');
@@ -164,7 +160,7 @@ const productController = {
                 where: {
                     mostwanted: 1
                 },
-                include: [{association: "productocategoria", attributes:["name"]},{association: "picturesproduct"}]
+                include: [{association: "productocategoria", attributes:["name"]},{association: "picturesproduct", attributes: ['id','url', 'description']}]
             }).then(resultado => {
                 res.status(200).json({
                     ok: true,
