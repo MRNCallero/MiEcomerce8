@@ -19,7 +19,6 @@ describe('POST /', () => {
         let cantI = await db.Usuario.findAll();
         const { statusCode, body } = await request(app).post('/api/v1/users/').send(data);
         const cantF = await db.Usuario.findAll();
-        console.log(cantI.length);
         expect(cantF.length).toEqual(cantI.length+1);
         expect(statusCode).toEqual(201);
         expect(body).toEqual(expect.objectContaining({
@@ -174,6 +173,43 @@ describe('GET /:id', () => {
                 })
         }));
     });
+    test('Debe devolver un código de estado 200 ok:true, msg: Usuarios id y el usuario buscado', async () => {
+        const token = await generateToken({id:3,role:"GUEST"});
+        let i = 3;
+        const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            user:expect.objectContaining({
+                    id: expect.any(Number),
+                    email: expect.any(String),
+                    username: expect.any(String),
+                    first_name: expect.any(String),
+                    last_name: expect.any(String),
+                    profilepic: expect.any(String),
+                    role: expect.any(String)
+                })
+        }));
+    });
+    test('Debe devolver un código de estado 200 ok:true, msg: Usuarios id y el usuario buscado', async () => {
+        const token = await generateToken({role:"ADMIN"});
+        let i = 2;
+        const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            user:expect.objectContaining({
+                    id: expect.any(Number),
+                    email: expect.any(String),
+                    username: expect.any(String),
+                    first_name: expect.any(String),
+                    last_name: expect.any(String),
+                    profilepic: expect.any(String),
+                    role: expect.any(String)
+                })
+        }));
     });
     test('Debe devolver un código de estado 404, ok : false, msg : No se encontro usuario', async () => {
         const token = await generateToken({role:"GOD"});
@@ -185,11 +221,78 @@ describe('GET /:id', () => {
             msg:expect.any(String)   
         }));
     });
+    test('Debe devolver un código de estado 404, ok : false, msg : No se encontro usuario', async () => {
+        const token = await generateToken({role:"GUEST"});
+        let i = 200;
+        const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(404);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String)   
+        }));
+    });
+    test('Debe devolver un código de estado 404, ok : false, msg : No se encontro usuario', async () => {
+        const token = await generateToken({role:"ADMIN"});
+        let i = 200;
+        const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(404);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String)   
+        }));
+    });
     
 });
 describe('PUT /:id', () => {
-    test('Debe devolver un código de estado 200 ok:true, msg: Usuario modificado correctamente y el usuario modificado', async () => {
-
+    test('GOD Debe devolver un código de estado 200 ok:true, msg: Usuario modificado correctamente y el usuario modificado', async () => {
+        const token = await generateToken({role:"GOD"});
+        const data = {
+            "email":"comun@guest.com",
+            "username":"guest",
+            "password":"guest",
+            "firstname":"guest",
+            "lastname":"guest"
+        }
+        let i = 3;
+        const { statusCode, body } = await request(app).post('/api/v1/users/'+i).send(data).auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            user:expect.objectContaining({
+                    id: expect.any(Number),
+                    email: expect.any(String),
+                    username: expect.any(String),
+                    first_name: expect.any(String),
+                    last_name: expect.any(String),
+                    profilepic: expect.any(String)
+                })
+        }));
+    });
+    test('GOD Debe devolver un código de estado 200 ok:true, msg: Usuario modificado correctamente y el usuario modificado', async () => {
+        const token = await generateToken({id:3,role:"GUEST"});
+        const data = {
+            "email":"comun@guest.com",
+            "username":"guest",
+            "password":"guest",
+            "firstname":"guest",
+            "lastname":"guest"
+        }
+        let i = 3;
+        const { statusCode, body } = await request(app).post('/api/v1/users/'+i).send(data).auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            user:expect.objectContaining({
+                    id: expect.any(Number),
+                    email: expect.any(String),
+                    username: expect.any(String),
+                    first_name: expect.any(String),
+                    last_name: expect.any(String),
+                    profilepic: expect.any(String)
+                })
+        }));
     });
     test('Debe devolver un código de estado 404, ok : false, msg : Usuario no encontrado', async () => {
 
@@ -211,4 +314,4 @@ describe('DELETE /:id', () => {
     test('Debe devolver un código de estado 400, ok : false, msg : Debe ingresar un id valido', async () => {
 
     });
-});
+});})
