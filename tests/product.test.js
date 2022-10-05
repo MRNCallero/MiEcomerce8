@@ -3,6 +3,9 @@ const { app, server } = require('../server');
 const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
 
+const matchers = require('jest-extended');
+expect.extend(matchers);
+
 afterEach(() => {
     server.close();
  });
@@ -268,4 +271,102 @@ describe('GET api/v1/products/mostwanted', () => {
             ])
         }))
     })
+})
+
+describe('GET api/v1/products/?category', () => {
+    test('GOD Debe devolver la lista de productos que contengan el query en su categoria', async () => {
+        const token = await generateJWT({role: 'GOD'});
+        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "e"}).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            listado:expect.arrayContaining([
+                expect.objectContaining({
+                    title:expect.any(String),
+                    price:expect.any(Number),
+                    id_category:expect.any(Number),
+                    productocategoria:expect.objectContaining({
+                        name:expect.stringMatching(/E/i)
+                    })
+                })
+            ])
+        }))
+    })
+
+    test('GOD Debe devolver 404 not found', async () => {
+        const token = await generateJWT({role: 'GOD'});
+        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "zzz"}).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(404);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }))
+    })
+
+    test('GOD Debe devolver la lista de productos con el query en la categoria', async () => {
+        const token = await generateJWT({role: 'GOD'});
+        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "AlFa"}).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            listado:expect.arrayContaining([
+                expect.objectContaining({
+                    title:expect.any(String),
+                    price:expect.any(Number),
+                    id_category:expect.any(Number),
+                    productocategoria:expect.objectContaining({
+                        name:expect.stringMatching(/AlFa/i)
+                    })
+                })
+            ])
+        }))
+    })
+
+    test('ADMIN Debe devolver la lista de productos con el query en la categoria', async () => {
+        const token = await generateJWT({role: 'ADMIN'});
+        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "e"}).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            listado:expect.arrayContaining([
+                expect.objectContaining({
+                    title:expect.any(String),
+                    price:expect.any(Number),
+                    id_category:expect.any(Number),
+                    productocategoria:expect.objectContaining({
+                        name:expect.stringMatching(/E/i)
+                    })
+                })
+            ])
+        }))
+    })
+
+    test('GUEST Debe devolver la lista de productos con el query en la categoria', async () => {
+        const token = await generateJWT({role: 'GUEST'});
+        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "e"}).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            listado:expect.arrayContaining([
+                expect.objectContaining({
+                    title:expect.any(String),
+                    price:expect.any(Number),
+                    id_category:expect.any(Number),
+                    productocategoria:expect.objectContaining({
+                        name:expect.stringMatching(/E/i)
+                    })
+                })
+            ])
+        }))
+    })
+
 })
