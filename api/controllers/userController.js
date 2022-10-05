@@ -60,7 +60,7 @@ let loginUsuario = async (req,res)=>{
 let listaUsuarios =  async(req,res)=>{
     try{
         let users = []
-        users = await db.Usuario.findAll({attributes: ['id','email','username','first_name','last_name','profilepic']});
+        users = await db.Usuario.findAll({attributes: ['id','email','username','first_name','last_name','profilepic','role']});
         if(users!==[]){
                 res.status(200).json({
                 "ok": true,
@@ -91,9 +91,10 @@ let verUsuario = async (req,res)=>{
             id: u.id,
             email: u.email,
             username: u.username,
-            firstname: u.firstname,
-            lastname: u.lastname,
-            profilepic: u.profilepic
+            first_name: u.first_name,
+            last_name: u.last_name,
+            profilepic: u.profilepic,
+            role:u.role
         }
             res.status(200).json({
                 "ok": true,
@@ -133,10 +134,18 @@ let crearUsuario = async (req,res)=>{
                 "profilepic":profilepic?profilepic:"sin foto",
                 "role": role
             })
+            let ret = {
+                id: u.id,
+                email: u.email,
+                username: u.username,
+                first_name: u.first_name,
+                last_name: u.last_name,
+                profilepic: u.profilepic
+            }
             res.status(201).json({
                 "ok":true,
                 "msg": "Usuario creado",
-                "user": u
+                "user": ret
             })
         }else{
             res.status(400).json({

@@ -4,6 +4,9 @@ const db = require ('../api/database/models');
 const generateToken = require('../helpers/generateJWT');
 const verificarToken = require('../api/middleware/verifyToken');
 
+afterEach(() => {
+    server.close();
+ });
 describe('POST /', () => {
     test('Debe devolver un código de estado 201, ok : true, msg : Usuario creado y el usuario creado ', async () => {
         const data = {
@@ -26,16 +29,17 @@ describe('POST /', () => {
                     id: expect.any(Number),
                     email: expect.any(String),
                     username: expect.any(String),
-                    password: expect.any(String),
                     first_name: expect.any(String),
                     last_name: expect.any(String),
                     profilepic: expect.any(String)
                 })
         }));
+        let i = body.user.id;
+        let dest = await db.Usuario.destroy({where:{id:i}})
     });
     test('Debe devolver un código de estado 400, ok : false, msg : Datos requeridos incompletos', async () => {
         const data = {
-            "email":"guest@guest.com",
+            "email":"comun@comun.com",
             "username":"guest",
             "password":"guest",
             "firstname":"guest",
@@ -52,8 +56,8 @@ describe('POST /', () => {
 describe('POST /login', () => {
     test('Debe devolver un código de estado 200, succes : true, message : Authorized, id, username y role del usuario, y el token generado', async () => {
         const data = {
-            "email":"guest@guest.com",
-            "password":"guest"
+            "email":"comun@comun.com",
+            "password":"comun"
         }
         const { statusCode, body } = await request(app).post('/api/v1/users/login').send(data);
         expect(statusCode).toEqual(200);
@@ -70,7 +74,7 @@ describe('POST /login', () => {
     });
     test('Debe devolver un código de estado 401, succes : false, message : Unuthorized', async () => {
         const data = {
-            "email":"guest@guest.com",
+            "email":"comun@comun.com",
             "password":"12345"
         }
         const { statusCode, body } = await request(app).post('/api/v1/users/login').send(data);
@@ -82,7 +86,7 @@ describe('POST /login', () => {
     });
     test('Debe devolver un código de estado 400, succes : false, message : Es necesario el email y la contraseña', async () => {
         const data = {
-            "email":"guest@guest.com"
+            "email":"comun@comun.com"
         }
         const { statusCode, body } = await request(app).post('/api/v1/users/login').send(data);
         expect(statusCode).toEqual(400);
@@ -93,20 +97,95 @@ describe('POST /login', () => {
     });
 });
 describe('GET /', () => {
-    test('Debe devolver un código de estado 200 ok:true, msg: Lista de usuarios y la lista de usuarios', async () => {
-
+    test('GUEST: Debe devolver un código de estado 200 ok:true, msg: Lista de usuarios y la lista de usuarios', async () => {
+        const token = await generateToken({role:"GUEST"});
+        const { statusCode, body } = await request(app).get('/api/v1/users').auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            users:expect.arrayContaining([expect.objectContaining({
+                    id: expect.any(Number),
+                    email: expect.any(String),
+                    username: expect.any(String),
+                    first_name: expect.any(String),
+                    last_name: expect.any(String),
+                    profilepic: expect.any(String),
+                    role: expect.any(String)
+                })])
+        }));
+    });
+    test('ADMIN: Debe devolver un código de estado 200 ok:true, msg: Lista de usuarios y la lista de usuarios', async () => {
+        const token = await generateToken({role:"ADMIN"});
+        const { statusCode, body } = await request(app).get('/api/v1/users').auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            users:expect.arrayContaining([expect.objectContaining({
+                    id: expect.any(Number),
+                    email: expect.any(String),
+                    username: expect.any(String),
+                    first_name: expect.any(String),
+                    last_name: expect.any(String),
+                    profilepic: expect.any(String),
+                    role: expect.any(String)
+                })])
+        }));
+    });
+    test('GOD: Debe devolver un código de estado 200 ok:true, msg: Lista de usuarios y la lista de usuarios', async () => {
+        const token = await generateToken({role:"GOD"});
+        const { statusCode, body } = await request(app).get('/api/v1/users').auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            users:expect.arrayContaining([expect.objectContaining({
+                    id: expect.any(Number),
+                    email: expect.any(String),
+                    username: expect.any(String),
+                    first_name: expect.any(String),
+                    last_name: expect.any(String),
+                    profilepic: expect.any(String),
+                    role: expect.any(String)
+                })])
+        }));
     });
     test('Debe devolver un código de estado 404, ok : false, msg : No se encontro lista de usuarios', async () => {
-
-    });
+      
 });
 describe('GET /:id', () => {
     test('Debe devolver un código de estado 200 ok:true, msg: Usuarios id y el usuario buscado', async () => {
-
+        const token = await generateToken({role:"GOD"});
+        let i = 2;
+        const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            user:expect.objectContaining({
+                    id: expect.any(Number),
+                    email: expect.any(String),
+                    username: expect.any(String),
+                    first_name: expect.any(String),
+                    last_name: expect.any(String),
+                    profilepic: expect.any(String),
+                    role: expect.any(String)
+                })
+        }));
+    });
     });
     test('Debe devolver un código de estado 404, ok : false, msg : No se encontro usuario', async () => {
-
+        const token = await generateToken({role:"GOD"});
+        let i = 200;
+        const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(404);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String)   
+        }));
     });
+    
 });
 describe('PUT /:id', () => {
     test('Debe devolver un código de estado 200 ok:true, msg: Usuario modificado correctamente y el usuario modificado', async () => {
