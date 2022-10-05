@@ -3,9 +3,6 @@ const { app, server } = require('../server');
 const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
 
-const matchers = require('jest-extended');
-expect.extend(matchers);
-
 afterEach(() => {
     server.close();
  });
