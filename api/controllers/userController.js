@@ -10,7 +10,7 @@ let loginUsuario = async (req,res)=>{
         let info = req.body;
 
         if(!info.email || !info.password){
-            return res.status(500).json({
+            return res.status(400).json({
                 success: false,
                 message: "Es necesario el email y la contraseña",
             })
@@ -43,23 +43,28 @@ let loginUsuario = async (req,res)=>{
                 token: token
             } )
         }else{
-            res.status(500).json({
+            res.status(401).json({
                 success: false,
                 message: "Unauthorized",
             })
         }
     }catch(err){
-
+        console.log(err)
+        res.status(500).json({
+            success: false,
+            message: "Server Error",
+        })
     }
 }
 
 let listaUsuarios =  async(req,res)=>{
     try{
-        let users = await db.Usuario.findAll({attributes: ['id','email','username','first_name','last_name','profilepic']});
-        if(users){
+        let users = []
+        users = await db.Usuario.findAll({attributes: ['id','email','username','first_name','last_name','profilepic','role']});
+        if(users!==[]){
                 res.status(200).json({
                 "ok": true,
-                "msg": "Lsita de usuarios",
+                "msg": "Lista de usuarios",
                 "users": users
                 
             });
@@ -80,15 +85,16 @@ let listaUsuarios =  async(req,res)=>{
 let verUsuario = async (req,res)=>{
     try{
         let index = req.params.id;
-        let u = await db.Usuario.findByPk(index);
+        let u =  await db.Usuario.findByPk(index);
         if(u){
         let ret = {
             id: u.id,
             email: u.email,
             username: u.username,
-            firstname: u.firstname,
-            lastname: u.lastname,
-            profilepic: u.profilepic
+            first_name: u.first_name,
+            last_name: u.last_name,
+            profilepic: u.profilepic,
+            role:u.role
         }
             res.status(200).json({
                 "ok": true,
@@ -128,15 +134,23 @@ let crearUsuario = async (req,res)=>{
                 "profilepic":profilepic?profilepic:"sin foto",
                 "role": role
             })
+            let ret = {
+                id: u.id,
+                email: u.email,
+                username: u.username,
+                first_name: u.first_name,
+                last_name: u.last_name,
+                profilepic: u.profilepic
+            }
             res.status(201).json({
                 "ok":true,
                 "msg": "Usuario creado",
-                "user": u
+                "user": ret
             })
         }else{
             res.status(400).json({
                 "ok": false,
-                "msg": "Dato requeridos incompletos"
+                "msg": "Datos requeridos incompletos"
             });
         }
     }catch(e){
@@ -152,6 +166,7 @@ let modificarUsuario = async(req,res)=>{
     try{
         let {email,username,firstname,lastname,profilepic,role}= req.body;
         let id = req.params.id;
+        if(id >= 0){
             if(email||username||firstname||lastname||profilepic||role){
                 email? await db.Usuario.update({email:email},{where:{id : id}}):{};
                 username? await db.Usuario.update({username:username},{where:{id : id}}):{};
@@ -173,11 +188,17 @@ let modificarUsuario = async(req,res)=>{
                     })
                 }
             }else{
-                res.status(400).json({
+                res.status(401).json({
                     "ok": false,
                     "msg": "Debe ingresaer al menos una campo que actualizar"
                 });
             }
+        }else{
+            res.status(400).json({
+                "ok": false,
+                "msg": "Debe ingresar un id valido"
+            });
+        }
     }catch(e){
         console.log(e);
         res.status(500).json({
@@ -190,19 +211,18 @@ let modificarUsuario = async(req,res)=>{
 let eliminarUsuario = async (req,res)=>{
     try{
         let id = req.params.id;
-        if (id){
+        if (id>=0){
                 await cart.deleteCart(id);
                 let dest = await db.Usuario.destroy({where:{id:id}})
                 if(dest){
                     res.status(200).json({
                     "ok": true,
-                    "msg": "Usuario eliminado correctamente",
-                    "users": dest
+                    "msg": "Usuario eliminado correctamente"
                     });
                 }else{
                     res.status(404).json({
                         "ok": false,
-                        "msg": "No se encontro lista de usuarios"
+                        "msg": "No se encontro el usuario " + id
                     });        
                 }
         }else{
