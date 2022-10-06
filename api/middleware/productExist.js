@@ -10,7 +10,7 @@ const productExist  = async (req,res,next)=>{
     }else{
         return res.status(404).json({
         ok: false,
-        msj: `Error pasando ID`
+        msg: `Error pasando ID`
     });}
 
     const exist = await db.Product.findOne({
@@ -19,7 +19,7 @@ const productExist  = async (req,res,next)=>{
      if (!exist) {
         return res.status(404).json({
             ok: false,
-            msj: `ID:${idProduct} no esta asociado a ningun producto`
+            msg: `ID:${idProduct} no esta asociado a ningun producto`
         });
      }else{
         next();

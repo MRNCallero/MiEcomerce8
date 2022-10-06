@@ -1,13 +1,13 @@
 //sequelize
 const db = require('../database/models/index');
+const { sequelize } = require('../database/models/index');
 
 const controllersPictures = {
 
     listPicturesOfProduct:async (req, res) => {
         try {
             const idProduct = Number(req.idProducto);
-            if (isNaN(idProduct)) return res.status(400).json({ ok: false,msj: "ID del producto incorrecto" });
-                
+            if (isNaN(idProduct)) return res.status(400).json({ ok: false,msg: "ID del producto incorrecto" });
                 let listOfPictures = await db.Picture.findAll({
                     where:{
                         id_Product: idProduct
@@ -16,22 +16,22 @@ const controllersPictures = {
                 if(listOfPictures.length > 0){
                     res.status(200).json({
                         ok: true,
-                        msj: "Lista de fotos del producto con id " + idProduct,
+                        msg: "Lista de fotos del producto con id " + idProduct,
                         lista: listOfPictures
                     });
                 }else{
                     res.status(200).json({
                         ok: true,
-                        msj: "Lista de fotos del producto con id " + idProduct + " esta vacia",
+                        msg: "Lista de fotos del producto con id " + idProduct + " esta vacia",
                     });
                 }
             
                 
         } catch (error) {
             console.log(error)
-            res.status(500).json({
-                                ok: false,
-                    msj: "Server Error"
+                res.status(500).json({
+                    ok: false,
+                    msg: "Server Error"
                 });
                 
             }
@@ -39,7 +39,7 @@ const controllersPictures = {
     listPictureID: async (req, res) => {
             
         try {
-            if (isNaN(req.params.id)) return res.status(400).json({ msj: "ID de picture incorrecto" });
+            if (isNaN(req.params.id)) return res.status(400).json({ msg: "ID de picture incorrecto" });
             const idPicture = Number(req.params.id);
 
             const Picture = await db.Picture.findOne({
@@ -50,19 +50,19 @@ const controllersPictures = {
             if (Picture) {
                 res.status(200).json({
                     ok: true,
-                    msj: "Foto encontrada",
+                    msg: "Foto encontrada",
                     lista: Picture
                 });
             } else {
                 res.status(404).json({
                     ok: false,
-                    msj: "Foto no encontrada"
+                    msg: "Foto no encontrada"
                 });
             }
         } catch (error) {
             res.status(500).json({
                 ok: false,
-                msj: "Server Error List ID"
+                msg: "Server Error List ID"
             });
             console.log(error)
         }
@@ -79,7 +79,7 @@ const controllersPictures = {
 
             res.status(201).json({
                 ok: true,
-                msj: "Foto creada correctamente",
+                msg: "Foto creada correctamente",
                 picture: newPicture
             });
 
@@ -87,7 +87,7 @@ const controllersPictures = {
             console.log(error)
             res.status(500).json({
                 ok: false,
-                msj: "Server Error"
+                msg: "Server Error"
             });
         }
     },
@@ -98,7 +98,7 @@ const controllersPictures = {
         if (!idPicture || isNaN(idPicture)) {
             return res.status(400).json({
                 ok: false,
-                msj: "ID Picture formato incorrecto"
+                msg: "ID Picture formato incorrecto"
             });
         }
 
@@ -108,7 +108,7 @@ const controllersPictures = {
             if(!pictureBuscada){
                 return res.status(404).json({
                     ok: false,
-                    msj: "Picture no encontrada"
+                    msg: "Picture no encontrada"
                 });
             }
             if(req.body.id_product){
@@ -116,7 +116,7 @@ const controllersPictures = {
                 if(!productExist){
                     return res.status(404).json({
                         ok: false,
-                        msj: `producto con ID:${req.body.id_product} no encontrado`
+                        msg: `producto con ID:${req.body.id_product} no encontrado`
                     });
                 }
             }
@@ -126,14 +126,14 @@ const controllersPictures = {
             const pictureEditada = await db.Picture.findByPk(Number(idPicture))
             res.status(200).json({
                 ok: true,
-                msj: "Picture editada correctamente",
+                msg: "Picture editada correctamente",
                 picture: pictureEditada
             });
 
 
         } catch (error) {
             console.log(error)
-            res.status(500).json({ msj: "Server Error" });
+            res.status(500).json({ msg: "Server Error" });
         }
     },
     delete:async (req, res) => {
@@ -141,7 +141,7 @@ const controllersPictures = {
         if (!idPicture || isNaN(idPicture)) {
             return res.status(400).json({
                 ok: false,
-                msj: "ID Picture formato incorrecto"
+                msg: "ID Picture formato incorrecto"
             });
         }
         try {
@@ -150,7 +150,7 @@ const controllersPictures = {
             if(!pictureBuscada){
                 return res.status(404).json({
                     ok: false,
-                    msj: "Picture no encontrada"
+                    msg: "Picture no encontrada"
                 });
             }
             if(pictureBuscada){
@@ -158,12 +158,11 @@ const controllersPictures = {
                     where: {id:idPicture}
                 })
             }
-            const listaPictures = await db.Picture.findAll();
-            res.status(200).json({ ok: true, msj: "Picture eliminada, te muestro las fotos de todas las pictures",pictures: listaPictures });
+            res.status(200).json({ ok: true, msg: "Picture eliminada, te muestro las fotos de todas las pictures",pictur: pictureBuscada });
 
         } catch (error) {
             console.log(error);
-            res.status(500).json({ ok: false,msj: "Server Error" });
+            res.status(500).json({ ok: false,msg: "Server Error" });
         }
     }
 
