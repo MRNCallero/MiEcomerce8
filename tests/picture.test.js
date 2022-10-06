@@ -4,64 +4,127 @@ const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
 
 
-beforeEach(async() => {
-    // const categoria1 ={
-    //     name:"Bebida"
-    // }
-    // const categoria2 ={
-    //     name:"Alfajores"
-    // }
-    // const producto1 = {
-    //     "title": "Marley",
-    //     "price": 30,
-    //     "id_category": 2,
-    //     "description": "Extra dulce de leche",
-    //     "stock": 5
-    // }
-    // const producto2 = {
-    //     "title": "Coca-Cola",
-    //     "price": 100,
-    //     "id_category": 1,
-    //     "description": "Sin Azucar",
-    //     "stock": 10
-    // }
-    // const picture = {
-    //     url:"https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2022/04/brad-west-kzloZDPHzeg-unsplash-scaled.jpg?w=2560&quality=60&strip=all&ssl=1",
-    //     id_product:1
-    // }
-    // const picture1 = {
-    //     url:"https://cdn.shopify.com/s/files/1/0374/1987/6483/products/marley-blanco_150x.jpg?v=1647453689",
-    //     id_product:1
-    // }
-    // const picture2 = {
-    //     url:"https://www.coca-coladeuruguay.com.uy/content/dam/journey/uy/es/private/brands/coca-cola/Large_product_shot_cocacolaoriginal.png",
-    //     id_product:2
-    // }
-    // await db.Categoria.create(categoria1)
-    // await db.Categoria.create(categoria2)
-    // await db.Product.create(producto1)
-    // await db.Product.create(producto2)
-    // await db.Picture.create(picture)
-    // await db.Picture.create(picture1)
-    // await db.Picture.create(picture2)
+beforeEach( async() => {
+
+
+    const cart = {
+        id_user:1,
+        id_product:1,
+        date:"2022-10-3",
+        quantity:3
+    }
+    const cart1 = {
+        id_user:1,
+        id_product:2,
+        date:"2022-9-3",
+        quantity:5
+    }    
+    const cart2 = {
+        id_user:1,
+        id_product:1,
+        date:"2022-8-3",
+        quantity:3
+    }
+    const user = {
+        id:1,
+        email:'god@god.com',
+        username:'god',
+        password:'god',
+        first_name: 'Diosito',
+        last_name:'TodoPoderoso',
+        profilepic:'https://media.istockphoto.com/photos/hands-of-god-picture-id157377707?k=20&m=157377707&s=612x612&w=0&h=K-dH2tCJGpQONcmvauRMeVnm-r5QdL4NipRDokHXukI=', 
+        role:'GOD'
+    }
+    const user2 = {
+        id:2,
+        email:'admin@admin.com',
+        username:'Admin',
+        password:'Admin',
+        first_name: 'ElAdmin',
+        last_name:'NoTanPoderoso',
+        profilepic:'https://media.istockphoto.com/vectors/administrative-professionals-day-secretaries-day-or-admin-day-holiday-vector-id1204416887?k=20&m=1204416887&s=612x612&w=0&h=tI6AmIGHRBv8NdL2KJHvHOtQ9nBhzAnX5yhmVNqrf-0=', 
+        role:'ADMIN'
+    }
+    const user3 = {
+        id:3,
+        email:'guset@guest.com',
+        username:'guest',
+        password:'guest',
+        first_name: 'guest',
+        last_name:'guest',
+        profilepic:'https://media.istockphoto.com/vectors/administrative-professionals-day-secretaries-day-or-admin-day-holiday-vector-id1204416887?k=20&m=1204416887&s=612x612&w=0&h=tI6AmIGHRBv8NdL2KJHvHOtQ9nBhzAnX5yhmVNqrf-0=', 
+        role:'GUEST'
+    }
+
+
+    const producto1 = {
+        id:1,
+        title: "Marley",
+        price: 30,
+        id_category: 2,
+        description: "Extra dulce de leche",
+        stock: 5
+    }
+    const producto2 = {
+        id:2,
+        title: "Coca-Cola",
+        price: 100,
+        id_category: 1,
+        description: "Sin Azucar",
+        stock: 10
+    }
+    const producto3 = {
+        id:3,
+        title: "Marley",
+        price: 30,
+        id_category: 2,
+        description: "Extra dulce de leche",
+        stock: 5
+    }
+    const picture = {
+        id:1,
+        url:"https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2022/04/brad-west-kzloZDPHzeg-unsplash-scaled.jpg?w=2560&quality=60&strip=all&ssl=1",
+        id_product:1
+    }
+    const picture1 = {
+        id:2,
+        url:"https://cdn.shopify.com/s/files/1/0374/1987/6483/products/marley-blanco_150x.jpg?v=1647453689",
+        id_product:1
+    }
+    const picture2 = {
+        id:3,
+        url:"https://www.coca-coladeuruguay.com.uy/content/dam/journey/uy/es/private/brands/coca-cola/Large_product_shot_cocacolaoriginal.png",
+        id_product:2
+    }
+
+
+    //Productos
+    await db.Product.create(producto1)
+    await db.Product.create(producto2)
+    await db.Product.create(producto3)
+    //Picture
+    await db.Picture.create(picture)
+    await db.Picture.create(picture1)
+    await db.Picture.create(picture2)
+    //usuarios
+    await db.Usuario.create(user)
+    await db.Usuario.create(user2)
+    await db.Usuario.create(user3)
+    //cart
+    await db.Cart.create(cart)
+    await db.Cart.create(cart1)
+    await db.Cart.create(cart2)
+
+
 });
     
 afterEach(async () => {
-    // await db.Cart.destroy({where:{}})
-    // await db.Picture.destroy({where:{}})
-    // await db.Product.destroy({where:{}})
-    // await db.Categoria.destroy({where:{}})
-    // server.close()
+    await db.Cart.destroy({where:{}})
+    await db.Usuario.destroy({where:{}})
+    await db.Picture.destroy({where:{}})
+    await db.Product.destroy({where:{}})
+
 });
- 
-describe('Server error', () => {
-    // test('Usuario GOD - RUTA /api/v1/pictures - Debe devolver una lista con todas las pictures de un producto', async ()=>{
-    //    // await db.sequelize.close();
-    //     const {body,statusCode} = await request(app).get("/api/v1/pictures/2");
-    //     expect(statusCode).toBe(500);
-    //     await db.sequelize.authenticate();
-    // })
-})
 
 describe('GET pictures of product /api/v1/pictures', () => {
 
@@ -98,7 +161,7 @@ describe('GET pictures of product /api/v1/pictures', () => {
     test('Usuario GOD - RUTA /api/v1/pictures - Se pasanda un id de un producto que no tiene imagenes', async ()=>{
         const token = await generateJWT({role: 'GOD'});
 
-        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:13}).auth(token, {type:"bearer"});
+        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:3}).auth(token, {type:"bearer"});
 
         expect(statusCode).toEqual(200);
         expect(body).toEqual(expect.objectContaining({
@@ -156,7 +219,7 @@ describe('GET pictures of product /api/v1/pictures', () => {
     });
     test('Usuario ADMIN - RUTA /api/v1/pictures - Se pasanda un id de un producto que no tiene imagenes', async ()=>{
         const token = await generateJWT({role: 'ADMIN'});
-        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:13}).auth(token, {type:"bearer"});
+        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:3}).auth(token, {type:"bearer"});
         console.log(statusCode)
         expect(statusCode).toEqual(200);
         expect(body).toEqual(expect.objectContaining({
@@ -214,7 +277,7 @@ describe('GET pictures of product /api/v1/pictures', () => {
     });
     test('Usuario GUEST - RUTA /api/v1/pictures - Se pasanda un id de un producto que no tiene imagenes', async ()=>{
         const token = await generateJWT({role: 'GUEST'});
-        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:13}).auth(token, {type:"bearer"});
+        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:3}).auth(token, {type:"bearer"});
         console.log(statusCode)
         expect(statusCode).toEqual(200);
         expect(body).toEqual(expect.objectContaining({
@@ -470,22 +533,17 @@ describe('POST picture /api/v1/pictures', () => {
            "description":"una descripcion",
            "id_product": 1
         };
-  
-        const originalDB = await db.Picture.findAll();
-        data.id = originalDB.at(-1).id + 1
-
         const {body,statusCode} = await request(app).post('/api/v1/pictures').send(data).auth(token, {type:"bearer"});
   
         const newDB = await db.Picture.findAll();
 
-        expect(newDB[newDB.length -1].dataValues).toEqual(data);
         expect(statusCode).toEqual(201);
         expect(body).toEqual(expect.objectContaining({
             ok:true,
             msg:expect.any(String),
             picture:expect.objectContaining({
-                url:expect.any(String),
-                id_product:expect.any(Number)
+                url:newDB.at(-1).url,
+                id_product:newDB.at(-1).id_product
             })
         }))
     });

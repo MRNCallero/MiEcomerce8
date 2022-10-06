@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1665081954606" clover="3.2.0">
-  <project timestamp="1665081954606" name="All files">
+<coverage generated="1665087459239" clover="3.2.0">
+  <project timestamp="1665087459239" name="All files">
     <metrics statements="611" coveredstatements="328" conditionals="246" coveredconditionals="76" methods="63" coveredmethods="28" elements="920" coveredelements="432" complexity="0" loc="611" ncloc="611" packages="7" files="25" classes="25"/>
     <package name="MiEcomerce8">
       <metrics statements="31" coveredstatements="31" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
