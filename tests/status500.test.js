@@ -1,4 +1,4 @@
-const request = require('supertest');
+/* const request = require('supertest');
 const { app, server } = require('../server');
 const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
@@ -23,3 +23,4 @@ test('GOD Debe crear un producto con los parametros que tiene el data', async ()
     expect(statusCode).toEqual(500);
 
 })
+ */
