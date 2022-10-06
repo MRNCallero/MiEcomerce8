@@ -2,21 +2,24 @@ const request = require('supertest');
 const { app, server } = require('../server');
 const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
-const sinon = require('sinon')
 
-describe('Status 500', () => {
-    let sequelize;
-    beforeEach(() => {
-        db.sequelize.close();
-        sequelize = new Sequelize('mysql://user:pass@example.com:5432/miEcommerce8_test') // Example for postgres
-    })
+test('GOD Debe crear un producto con los parametros que tiene el data', async () => {
+    const token = await generateJWT({role: 'GOD'});
 
-    test('GOD Debe devolver la lista de productos', async () => {
+    const data = {
+        title: "Producto test",
+        price: 5,
+        mostwanted: 0,
+        stock: 1,
+        description: "Esto es una prueba",
+        id_category: 1
+    }
+    db.sequelize.close();
+    const DB = await db.Product.findAll();
+    const { statusCode, body } = await request(app).post('/api/v1/products').send(data).auth(token, {type:"bearer"});
+    const newDB = await db.Product.findAll();
+    const productoCreado = newDB.at(-1);
 
-        const token = await generateJWT({role: 'GOD'});
-        const { statusCode, body } = await request(app).get('/api/v1/products').auth(token, {type:"bearer"});
-        
-        expect(statusCode).toEqual(500);
-    })
+    expect(statusCode).toEqual(500);
 
 })
