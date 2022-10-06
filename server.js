@@ -16,7 +16,7 @@ const cartRoutes = require('./api/routes/cartRoutes');
 const pictureRoutes = require('./api/routes/pictureRoutes');
 
 //PUERTO
-const PORT = 3003;
+const PORT = 8080;
 
 const app = express();
 
