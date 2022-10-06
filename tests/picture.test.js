@@ -2,57 +2,56 @@ const request = require('supertest');
 const { app, server } = require('../server');
 const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
-const { sequelize } = require('../api/database/models');
 
 
 beforeEach(async() => {
-    const categoria1 ={
-        name:"Bebida"
-    }
-    const categoria2 ={
-        name:"Alfajores"
-    }
-    const producto1 = {
-        "title": "Marley",
-        "price": 30,
-        "id_category": 2,
-        "description": "Extra dulce de leche",
-        "stock": 5
-    }
-    const producto2 = {
-        "title": "Coca-Cola",
-        "price": 100,
-        "id_category": 1,
-        "description": "Sin Azucar",
-        "stock": 10
-    }
-    const picture = {
-        url:"https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2022/04/brad-west-kzloZDPHzeg-unsplash-scaled.jpg?w=2560&quality=60&strip=all&ssl=1",
-        id_product:1
-    }
-    const picture1 = {
-        url:"https://cdn.shopify.com/s/files/1/0374/1987/6483/products/marley-blanco_150x.jpg?v=1647453689",
-        id_product:1
-    }
-    const picture2 = {
-        url:"https://www.coca-coladeuruguay.com.uy/content/dam/journey/uy/es/private/brands/coca-cola/Large_product_shot_cocacolaoriginal.png",
-        id_product:2
-    }
-    await db.Categoria.create(categoria1)
-    await db.Categoria.create(categoria2)
-    await db.Product.create(producto1)
-    await db.Product.create(producto2)
-    await db.Picture.create(picture)
-    await db.Picture.create(picture1)
-    await db.Picture.create(picture2)
+    // const categoria1 ={
+    //     name:"Bebida"
+    // }
+    // const categoria2 ={
+    //     name:"Alfajores"
+    // }
+    // const producto1 = {
+    //     "title": "Marley",
+    //     "price": 30,
+    //     "id_category": 2,
+    //     "description": "Extra dulce de leche",
+    //     "stock": 5
+    // }
+    // const producto2 = {
+    //     "title": "Coca-Cola",
+    //     "price": 100,
+    //     "id_category": 1,
+    //     "description": "Sin Azucar",
+    //     "stock": 10
+    // }
+    // const picture = {
+    //     url:"https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2022/04/brad-west-kzloZDPHzeg-unsplash-scaled.jpg?w=2560&quality=60&strip=all&ssl=1",
+    //     id_product:1
+    // }
+    // const picture1 = {
+    //     url:"https://cdn.shopify.com/s/files/1/0374/1987/6483/products/marley-blanco_150x.jpg?v=1647453689",
+    //     id_product:1
+    // }
+    // const picture2 = {
+    //     url:"https://www.coca-coladeuruguay.com.uy/content/dam/journey/uy/es/private/brands/coca-cola/Large_product_shot_cocacolaoriginal.png",
+    //     id_product:2
+    // }
+    // await db.Categoria.create(categoria1)
+    // await db.Categoria.create(categoria2)
+    // await db.Product.create(producto1)
+    // await db.Product.create(producto2)
+    // await db.Picture.create(picture)
+    // await db.Picture.create(picture1)
+    // await db.Picture.create(picture2)
  });
     
 afterEach(async () => {
-    await db.Cart.destroy({where:{}})
-    await db.Picture.destroy({where:{}})
-    await db.Product.destroy({where:{}})
-    await db.Categoria.destroy({where:{}})
-    server.close()
+    // await db.Cart.destroy({where:{}})
+    // await db.Picture.destroy({where:{}})
+    // await db.Product.destroy({where:{}})
+    // await db.Categoria.destroy({where:{}})
+    // server.close()
  });
  
 describe('Server error', () => {
@@ -830,10 +829,41 @@ describe('DELETE picture /api/v1/pictures', () => {
     })
     
 
-    test('Usuario GOD  - RUTA /api/v1/pictures/id - ID de picture inexistente, debe devolver mensaje de error', async()=>{
+    test('Usuario GOD  - RUTA /api/v1/pictures/id - ID de picture incorrecto, debe devolver mensaje de error', async()=>{
+        const idPicture = "asd";
+        const token = await generateJWT({role: 'GOD'});
         
-        
+        const pictureEdit = {
+            "id_product":3,
+            "description":"Foto Oreo",
+            "url":"https://img.freepik.com/vector-gratis/icono-vector-galletas-chocolate-oreo-pila-embems-marca-aislado-sobre-fondo-blanco_528282-135.jpg?size=626&ext=jpg"
+        }
+        const {body,statusCode} = await request(app).delete(`/api/v1/pictures/${idPicture}`).send(pictureEdit).auth(token, {type:"bearer"});
 
+        expect(statusCode).toBe(400);
+        expect(body).toEqual(expect.objectContaining({
+                ok:false,
+                msg:expect.any(String),
+            })
+        );
+    })
+    test('Usuario GOD  - RUTA /api/v1/pictures/id - ID de picture inexistente, debe devolver mensaje de error', async()=>{
+        const idPicture = -1;
+        const token = await generateJWT({role: 'GOD'});
+        
+        const pictureEdit = {
+            "id_product":3,
+            "description":"Foto Oreo",
+            "url":"https://img.freepik.com/vector-gratis/icono-vector-galletas-chocolate-oreo-pila-embems-marca-aislado-sobre-fondo-blanco_528282-135.jpg?size=626&ext=jpg"
+        }
+        const {body,statusCode} = await request(app).delete(`/api/v1/pictures/${idPicture}`).send(pictureEdit).auth(token, {type:"bearer"});
+
+        expect(statusCode).toBe(404);
+        expect(body).toEqual(expect.objectContaining({
+                ok:false,
+                msg:expect.any(String),
+            })
+        );
     })
 
 
