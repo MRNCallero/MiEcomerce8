@@ -10,7 +10,9 @@ const verifyToken = async (req, res, next ) => {
         const bearerToken = bearer[1];
         jwt.verify(bearerToken, process.env.JWT_MIECOMMERCE, (err, data) => {
             if(err) {
-                res.status(403).json({mensaje: "No permitido"});
+                res.status(403).json({
+                    ok:false,
+                    msg: "Token invalido"});
             }else{
                 if(data){
                     //req.token = bearerToken;
@@ -23,7 +25,10 @@ const verifyToken = async (req, res, next ) => {
         });
     }
     else {
-        res.status(403).json({mensaje: "No permitido"});
+        res.status(403).json({
+            ok:false,
+            msg: "Token invalido"
+        });
     }
 }
 
