@@ -70,14 +70,19 @@ const productController = {
             })
         }
         try{
-            if(newProd.title != undefined && newProd.price != undefined){            
+            if(newProd.stock && isNaN(newProd.stock)){
+                return res.status(400).json({
+                    ok:false,
+                    msg:"Stock debe ser un numero"
+                })
+            }
                 db.Product.create({
-                    title: req.body.title,
-                    price: req.body.price,
-                    mostwanted: req.body.mostwanted,
-                    stock: req.body.stock,
-                    description: req.body.description,
-                    id_category: req.body.id_category
+                    title: newProd.title,
+                    price: newProd.price,
+                    mostwanted: newProd.mostwanted? newProd.mostwanted: 0,
+                    stock: newProd.stock? newProd.stock: 0,
+                    description: newProd.description? newProd.description: "",
+                    id_category: newProd.id_category
                 })
                 .then(resultado => {
                     res.status(200).json({
@@ -85,12 +90,7 @@ const productController = {
                         msg: "El producto fue agregado correctamente"
                     })
                 })
-            }else{
-                res.status(400).json({
-                   ok: false,
-                   msg: 'Producto inválido, debe agregar todos los parametros requeridos'
-                })
-            }}catch(err){
+            }catch(err){
                 console.log(err);
                 res.status(500).json({
                     ok: false,
