@@ -44,7 +44,7 @@ beforeEach(async() => {
     // await db.Picture.create(picture)
     // await db.Picture.create(picture1)
     // await db.Picture.create(picture2)
- });
+});
     
 afterEach(async () => {
     // await db.Cart.destroy({where:{}})
@@ -52,7 +52,7 @@ afterEach(async () => {
     // await db.Product.destroy({where:{}})
     // await db.Categoria.destroy({where:{}})
     // server.close()
- });
+});
  
 describe('Server error', () => {
     // test('Usuario GOD - RUTA /api/v1/pictures - Debe devolver una lista con todas las pictures de un producto', async ()=>{
@@ -63,7 +63,7 @@ describe('Server error', () => {
     // })
 })
 
- describe('GET pictures of product /api/v1/pictures', () => {
+describe('GET pictures of product /api/v1/pictures', () => {
 
     test('Usuario GOD - RUTA /api/v1/pictures - Debe devolver una lista con todas las pictures de un producto', async ()=>{
         const token = await generateJWT({role: 'GOD'});
@@ -369,28 +369,26 @@ describe('POST picture /api/v1/pictures', () => {
 
     });
     test('Usuario GOD - RUTA /api/v1/pictures - Debe crear una picture en la base de datos', async () => {
+
         const token = await generateJWT({role: 'GOD'});
+
         const data = {
            "url": "nuevaURL",
            "description":"una descripcion",
            "id_product": 1
         };
-  
-        const originalDB = await db.Picture.findAll();
-        data.id = originalDB.at(-1).id + 1
 
         const {body,statusCode} = await request(app).post('/api/v1/pictures').send(data).auth(token, {type:"bearer"});
-  
+        
         const newDB = await db.Picture.findAll();
 
-        expect(newDB[newDB.length -1].dataValues).toEqual(data);
         expect(statusCode).toEqual(201);
         expect(body).toEqual(expect.objectContaining({
             ok:true,
             msg:expect.any(String),
             picture:expect.objectContaining({
-                url:expect.any(String),
-                id_product:expect.any(Number)
+                url:newDB.at(-1).url,
+                id_product:newDB.at(-1).id_product
             })
         }))
     });
@@ -828,7 +826,29 @@ describe('DELETE picture /api/v1/pictures', () => {
         );
     })
     
+    test('Usuario GOD  - RUTA /api/v1/pictures/id - Debe eliminar picture y retornar la picture eliminada', async()=>{
+        const picture = await db.Picture.create({
+            url:"https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2022/04/brad-west-kzloZDPHzeg-unsplash-scaled.jpg?w=2560&quality=60&strip=all&ssl=1",
+            id_product:1
+        })
 
+        const idPicture = picture.id;
+        const token = await generateJWT({role: 'GOD'});
+        
+        const {body,statusCode} = await request(app).delete(`/api/v1/pictures/${idPicture}`).auth(token, {type:"bearer"});
+
+        expect(statusCode).toBe(200);
+        expect(body).toEqual(expect.objectContaining({
+                ok:true,
+                msg:expect.any(String),
+                picture: expect.objectContaining({
+                    id:idPicture,
+                    id_product:picture.id_product,
+                    url:picture.url
+                })
+            })
+        );
+    })
     test('Usuario GOD  - RUTA /api/v1/pictures/id - ID de picture incorrecto, debe devolver mensaje de error', async()=>{
         const idPicture = "asd";
         const token = await generateJWT({role: 'GOD'});
@@ -850,6 +870,65 @@ describe('DELETE picture /api/v1/pictures', () => {
     test('Usuario GOD  - RUTA /api/v1/pictures/id - ID de picture inexistente, debe devolver mensaje de error', async()=>{
         const idPicture = -1;
         const token = await generateJWT({role: 'GOD'});
+        
+        const pictureEdit = {
+            "id_product":3,
+            "description":"Foto Oreo",
+            "url":"https://img.freepik.com/vector-gratis/icono-vector-galletas-chocolate-oreo-pila-embems-marca-aislado-sobre-fondo-blanco_528282-135.jpg?size=626&ext=jpg"
+        }
+        const {body,statusCode} = await request(app).delete(`/api/v1/pictures/${idPicture}`).send(pictureEdit).auth(token, {type:"bearer"});
+
+        expect(statusCode).toBe(404);
+        expect(body).toEqual(expect.objectContaining({
+                ok:false,
+                msg:expect.any(String),
+            })
+        );
+    })
+    test('Usuario ADMIN  - RUTA /api/v1/pictures/id - Debe eliminar picture y retornar la picture eliminada', async()=>{
+        const picture = await db.Picture.create({
+            url:"https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2022/04/brad-west-kzloZDPHzeg-unsplash-scaled.jpg?w=2560&quality=60&strip=all&ssl=1",
+            id_product:1
+        })
+
+        const idPicture = picture.id;
+        const token = await generateJWT({role: 'GOD'});
+        
+        const {body,statusCode} = await request(app).delete(`/api/v1/pictures/${idPicture}`).auth(token, {type:"bearer"});
+
+        expect(statusCode).toBe(200);
+        expect(body).toEqual(expect.objectContaining({
+                ok:true,
+                msg:expect.any(String),
+                picture: expect.objectContaining({
+                    id:idPicture,
+                    id_product:picture.id_product,
+                    url:picture.url
+                })
+            })
+        );
+    })
+    test('Usuario ADMIN  - RUTA /api/v1/pictures/id - ID de picture incorrecto, debe devolver mensaje de error', async()=>{
+        const idPicture = "asd";
+        const token = await generateJWT({role: 'ADMIN'});
+        
+        const pictureEdit = {
+            "id_product":3,
+            "description":"Foto Oreo",
+            "url":"https://img.freepik.com/vector-gratis/icono-vector-galletas-chocolate-oreo-pila-embems-marca-aislado-sobre-fondo-blanco_528282-135.jpg?size=626&ext=jpg"
+        }
+        const {body,statusCode} = await request(app).delete(`/api/v1/pictures/${idPicture}`).send(pictureEdit).auth(token, {type:"bearer"});
+
+        expect(statusCode).toBe(400);
+        expect(body).toEqual(expect.objectContaining({
+                ok:false,
+                msg:expect.any(String),
+            })
+        );
+    })
+    test('Usuario ADMIN  - RUTA /api/v1/pictures/id - ID de picture inexistente, debe devolver mensaje de error', async()=>{
+        const idPicture = -1;
+        const token = await generateJWT({role: 'ADMIN'});
         
         const pictureEdit = {
             "id_product":3,

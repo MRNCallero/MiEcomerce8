@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">74.19% </span>
+                <span class="strong">79.03% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>46/62</span>
+                <span class='fraction'>49/62</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.42% </span>
+                <span class="strong">78.57% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>20/28</span>
+                <span class='fraction'>22/28</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.27% </span>
+                <span class="strong">81.35% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>45/59</span>
+                <span class='fraction'>48/59</span>
             </div>
         
             
@@ -371,28 +371,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -432,12 +432,12 @@ const controllersPictures = {
                 
         } catch (error) {
 <span class="cstat-no" title="statement not covered" >            console.log(error)</span>
-<span class="cstat-no" title="statement not covered" >                res.status(500).json({</span>
-                    ok: false,
-                    msg: "Server Error"
-                });
+<span class="cstat-no" title="statement not covered" >            res.status(500).json({</span>
+                ok: false,
+                msg: "Server Error"
+            });
                 
-            }
+       }
     },
     listPictureID: async (req, res) =&gt; {
             
@@ -550,18 +550,18 @@ const controllersPictures = {
         try {
             
             const pictureBuscada = await db.Picture.findByPk(Number(idPicture))
-            <span class="missing-if-branch" title="else path not taken" >E</span>if(!pictureBuscada){
+            if(!pictureBuscada){
                 return res.status(404).json({
                     ok: false,
                     msg: "Picture no encontrada"
                 });
             }
-<span class="cstat-no" title="statement not covered" >            if(pictureBuscada){</span>
-<span class="cstat-no" title="statement not covered" >                await db.Picture.destroy({</span>
+            <span class="missing-if-branch" title="else path not taken" >E</span>if(pictureBuscada){
+                await db.Picture.destroy({
                     where: {id:idPicture}
                 })
             }
-<span class="cstat-no" title="statement not covered" >            res.status(200).json({ ok: true, msg: "Picture eliminada, te muestro las fotos de todas las pictures",pictur: pictureBuscada });</span>
+            res.status(200).json({ ok: true, msg: "Picture eliminada, te muestro las fotos de todas las pictures",picture: pictureBuscada });
 &nbsp;
         } catch (error) {
 <span class="cstat-no" title="statement not covered" >            console.log(error);</span>
@@ -577,7 +577,7 @@ module.exports = controllersPictures;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-10-06T15:08:27.258Z
+                at 2022-10-06T18:45:54.538Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

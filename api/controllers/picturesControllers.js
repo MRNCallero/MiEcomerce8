@@ -29,12 +29,12 @@ const controllersPictures = {
                 
         } catch (error) {
             console.log(error)
-                res.status(500).json({
-                    ok: false,
-                    msg: "Server Error"
-                });
+            res.status(500).json({
+                ok: false,
+                msg: "Server Error"
+            });
                 
-            }
+       }
     },
     listPictureID: async (req, res) => {
             
@@ -158,7 +158,7 @@ const controllersPictures = {
                     where: {id:idPicture}
                 })
             }
-            res.status(200).json({ ok: true, msg: "Picture eliminada, te muestro las fotos de todas las pictures",pictur: pictureBuscada });
+            res.status(200).json({ ok: true, msg: "Picture eliminada, te muestro las fotos de todas las pictures",picture: pictureBuscada });
 
         } catch (error) {
             console.log(error);
