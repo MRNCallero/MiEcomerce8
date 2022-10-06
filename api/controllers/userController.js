@@ -165,33 +165,36 @@ let crearUsuario = async (req,res)=>{
 let modificarUsuario = async(req,res)=>{
     try{
         let {email,username,firstname,lastname,profilepic,role}= req.body;
-        let id = req.params.id;
-        if(id >= 0){
-            if(email||username||firstname||lastname||profilepic||role){
-                email? await db.Usuario.update({email:email},{where:{id : id}}):{};
-                username? await db.Usuario.update({username:username},{where:{id : id}}):{};
-                firstname? await db.Usuario.update({first_name:firstname},{where:{id : id}}):{};
-                lastname? await db.Usuario.update({last_name:lastname},{where:{id : id}}):{};
-                profilepic? await db.Usuario.update({profilepic:profilepic},{where:{id : id}}):{};
-                role? await db.Usuario.update({role:role},{where:{id : id}}):{};
-                let mod = await db.Usuario.findByPk(id);
-                if(mod){
+        let id = parseInt(req.params.id);
+        console.log('id el modificar : '+ id)
+        if(id > 0){
+            let mod = await db.Usuario.findByPk(id);
+            console.log(mod)
+            if(mod){
+                if(email||username||firstname||lastname||profilepic||role){
+                    email? await db.Usuario.update({email:email},{where:{id : id}}):{};
+                    username? await db.Usuario.update({username:username},{where:{id : id}}):{};
+                    firstname? await db.Usuario.update({first_name:firstname},{where:{id : id}}):{};
+                    lastname? await db.Usuario.update({last_name:lastname},{where:{id : id}}):{};
+                    profilepic? await db.Usuario.update({profilepic:profilepic},{where:{id : id}}):{};
+                    role? await db.Usuario.update({role:role},{where:{id : id}}):{};
+                    mod = await db.Usuario.findByPk(id);
                     res.status(200).json({
                         "ok":true,
                         "msg": "Usuario modificado correctamente",
                         "user": mod
-                    })
+                    });  
                 }else{
-                    res.status(404).json({
-                        "ok":false,
-                        "msg": "Usuario no encontrado"
-                    })
+                    res.status(401).json({
+                        "ok": false,
+                        "msg": "Debe ingresaer al menos una campo que actualizar"
+                    });
                 }
             }else{
-                res.status(401).json({
-                    "ok": false,
-                    "msg": "Debe ingresaer al menos una campo que actualizar"
-                });
+                res.status(404).json({
+                    "ok":false,
+                    "msg": "Usuario no encontrado"
+                })
             }
         }else{
             res.status(400).json({
@@ -211,7 +214,7 @@ let modificarUsuario = async(req,res)=>{
 let eliminarUsuario = async (req,res)=>{
     try{
         let id = req.params.id;
-        if (id>=0){
+        if (id>0){
                 await cart.deleteCart(id);
                 let dest = await db.Usuario.destroy({where:{id:id}})
                 if(dest){

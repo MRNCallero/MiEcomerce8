@@ -4,8 +4,6 @@ const habilitarMod = ( req,res,next)=> {
     try{
         const {id,role}= req.jwtauth;
         const idReq = req.params.id;
-        console.log('id '+ id);
-        console.log('role '+role);
         if(role == "GOD"){
             next()
         }else if(((req.originalUrl.includes('users') || req.originalUrl.includes('cart')) && id == idReq)){
