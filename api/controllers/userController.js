@@ -165,7 +165,7 @@ let crearUsuario = async (req,res)=>{
 let modificarUsuario = async(req,res)=>{
     try{
         let {email,username,firstname,lastname,profilepic,role}= req.body;
-        let id = parseInt(req.params.id);
+        let id = req.params.id;
         console.log('id el modificar : '+ id)
         if(id > 0){
             let mod = await db.Usuario.findByPk(id);
