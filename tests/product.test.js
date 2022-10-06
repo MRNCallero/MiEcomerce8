@@ -4,10 +4,6 @@ const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
 const sinon = require('sinon')
 
-afterEach(() => {
-    server.close();
- });
-
 describe('POST api/v1/products', () => {
     test('GOD Debe crear un producto con los parametros que tiene el data', async () => {
         const token = await generateJWT({role: 'GOD'});
