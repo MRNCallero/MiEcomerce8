@@ -186,7 +186,7 @@ describe('GET pictures of product /api/v1/pictures', () => {
         })
         )
     })
-//-----------------------------------------------
+    //-----------------------------------------------
     test('Usuario ADMIN - RUTA /api/v1/pictures - Debe devolver una lista con todas las pictures de un producto', async ()=>{
         const token = await generateJWT({role: 'ADMIN'});
 
@@ -847,8 +847,6 @@ describe('PUT picture /api/v1/pictures', () => {
         );
     })
 
-
-
 })
 describe('DELETE picture /api/v1/pictures', () => {
 
@@ -883,7 +881,7 @@ describe('DELETE picture /api/v1/pictures', () => {
             })
         );
     })
-    
+    //-----------------------------------------------
     test('Usuario GOD  - RUTA /api/v1/pictures/id - Debe eliminar picture y retornar la picture eliminada', async()=>{
         const picture = await db.Picture.create({
             url:"https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2022/04/brad-west-kzloZDPHzeg-unsplash-scaled.jpg?w=2560&quality=60&strip=all&ssl=1",
@@ -943,6 +941,7 @@ describe('DELETE picture /api/v1/pictures', () => {
             })
         );
     })
+    //-----------------------------------------------
     test('Usuario ADMIN  - RUTA /api/v1/pictures/id - Debe eliminar picture y retornar la picture eliminada', async()=>{
         const picture = await db.Picture.create({
             url:"https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2022/04/brad-west-kzloZDPHzeg-unsplash-scaled.jpg?w=2560&quality=60&strip=all&ssl=1",
