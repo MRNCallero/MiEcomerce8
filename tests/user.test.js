@@ -134,12 +134,12 @@ beforeEach( async() => {
 
 });  
 afterEach(async () => {
+    await db.Cart.destroy({where:{}})
     await db.Usuario.destroy({where:{}})
     await db.Picture.destroy({where:{}})
     await db.Product.destroy({where:{}})
-    await db.Cart.destroy({where:{}})
+    await db.Categoria.destroy({where:{}})
     server.close();
-
 });
 describe('POST /',() => {
     test('Debe devolver un código de estado 201, ok : true, msg : Usuario creado y el usuario creado ', async () => {
