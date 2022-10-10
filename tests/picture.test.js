@@ -355,6 +355,7 @@ describe('GET picture /api/v1/pictures/id', () => {
         }))
         //-----------------------------------------------
     })
+    
     test('Usuario ADMIN - RUTA /api/v1/pictures/id - pasar id incorrecto', async ()=>{
         
         const token = await generateJWT({role: 'ADMIN'});
