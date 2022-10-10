@@ -16,7 +16,8 @@ const cartRoutes = require('./api/routes/cartRoutes');
 const pictureRoutes = require('./api/routes/pictureRoutes');
 
 //PUERTO
-const PORT = 3003;
+const PORT = 8080;
+
 
 const app = express();
 
@@ -55,12 +56,18 @@ app.delete('*',(req,res) => res.status(404).json({
 
 
 
-const server = app.listen(PORT,async() => {
-    try {
-        await sequelize.authenticate();
-        console.log('Connection has been established successfully. Al puerto '+ PORT);
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
+/* const server = app.listen(PORT, async() => {
+        try {
+            await sequelize.authenticate();
+            console.log('Connection has been established successfully. Al puerto '+ PORT);
+        } catch (error) {
+            console.error('Unable to connect to the database:', error);
         }
-    })
+    }) */
+
+const server = app.listen(0,async function(){
+        await sequelize.authenticate();
+        console.log("Listening on port " + this.address().port);
+    });
+
 module.exports = { app, server };

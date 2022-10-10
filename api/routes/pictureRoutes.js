@@ -13,7 +13,7 @@ const { query } = require('express-validator');
 
 router.use(verifyToken);
 
-router.get('/:id',productExist,pictureController.listPictureID);
+router.get('/:id',middlewareIDinBody,productExist,pictureController.listPictureID);
 
 router.get('/',[
     query('product', 'Se necesita el id del producto').not().isEmpty(),
