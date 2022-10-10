@@ -5,6 +5,18 @@ const generateToken = require('../helpers/generateJWT');
 
 beforeEach( async() => {
 
+    const categoria1 = {
+        id:1,
+        name:"Bebida"
+    }
+    const categoria2 = {
+        id:2,
+        name:"Alfajores"
+    }
+    const categoria3 = {
+        id:3,
+        name:"Galletas"
+    }
 
     const cart = {
         id_user:1,
@@ -96,6 +108,11 @@ beforeEach( async() => {
         id_product:2
     }
 
+    ///Categoria
+
+    await db.Categoria.create(categoria1);
+    await db.Categoria.create(categoria2);
+    await db.Categoria.create(categoria3);
 
     //Productos
     await db.Product.create(producto1)
