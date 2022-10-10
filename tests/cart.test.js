@@ -7,7 +7,7 @@ beforeEach( async() => {
 
 
     const cart = {
-        id_user:3,
+        id_user:4,
         id_product:1,
         date:"2022-10-3",
         quantity:3
@@ -21,6 +21,12 @@ beforeEach( async() => {
     const cart2 = {
         id_user:3,
         id_product:1,
+        date:"2022-8-3",
+        quantity:3
+    };
+    const cart3 = {
+        id_user:3,
+        id_product:4,
         date:"2022-8-3",
         quantity:3
     };
@@ -54,6 +60,16 @@ beforeEach( async() => {
         profilepic:'https://media.istockphoto.com/vectors/administrative-professionals-day-secretaries-day-or-admin-day-holiday-vector-id1204416887?k=20&m=1204416887&s=612x612&w=0&h=tI6AmIGHRBv8NdL2KJHvHOtQ9nBhzAnX5yhmVNqrf-0=', 
         role:'GUEST'
     };
+    const user4 = {
+        id:4,
+        email:'guset2@guest.com',
+        username:'guest2',
+        password:'guest2',
+        first_name: 'guest2',
+        last_name:'guest2',
+        profilepic:'https://media.istockphoto.com/vectors/administrative-professionals-day-secretaries-day-or-admin-day-holiday-vector-id1204416887?k=20&m=1204416887&s=612x612&w=0&h=tI6AmIGHRBv8NdL2KJHvHOtQ9nBhzAnX5yhmVNqrf-0=', 
+        role:'GUEST'
+    };
 
 
     const producto1 = {
@@ -74,11 +90,27 @@ beforeEach( async() => {
     };
     const producto3 = {
         id:3,
-        title: "Marley",
-        price: 30,
-        id_category: 2,
-        description: "Extra dulce de leche",
+        title: "Pepsi",
+        price: 130,
+        id_category: 1,
+        description: "Ligth",
         stock: 5
+    };
+    const producto4 = {
+        id:4,
+        title: "Portezuelo",
+        price: 20,
+        id_category: 2,
+        description: "Chocolate blanco",
+        stock: 5
+    };
+    const producto5 = {
+        id:5,
+        title: "Oreos",
+        price: 20,
+        id_category: 2,
+        description: "Clasicas",
+        stock: 0
     };
     const picture = {
         id:1,
@@ -101,6 +133,8 @@ beforeEach( async() => {
     await db.Product.create(producto1);
     await db.Product.create(producto2);
     await db.Product.create(producto3);
+    await db.Product.create(producto4);
+    await db.Product.create(producto5);
     //Picture
     await db.Picture.create(picture);
     await db.Picture.create(picture1);
@@ -109,10 +143,12 @@ beforeEach( async() => {
     await db.Usuario.create(user);
     await db.Usuario.create(user2);
     await db.Usuario.create(user3);
+    await db.Usuario.create(user4);
     //cart
     await db.Cart.create(cart);
     await db.Cart.create(cart1);
     await db.Cart.create(cart2);
+    await db.Cart.create(cart3);
 
 
 });
@@ -301,14 +337,36 @@ describe('PUT Carts', () => {
 
     const newCart = [
         {
-            "product": 2,
-            "quantity": 2
+            "product": 1,
+            "quantity": 3
         },
         {
-            "product": 1,
-            "quantity": 1
+            "product": 2,
+            "quantity": 4
+        },
+        {
+            "product": 4,
+            "quantity": 4
+        },
+        {
+            "product": 3,
+            "quantity": 6
         }
-    ]
+    ];
+
+    const noStockCart = [
+        {
+            "product": 5,
+            "quantity": 6
+        }
+    ];
+
+    const fakeCart = [
+        {
+            "product": 7,
+            "quantity": 6
+        }
+    ];
 
     test('Se necesita token para editar carritos', async () => {
         const token = "cualquierCOsa";
@@ -338,13 +396,30 @@ describe('PUT Carts', () => {
         )
     })
 
+    test('Error cuando envio un producto que no existe', async () => {
+        const token = await generateJWT({role: 'GOD'});
+
+        const beforeCart = await getCart(3);
+        const { statusCode, body } = await request(app).put('/api/v1/carts/' + 3).send(fakeCart).auth(token, {type:"bearer"});
+        const afterCart = await getCart(3);
+
+        expect(statusCode).toEqual(400);
+        expect(beforeCart).toEqual(afterCart);
+        expect(body).toEqual(
+            expect.objectContaining({
+                ok: false,
+                message: "Some products does not exist",
+            })
+        )
+    })
+
     test('GOD puede editar cualquier carrito', async () => {
         const token = await generateJWT({role: 'GOD'});
 
-        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 3).send(newCart).auth(token, {type:"bearer"});
+        const { statusCode, body } = await request(app).put('/api/v1/carts/' + 3).send(newCart).auth(token, {type:"bearer"});
         const cart = await getCart(3);
 
-        expect(statusCode).toEqual(200);
+        expect(statusCode).toEqual(201);
         expect(body).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
