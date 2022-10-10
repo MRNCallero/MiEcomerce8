@@ -3,360 +3,460 @@ const { app, server } = require('../server');
 const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
 
+beforeEach( async() => {
 
-afterEach(() => {
+
+    const cart = {
+        id_user:3,
+        id_product:1,
+        date:"2022-10-3",
+        quantity:3
+    };
+    const cart1 = {
+        id_user:3,
+        id_product:2,
+        date:"2022-9-3",
+        quantity:5
+    };  
+    const cart2 = {
+        id_user:3,
+        id_product:1,
+        date:"2022-8-3",
+        quantity:3
+    };
+    const user = {
+        id:1,
+        email:'god@god.com',
+        username:'god',
+        password:'god',
+        first_name: 'Diosito',
+        last_name:'TodoPoderoso',
+        profilepic:'https://media.istockphoto.com/photos/hands-of-god-picture-id157377707?k=20&m=157377707&s=612x612&w=0&h=K-dH2tCJGpQONcmvauRMeVnm-r5QdL4NipRDokHXukI=', 
+        role:'GOD'
+    };
+    const user2 = {
+        id:2,
+        email:'admin@admin.com',
+        username:'Admin',
+        password:'Admin',
+        first_name: 'ElAdmin',
+        last_name:'NoTanPoderoso',
+        profilepic:'https://media.istockphoto.com/vectors/administrative-professionals-day-secretaries-day-or-admin-day-holiday-vector-id1204416887?k=20&m=1204416887&s=612x612&w=0&h=tI6AmIGHRBv8NdL2KJHvHOtQ9nBhzAnX5yhmVNqrf-0=', 
+        role:'ADMIN'
+    };
+    const user3 = {
+        id:3,
+        email:'guset@guest.com',
+        username:'guest',
+        password:'guest',
+        first_name: 'guest',
+        last_name:'guest',
+        profilepic:'https://media.istockphoto.com/vectors/administrative-professionals-day-secretaries-day-or-admin-day-holiday-vector-id1204416887?k=20&m=1204416887&s=612x612&w=0&h=tI6AmIGHRBv8NdL2KJHvHOtQ9nBhzAnX5yhmVNqrf-0=', 
+        role:'GUEST'
+    };
+
+
+    const producto1 = {
+        id:1,
+        title: "Marley",
+        price: 30,
+        id_category: 2,
+        description: "Extra dulce de leche",
+        stock: 5
+    };
+    const producto2 = {
+        id:2,
+        title: "Coca-Cola",
+        price: 100,
+        id_category: 1,
+        description: "Sin Azucar",
+        stock: 10
+    };
+    const producto3 = {
+        id:3,
+        title: "Marley",
+        price: 30,
+        id_category: 2,
+        description: "Extra dulce de leche",
+        stock: 5
+    };
+    const picture = {
+        id:1,
+        url:"https://i0.wp.com/imgs.hipertextual.com/wp-content/uploads/2022/04/brad-west-kzloZDPHzeg-unsplash-scaled.jpg?w=2560&quality=60&strip=all&ssl=1",
+        id_product:1
+    };
+    const picture1 = {
+        id:2,
+        url:"https://cdn.shopify.com/s/files/1/0374/1987/6483/products/marley-blanco_150x.jpg?v=1647453689",
+        id_product:1
+    };
+    const picture2 = {
+        id:3,
+        url:"https://www.coca-coladeuruguay.com.uy/content/dam/journey/uy/es/private/brands/coca-cola/Large_product_shot_cocacolaoriginal.png",
+        id_product:2
+    };
+
+
+    //Productos
+    await db.Product.create(producto1);
+    await db.Product.create(producto2);
+    await db.Product.create(producto3);
+    //Picture
+    await db.Picture.create(picture);
+    await db.Picture.create(picture1);
+    await db.Picture.create(picture2);
+    //usuarios
+    await db.Usuario.create(user);
+    await db.Usuario.create(user2);
+    await db.Usuario.create(user3);
+    //cart
+    await db.Cart.create(cart);
+    await db.Cart.create(cart1);
+    await db.Cart.create(cart2);
+
+
+});
+    
+afterEach(async () => {
+    await db.Cart.destroy({where:{}});
+    await db.Usuario.destroy({where:{}});
+    await db.Picture.destroy({where:{}});
+    await db.Product.destroy({where:{}});
     server.close();
- });
+});
+
+const getCart = async (id_user) => {
+    const uCart = await db.Cart.findAll({
+        where: {
+            id_user: id_user
+        }
+    });
+    let retList = [];
+    for(let index in uCart ){
+        let elem = uCart[index];
+        let prod = await db.Product.findByPk(elem.id_product);
+        retList[index] = {
+            product: prod,
+            date: elem.date,
+            quantity: elem.quantity
+        };
+    }
+    return retList;
+}
 
 describe('GET Carts', () => {
+
+    test('Se necesita token para el listado', async () => {
+        const token = "cualquierCOsa";
+
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 1).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(
+            expect.objectContaining({
+                ok:false,
+                msg: "Token invalido"
+            })
+        )
+    })
+
+    test('Error cuando el usuario no existe', async () => {
+        const token = await generateJWT({role: 'GOD'});
+
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 5).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(404);
+        expect(body).toEqual(
+            expect.objectContaining({
+                ok:false,
+                message:"User does not exist"
+            })
+        );
+    })
 
     test('GOD puede ver cualquier carrito', async () => {
         const token = await generateJWT({role: 'GOD'});
 
-        const DB = await db.Product.findAll();
-        const { statusCode, body } = await request(app).post('/api/v1/products').send(data).auth(token, {type:"bearer"});
-        const newDB = await db.Product.findAll();
-        const productoCreado = newDB.at(-1);
+        // const cart = await getCart(1);
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 3).auth(token, {type:"bearer"});
 
         expect(statusCode).toEqual(200);
-        expect(DB.length + 1).toEqual(newDB.length);
-        expect(productoCreado).toEqual(expect.objectContaining({
-            title:expect.any(String),
-            price:expect.any(Number),
-            mostwanted:expect.any(Number),
-            stock:expect.any(Number),
-            description:expect.any(String),
-            id_category:expect.any(Number)
-        }))
-        await db.Product.destroy({where:{id : newDB.at(-1).id}});
+        expect(body).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    date:expect.any(String),
+                    quantity:expect.any(Number),
+                    product:expect.objectContaining({
+                        title:expect.any(String),
+                        price:expect.any(Number),
+                        mostwanted:expect.any(Number),
+                        stock:expect.any(Number),
+                        description:expect.any(String),
+                        id_category:expect.any(Number)
+                    })
+                })
+            ])
+        )
+    })
+
+    test('GOD puede ver cualquier carrito, carrito vacio', async () => {
+        const token = await generateJWT({role: 'GOD'});
+
+        const cart = await getCart(2);
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 2).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(200);
+        expect(cart.length).toEqual(0);
+        expect(body).toEqual(
+            expect.objectContaining({
+                message:"Cart is empty",
+                ok:true
+            })
+        )
     })
 
     test('ADMIN puede ver cualquier carrito', async () => {
         const token = await generateJWT({role: 'ADMIN'});
 
-        const data = {
-            title: "Producto test",
-            price: 5,
-            mostwanted: 0,
-            stock: 1,
-            description: "Esto es una prueba",
-            id_category: 1
-        }
-        const DB = await db.Product.findAll();
-        const { statusCode, body } = await request(app).post('/api/v1/products').send(data).auth(token, {type:"bearer"});
-        const newDB = await db.Product.findAll();
-        const productoCreado = newDB.at(-1);
+        // const cart = await getCart(1);
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 3).auth(token, {type:"bearer"});
 
         expect(statusCode).toEqual(200);
-        expect(DB.length + 1).toEqual(newDB.length);
-        expect(productoCreado).toEqual(expect.objectContaining({
-            title:expect.any(String),
-            price:expect.any(Number),
-            mostwanted:expect.any(Number),
-            stock:expect.any(Number),
-            description:expect.any(String),
-            id_category:expect.any(Number)
-        }))
-        await db.Product.destroy({where:{id : newDB.at(-1).id}});
+        expect(body).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    date:expect.any(String),
+                    quantity:expect.any(Number),
+                    product:expect.objectContaining({
+                        title:expect.any(String),
+                        price:expect.any(Number),
+                        mostwanted:expect.any(Number),
+                        stock:expect.any(Number),
+                        description:expect.any(String),
+                        id_category:expect.any(Number)
+                    })
+                })
+            ])
+        )
     })
+
+    test('ADMIN puede ver cualquier carrito, carrito vacio', async () => {
+        const token = await generateJWT({role: 'ADMIN'});
+
+        const cart = await getCart(1);
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 1).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(200);
+        expect(cart.length).toEqual(0);
+        expect(body).toEqual(
+            expect.objectContaining({
+                message:"Cart is empty",
+                ok:true
+            })
+        )
+    })
+
 
     test('GUEST puede ver su carrito', async () => {
-        const token = await generateJWT({role: 'GUEST'});
-        const data = {
-            title: "Producto test",
-            price: 5,
-            mostwanted: 0,
-            stock: 1,
-            description: "Esto es una prueba",
-            id_category: 1
-        }
-        let DB = db.Product.findAll();
-        const { statusCode, body } = await request(app).post('/api/v1/products').send(data).auth(token, {type:"bearer"});
-        const newDB = db.Product.findAll();
+        const token = await generateJWT({id: 3, role: 'GUEST'});
+
+        // const cart = await getCart(1);
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 3).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    date:expect.any(String),
+                    quantity:expect.any(Number),
+                    product:expect.objectContaining({
+                        title:expect.any(String),
+                        price:expect.any(Number),
+                        mostwanted:expect.any(Number),
+                        stock:expect.any(Number),
+                        description:expect.any(String),
+                        id_category:expect.any(Number)
+                    })
+                })
+            ])
+        )
+    })
+
+    test('GUEST no puede ver otros carritos', async () => {
+        const token = await generateJWT({id: 3, role: 'GUEST'});
+
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 1).auth(token, {type:"bearer"});
 
         expect(statusCode).toEqual(403);
-        expect(DB.length).toEqual(newDB.length);
+        expect(body).toEqual(
+            expect.objectContaining({
+                error: "No tienes las credenciales necesarias para acceder"
+            })
+        )
     })
-
-    test('GUEST no puede ver un carrito ageno', async () => {
-        const token = await generateJWT({role: 'GOD'});
-        const data = {
-            title: "Producto test",
-            price: 5,
-            mostwanted: 0,
-            stock: 1,
-            description: "Esto es una prueba",
-            id_category: 10000
-        }
-        let DB = db.Product.findAll();
-        const { statusCode, body } = await request(app).post('/api/v1/products').send(data).auth(token, {type:"bearer"});
-        const newDB = db.Product.findAll();
-
-        expect(statusCode).toEqual(400);
-        expect(DB.length).toEqual(newDB.length);
-    })
-
-    test('Hay que estar autenticado para ver carritos', async () => {
-        const token = await generateJWT({role: 'GOD'});
-        const data = {
-            price: 5,
-            mostwanted: 0,
-            stock: 1,
-            description: "Esto es una prueba",
-            id_category: 1
-        }
-        let DB = db.Product.findAll();
-        const { statusCode, body } = await request(app).post('/api/v1/products').send(data).auth(token, {type:"bearer"});
-        const newDB = db.Product.findAll();
-
-        expect(statusCode).toEqual(400);
-        expect(DB.length).toEqual(newDB.length);
-    })
-
-    test('Crear sin indicar el price, debe devolver status 400 sin crear el producto', async () => {
-        const token = await generateJWT({role: 'GOD'});
-        const data = {
-            title: 'Producto test',
-            mostwanted: 0,
-            stock: 1,
-            description: "Esto es una prueba",
-            id_category: 1
-        }
-        let DB = db.Product.findAll();
-        const { statusCode, body } = await request(app).post('/api/v1/products').send(data).auth(token, {type:"bearer"});
-        const newDB = db.Product.findAll();
-
-        expect(statusCode).toEqual(400);
-        expect(DB.length).toEqual(newDB.length);
-    })
-
 
 })
 
 describe('PUT Carts', () => {
 
-    test('GOD Debe devolver la lista de productos', async () => {
+    const newCart = [
+        {
+            "product": 2,
+            "quantity": 2
+        },
+        {
+            "product": 1,
+            "quantity": 1
+        }
+    ]
+
+    test('Se necesita token para editar carritos', async () => {
+        const token = "cualquierCOsa";
+
+        const { statusCode, body } = await request(app).put('/api/v1/carts/' + 1).send(newCart).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(
+            expect.objectContaining({
+                ok:false,
+                msg: "Token invalido"
+            })
+        )
+    })
+
+    test('Error cuando el usuario no existe', async () => {
         const token = await generateJWT({role: 'GOD'});
-        const { statusCode, body } = await request(app).get('/api/v1/products').auth(token, {type:"bearer"});
-        expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            lista:expect.arrayContaining([
-                expect.objectContaining({
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    mostwanted:expect.any(Number),
-                    stock:expect.any(Number),
-                    description:expect.any(String),
-                    id_category:expect.any(Number)
-                })
-            ])
-        }))
-    })
 
-    test('ADMIN Debe devolver la lista de productos', async () => {
-        const token = await generateJWT({role: 'ADMIN'});
-        const { statusCode, body } = await request(app).get('/api/v1/products').auth(token, {type:"bearer"});
-        expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            lista:expect.arrayContaining([
-                expect.objectContaining({
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    mostwanted:expect.any(Number),
-                    stock:expect.any(Number),
-                    description:expect.any(String),
-                    id_category:expect.any(Number)
-                })
-            ])
-        }))
-    })
-
-    test('GUEST Debe devolver la lista de productos', async () => {
-        const token = await generateJWT({role: 'GUEST'});
-        const { statusCode, body } = await request(app).get('/api/v1/products').auth(token, {type:"bearer"});
-        expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            lista:expect.arrayContaining([
-                expect.objectContaining({
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    mostwanted:expect.any(Number),
-                    stock:expect.any(Number),
-                    description:expect.any(String),
-                    id_category:expect.any(Number)
-                })
-            ])
-        }))
-    })
-
-
-})
-
-describe('GET api/v1/products/mostwanted', () => {
-    test('GOD Debe devolver la lista de productos con mostwanted en 1', async () => {
-        const token = await generateJWT({role: 'GOD'});
-        const { statusCode, body } = await request(app).get('/api/v1/products/mostwanted').auth(token, {type:"bearer"});
-        expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            listado:expect.arrayContaining([
-                expect.objectContaining({
-                    id:expect.any(Number),
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    mostwanted:1,
-                    stock:expect.any(Number),
-                    description:expect.any(String),
-                    id_category:expect.any(Number)
-                })
-            ])
-        }))
-    })
-
-    test('ADMIN Debe devolver la lista de productos con mostwanted en 1', async () => {
-        const token = await generateJWT({role: 'ADMIN'});
-        const { statusCode, body } = await request(app).get('/api/v1/products/mostwanted').auth(token, {type:"bearer"});
-        expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            listado:expect.arrayContaining([
-                expect.objectContaining({
-                    id:expect.any(Number),
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    mostwanted:1,
-                    stock:expect.any(Number),
-                    description:expect.any(String),
-                    id_category:expect.any(Number)
-                })
-            ])
-        }))
-    })
-
-    test('GUEST Debe devolver la lista de productos con mostwanted en 1', async () => {
-        const token = await generateJWT({role: 'GUEST'});
-        const { statusCode, body } = await request(app).get('/api/v1/products/mostwanted').auth(token, {type:"bearer"});
-        expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            listado:expect.arrayContaining([
-                expect.objectContaining({
-                    id:expect.any(Number),
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    mostwanted:1,
-                    stock:expect.any(Number),
-                    description:expect.any(String),
-                    id_category:expect.any(Number)
-                })
-            ])
-        }))
-    })
-})
-
-describe('GET api/v1/products/?category', () => {
-    test('GOD Debe devolver la lista de productos que contengan el query en su categoria', async () => {
-        const token = await generateJWT({role: 'GOD'});
-        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "e"}).auth(token, {type:"bearer"});
-
-        expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            listado:expect.arrayContaining([
-                expect.objectContaining({
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    id_category:expect.any(Number),
-                    productocategoria:expect.objectContaining({
-                        name:expect.stringMatching(/E/i)
-                    })
-                })
-            ])
-        }))
-    })
-
-    test('GOD Debe devolver 404 not found', async () => {
-        const token = await generateJWT({role: 'GOD'});
-        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "zzz"}).auth(token, {type:"bearer"});
+        const { statusCode, body } = await request(app).put('/api/v1/carts/' + 5).send(newCart).auth(token, {type:"bearer"});
 
         expect(statusCode).toEqual(404);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-        }))
+        expect(body).toEqual(
+            expect.objectContaining({
+                ok:false,
+                message:"User does not exist"
+            })
+        )
     })
 
-    test('GOD Debe devolver la lista de productos con el query en la categoria', async () => {
+    test('GOD puede editar cualquier carrito', async () => {
         const token = await generateJWT({role: 'GOD'});
-        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "AlFa"}).auth(token, {type:"bearer"});
+
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 3).send(newCart).auth(token, {type:"bearer"});
+        const cart = await getCart(3);
 
         expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            listado:expect.arrayContaining([
+        expect(body).toEqual(
+            expect.arrayContaining([
                 expect.objectContaining({
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    id_category:expect.any(Number),
-                    productocategoria:expect.objectContaining({
-                        name:expect.stringMatching(/AlFa/i)
+                    date:cart[0].date || cart[1].date,
+                    quantity:cart[0].quantity || cart[1].quantity,
+                    product:expect.objectContaining({
+                        title:cart[0].product.title || cart[1].product.title,
+                        price:cart[0].product.price || cart[1].product.price,
+                        mostwanted:cart[0].product.mostwanted || cart[1].product.mostwanted,
+                        stock:cart[0].product.stock || cart[1].product.stock,
+                        description:cart[0].product.description || cart[1].product.description,
+                        id_category:cart[0].product.id_category || cart[1].product.id_category
                     })
                 })
             ])
-        }))
+        )
     })
 
-    test('ADMIN Debe devolver la lista de productos con el query en la categoria', async () => {
+    test('GOD puede ver cualquier carrito, carrito vacio', async () => {
+        const token = await generateJWT({role: 'GOD'});
+
+        const cart = await getCart(2);
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 2).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(200);
+        expect(cart.length).toEqual(0);
+        expect(body).toEqual(
+            expect.objectContaining({
+                message:"Cart is empty",
+                ok:true
+            })
+        )
+    })
+
+    test('ADMIN puede ver cualquier carrito', async () => {
         const token = await generateJWT({role: 'ADMIN'});
-        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "e"}).auth(token, {type:"bearer"});
+
+        // const cart = await getCart(1);
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 3).auth(token, {type:"bearer"});
 
         expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            listado:expect.arrayContaining([
+        expect(body).toEqual(
+            expect.arrayContaining([
                 expect.objectContaining({
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    id_category:expect.any(Number),
-                    productocategoria:expect.objectContaining({
-                        name:expect.stringMatching(/E/i)
+                    date:expect.any(String),
+                    quantity:expect.any(Number),
+                    product:expect.objectContaining({
+                        title:expect.any(String),
+                        price:expect.any(Number),
+                        mostwanted:expect.any(Number),
+                        stock:expect.any(Number),
+                        description:expect.any(String),
+                        id_category:expect.any(Number)
                     })
                 })
             ])
-        }))
+        )
     })
 
-    test('GUEST Debe devolver la lista de productos con el query en la categoria', async () => {
-        const token = await generateJWT({role: 'GUEST'});
-        const { statusCode, body } = await request(app).get('/api/v1/products/').query({category: "e"}).auth(token, {type:"bearer"});
+    test('ADMIN puede ver cualquier carrito, carrito vacio', async () => {
+        const token = await generateJWT({role: 'ADMIN'});
+
+        const cart = await getCart(1);
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 1).auth(token, {type:"bearer"});
 
         expect(statusCode).toEqual(200);
-        expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
-            msg:expect.any(String),
-            listado:expect.arrayContaining([
+        expect(cart.length).toEqual(0);
+        expect(body).toEqual(
+            expect.objectContaining({
+                message:"Cart is empty",
+                ok:true
+            })
+        )
+    })
+
+
+    test('GUEST puede ver su carrito', async () => {
+        const token = await generateJWT({id: 3, role: 'GUEST'});
+
+        // const cart = await getCart(1);
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 3).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(200);
+        expect(body).toEqual(
+            expect.arrayContaining([
                 expect.objectContaining({
-                    title:expect.any(String),
-                    price:expect.any(Number),
-                    id_category:expect.any(Number),
-                    productocategoria:expect.objectContaining({
-                        name:expect.stringMatching(/E/i)
+                    date:expect.any(String),
+                    quantity:expect.any(Number),
+                    product:expect.objectContaining({
+                        title:expect.any(String),
+                        price:expect.any(Number),
+                        mostwanted:expect.any(Number),
+                        stock:expect.any(Number),
+                        description:expect.any(String),
+                        id_category:expect.any(Number)
                     })
                 })
             ])
-        }))
+        )
+    })
+
+    test('GUEST no puede ver otros carritos', async () => {
+        const token = await generateJWT({id: 3, role: 'GUEST'});
+
+        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 1).auth(token, {type:"bearer"});
+
+        expect(statusCode).toEqual(403);
+        expect(body).toEqual(
+            expect.objectContaining({
+                error: "No tienes las credenciales necesarias para acceder"
+            })
+        )
     })
 
 })
