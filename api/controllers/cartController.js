@@ -64,14 +64,14 @@ const listCart = async (req, res) => {
 }
 
 
-const updateStock = async (id, dec) => {
+const updateStock = async (id, dec, prod = null) => {
     if(dec === 0){
         return 0;
     }
-    let prod = await db.Product.findByPk(id);
     if (!prod){
-        return 0;
-    } else if (prod.stock - dec < 0){
+        prod = await db.Product.findByPk(id);
+    }
+    if (prod.stock - dec < 0){
         await db.Product.increment({stock: (prod.stock*(-1))}, { where: {id : id} });
         return prod.stock;
     } else {
@@ -113,14 +113,16 @@ const updateCart = async (req, res) => {
                     let prod = await checkProd(newCart[elem].product);
                     if(prod){
                         // updateStock
-                        quant = await updateStock(newCart[elem].product, newCart[elem].quantity);
+                        quant = await updateStock(newCart[elem].product, newCart[elem].quantity, prod);
                         // si hay que agregar el elemento en el carrito
-                        await db.Cart.create({
-                            id_user: id,
-                            id_product: newCart[elem].product,
-                            date: today.toISOString(),
-                            quantity: quant
-                        });
+                        if(quant > 0){
+                            await db.Cart.create({
+                                id_user: id,
+                                id_product: newCart[elem].product,
+                                date: today.toISOString(),
+                                quantity: quant
+                            });
+                        };
                     } else {
                         return res.status(400).json({
                             ok: false,
