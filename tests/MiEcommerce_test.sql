@@ -139,7 +139,10 @@ CREATE TABLE IF NOT EXISTS `User` (
 
 INSERT INTO `User` (`id`, `email`, `username`, `password`, `first_name`, `last_name`, `profilepic`, `role`) VALUES
 (1, 'god@god.com', 'god', 'god', 'Diosito', 'TodoPoderoso', 'https://media.istockphoto.com/photos/hands-of-god-picture-id157377707?k=20&m=157377707&s=612x612&w=0&h=K-dH2tCJGpQONcmvauRMeVnm-r5QdL4NipRDokHXukI=', 'GOD'),
-(2, 'admin@admin.com', 'Admin', 'Admin', 'ElAdmin', 'NoTanPoderoso', 'https://media.istockphoto.com/vectors/administrative-professionals-day-secretaries-day-or-admin-day-holiday-vector-id1204416887?k=20&m=1204416887&s=612x612&w=0&h=tI6AmIGHRBv8NdL2KJHvHOtQ9nBhzAnX5yhmVNqrf-0=', 'ADMIN');
+(2, 'admin@admin.com', 'Admin', 'Admin', 'ElAdmin', 'NoTanPoderoso', 'https://media.istockphoto.com/vectors/administrative-professionals-day-secretaries-day-or-admin-day-holiday-vector-id1204416887?k=20&m=1204416887&s=612x612&w=0&h=tI6AmIGHRBv8NdL2KJHvHOtQ9nBhzAnX5yhmVNqrf-0=', 'ADMIN'),
+(3,'comun@comun.com', 'comun', 'comun', 'comun', 'comun', 'no tiene', 'GUEST'),
+(4,'comuncomun@comuncomun.com', 'comuncomun', 'comuncomun', 'comuncomun', 'comuncomun', 'no tiene', 'GUEST'),
+(5,'comuncomuncomun@comuncomuncomun.com', 'comuncomuncomun', 'comuncomuncomun', 'comuncomuncomun', 'comuncomuncomun', 'no tiene', 'GUEST');
 
 
 -- --------------------------------------------------------

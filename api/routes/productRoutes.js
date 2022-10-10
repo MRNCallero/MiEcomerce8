@@ -35,10 +35,10 @@ router.get('/:id', productController.findProduct);
 router.put('/:id',habilitarMod, productController.editProduct);
 
 router.post('/',habilitarMod, [
-    check('title', 'Es necesario que el producto tenga un title').not().isEmpty(),
+    check('title', 'Es necesario que el producto tenga un title').not().isEmpty().isString(),
     check('price','Es necesario que el producto tenga un price y sea un numero').isInt(),
     check('id_category', 'Es necesario ingresar un id_categoria').isInt(),
-    handleErrors,  
+    handleErrors
 ],productController.createProduct);
 
 router.delete('/:id',habilitarMod, productController.deleteProduct);

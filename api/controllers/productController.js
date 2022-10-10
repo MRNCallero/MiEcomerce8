@@ -70,14 +70,19 @@ const productController = {
             })
         }
         try{
-            if(newProd.title != undefined && newProd.price != undefined){            
+            if(newProd.stock && isNaN(newProd.stock)){
+                return res.status(400).json({
+                    ok:false,
+                    msg:"Stock debe ser un numero"
+                })
+            }
                 db.Product.create({
-                    title: req.body.title,
-                    price: req.body.price,
-                    mostwanted: req.body.mostwanted,
-                    stock: req.body.stock,
-                    description: req.body.description,
-                    id_category: req.body.id_category
+                    title: newProd.title,
+                    price: newProd.price,
+                    mostwanted: newProd.mostwanted? newProd.mostwanted: 0,
+                    stock: newProd.stock? newProd.stock: 0,
+                    description: newProd.description? newProd.description: "",
+                    id_category: newProd.id_category
                 })
                 .then(resultado => {
                     res.status(200).json({
@@ -85,12 +90,7 @@ const productController = {
                         msg: "El producto fue agregado correctamente"
                     })
                 })
-            }else{
-                res.status(400).json({
-                   ok: false,
-                   msg: 'Producto inválido, debe agregar todos los parametros requeridos'
-                })
-            }}catch(err){
+            }catch(err){
                 console.log(err);
                 res.status(500).json({
                     ok: false,
@@ -100,6 +100,56 @@ const productController = {
     },
 
     editProduct: async (req, res) => {
+        try {
+     
+            const idProd = req.params.id;
+            let prod = await db.Product.findByPk(idProd);
+            if(prod == undefined){
+                return res.status(404).json({
+                    ok: false,
+                    msg: 'Producto no encontrado'
+                })
+            }
+
+            let {id_category,...parametros} = req.body;
+            let cat;
+            if(id_category){ cat = await db.Categoria.findByPk(id_category);}
+            if(cat){
+                await db.Product.update({
+                  id_category,  
+                  ...parametros
+                },
+                {
+                    where : {id : idProd}
+                }
+                )
+                prod = await db.Product.findByPk(idProd);
+                res.status(200).json({
+                    ok: true,
+                    msg: 'El producto ha sido editado',
+                    producto: prod
+                })
+                
+            }else{
+                console.log("No existe categoria")
+            }
+        } catch (error) {
+            console.log(error);
+            if(error){ //producto no encontrado
+                console.log(error);
+            }else if(error){//categoria no encontrada
+                console.log(error);
+            }else{ //error en updatee
+                console.log(error);
+            }
+            res.status(500).json({
+                ok: false,
+                msg: 'Error interno del servidor'
+            })
+        }
+    },
+
+    editProduct2: async (req, res) => {
         try {
      
             const idProd = req.params.id;
@@ -135,7 +185,7 @@ const productController = {
                 res.status(200).json({
                     ok: true,
                     msg: 'El producto ha sido editado',
-                    prdoucto: prod
+                    producto: prod
                 })
             }
         } catch (error) {
@@ -183,14 +233,17 @@ const productController = {
             let idParam = req.params.id;
             if(!isNaN(idParam)){               
                 const fromCart = await db.Cart.findAll({where:{id_product: idParam}});
+                
                 if (fromCart.length == 0){
+                    const aBorrar = await db.Product.findByPk(idParam);
                     const deleteImg = await db.Picture.destroy({where:{id_product : idParam}});
                     const toDelete = await db.Product.destroy({where:{id : idParam}});
 
                     if(toDelete != 0){
                         res.status(200).json({
                             ok: true,
-                            msg: "Producto borrado correctamente " + toDelete
+                            msg: "Producto borrado correctamente " + toDelete,
+                            producto: aBorrar
                         })
                     }else{
                         res.status(404).json({
@@ -199,7 +252,7 @@ const productController = {
                         })
                     }
                 }else{
-                    res.status(404).json({
+                    res.status(403).json({
                         ok: false,
                         msg: 'Imposible borrar producto. Un usuario o mas lo tiene en su carrito'
                     })
