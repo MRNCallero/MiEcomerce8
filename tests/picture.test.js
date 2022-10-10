@@ -428,7 +428,7 @@ describe('POST picture /api/v1/pictures', () => {
          };
          const {body,statusCode} = await request(app).post('/api/v1/pictures').send(data).auth("", {type:"bearer"});
    
-         expect(statusCode).toEqual(403);
+         expect(statusCode).toEqual(401);
          expect(body).toEqual(expect.objectContaining({
                 ok:false,
                 msg:expect.any(String)
@@ -650,7 +650,7 @@ describe('PUT picture /api/v1/pictures', () => {
         }
         const {body,statusCode} = await request(app).put("/api/v1/pictures/1").send(pictureEdit);
 
-        expect(statusCode).toBe(403);
+        expect(statusCode).toBe(401);
         expect(body).toEqual(expect.objectContaining({
                 ok:false,
                 msg:expect.any(String)
@@ -879,7 +879,7 @@ describe('DELETE picture /api/v1/pictures', () => {
         }
         const {body,statusCode} = await request(app).delete("/api/v1/pictures/1").send(pictureEdit);
 
-        expect(statusCode).toBe(403);
+        expect(statusCode).toBe(401);
         expect(body).toEqual(expect.objectContaining({
                 ok:false,
                 msg:expect.any(String)

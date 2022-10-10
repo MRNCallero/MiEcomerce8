@@ -121,7 +121,6 @@ let verUsuario = async (req,res)=>{
 let crearUsuario = async (req,res)=>{
     try{
         let {email,username,password,firstname,lastname,profilepic,role}= req.body;
-       if(email&&username&&password&&firstname&&lastname){
             console.log("email: ",email);
             console.log("username ",username);
             role? role : role = "GUEST"
@@ -147,12 +146,7 @@ let crearUsuario = async (req,res)=>{
                 "msg": "Usuario creado",
                 "user": ret
             })
-        }else{
-            res.status(400).json({
-                "ok": false,
-                "msg": "Datos requeridos incompletos"
-            });
-        }
+        
     }catch(e){
         console.log(e);
         res.status(500).json({
