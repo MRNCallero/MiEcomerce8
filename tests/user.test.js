@@ -138,6 +138,8 @@ afterEach(async () => {
     await db.Usuario.destroy({where:{}})
     await db.Picture.destroy({where:{}})
     await db.Product.destroy({where:{}})
+    await db.Categoria.destroy({where:{}})
+
 
 });
 describe('POST /',() => {
