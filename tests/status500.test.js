@@ -1,9 +1,16 @@
-/* const request = require('supertest');
+const request = require('supertest');
 const { app, server } = require('../server');
 const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
 
-test('GOD Debe crear un producto con los parametros que tiene el data', async () => {
+
+description('Pruebas error 500 picture',()=>{
+    beforeAll(async() =>{
+        db.sequelize.query('drop database `MiEcommerce_test`')
+        await db.sequelize.close();
+    })
+})
+test('Server error get picture', async () => {
     const token = await generateJWT({role: 'GOD'});
 
     const data = {
@@ -14,13 +21,9 @@ test('GOD Debe crear un producto con los parametros que tiene el data', async ()
         description: "Esto es una prueba",
         id_category: 1
     }
-    db.sequelize.close();
-    const DB = await db.Product.findAll();
-    const { statusCode, body } = await request(app).post('/api/v1/products').send(data).auth(token, {type:"bearer"});
-    const newDB = await db.Product.findAll();
-    const productoCreado = newDB.at(-1);
+    const { statusCode, body } = await request(app).get('/api/v1/products').send(data).auth(token, {type:"bearer"});
 
     expect(statusCode).toEqual(500);
 
 })
- */
+ 
