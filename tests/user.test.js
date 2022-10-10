@@ -115,8 +115,7 @@ beforeEach( async() => {
     await db.Cart.create(cart2)
 
 
-});
-1    
+});  
 afterEach(async () => {
     await db.Cart.destroy({where:{}})
     await db.Usuario.destroy({where:{}})
@@ -124,11 +123,6 @@ afterEach(async () => {
     await db.Product.destroy({where:{}})
 
 });
-
-afterEach(() => {
-    server.close();
- });
-
 describe('POST /',() => {
     test('Debe devolver un código de estado 201, ok : true, msg : Usuario creado y el usuario creado ', async () => {
         const data = {
@@ -152,8 +146,6 @@ describe('POST /',() => {
                     profilepic: expect.any(String)
                 })
         }));
-        let i = body.user.id;
-        let dest = await db.Usuario.destroy({where:{id:i}})
     });
 });
 describe('POST /login', () => {
