@@ -4,7 +4,18 @@ const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
 
 beforeEach( async() => {
-
+    const categoria1 = {
+        id:1,
+        name:"Bebida"
+    }
+    const categoria2 = {
+        id:2,
+        name:"Alfajores"
+    }
+    const categoria3 = {
+        id:3,
+        name:"Galletas"
+    }
 
     const cart = {
         id_user:4,
@@ -129,6 +140,10 @@ beforeEach( async() => {
     };
 
 
+    await db.Categoria.create(categoria1);
+    await db.Categoria.create(categoria2);
+    await db.Categoria.create(categoria3);
+
     //Productos
     await db.Product.create(producto1);
     await db.Product.create(producto2);
@@ -158,6 +173,7 @@ afterEach(async () => {
     await db.Usuario.destroy({where:{}});
     await db.Picture.destroy({where:{}});
     await db.Product.destroy({where:{}});
+    await db.Categoria.destroy({where:{}})
     server.close();
 });
 
