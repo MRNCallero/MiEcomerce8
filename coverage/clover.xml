@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1664998368029" clover="3.2.0">
-  <project timestamp="1664998368029" name="All files">
-    <metrics statements="592" coveredstatements="280" conditionals="230" coveredconditionals="53" methods="62" coveredmethods="21" elements="884" coveredelements="354" complexity="0" loc="592" ncloc="592" packages="7" files="25" classes="25"/>
+<coverage generated="1665082950795" clover="3.2.0">
+  <project timestamp="1665082950795" name="All files">
+    <metrics statements="590" coveredstatements="297" conditionals="211" coveredconditionals="46" methods="62" coveredmethods="25" elements="863" coveredelements="368" complexity="0" loc="590" ncloc="590" packages="7" files="25" classes="25"/>
     <package name="MiEcomerce8">
-      <metrics statements="33" coveredstatements="32" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="1"/>
+      <metrics statements="33" coveredstatements="32" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
       <file name="server.js" path="/Users/santiagomariaamorin/Documents/MiEcommerce8/MiEcomerce8/server.js">
-        <metrics statements="33" coveredstatements="32" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="1"/>
+        <metrics statements="33" coveredstatements="32" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -42,7 +42,7 @@
       </file>
     </package>
     <package name="MiEcomerce8.api.controllers">
-      <metrics statements="318" coveredstatements="57" conditionals="148" coveredconditionals="20" methods="32" coveredmethods="2"/>
+      <metrics statements="316" coveredstatements="71" conditionals="129" coveredconditionals="12" methods="32" coveredmethods="4"/>
       <file name="cartController.js" path="/Users/santiagomariaamorin/Documents/MiEcommerce8/MiEcomerce8/api/controllers/cartController.js">
         <metrics statements="84" coveredstatements="13" conditionals="20" coveredconditionals="0" methods="9" coveredmethods="0"/>
         <line num="2" count="1" type="stmt"/>
@@ -193,7 +193,7 @@
         <line num="171" count="1" type="stmt"/>
       </file>
       <file name="productController.js" path="/Users/santiagomariaamorin/Documents/MiEcommerce8/MiEcomerce8/api/controllers/productController.js">
-        <metrics statements="90" coveredstatements="28" conditionals="51" coveredconditionals="20" methods="12" coveredmethods="2"/>
+        <metrics statements="88" coveredstatements="42" conditionals="32" coveredconditionals="12" methods="12" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -211,9 +211,9 @@
         <line num="37" count="6" type="stmt"/>
         <line num="38" count="6" type="stmt"/>
         <line num="40" count="6" type="stmt"/>
-        <line num="42" count="6" type="cond" truecount="1" falsecount="1"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="48" count="6" type="stmt"/>
+        <line num="42" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="3" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
         <line num="55" count="0" type="stmt"/>
         <line num="56" count="0" type="stmt"/>
         <line num="64" count="0" type="stmt"/>
@@ -227,63 +227,61 @@
         <line num="89" count="0" type="stmt"/>
         <line num="94" count="0" type="stmt"/>
         <line num="95" count="0" type="stmt"/>
-        <line num="103" count="4" type="stmt"/>
-        <line num="105" count="4" type="stmt"/>
-        <line num="106" count="4" type="stmt"/>
-        <line num="107" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="108" count="0" type="stmt"/>
-        <line num="113" count="4" type="stmt"/>
-        <line num="115" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="116" count="4" type="cond" truecount="8" falsecount="0"/>
+        <line num="103" count="6" type="stmt"/>
+        <line num="105" count="6" type="stmt"/>
+        <line num="106" count="6" type="stmt"/>
+        <line num="107" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="108" count="4" type="stmt"/>
+        <line num="114" count="2" type="stmt"/>
+        <line num="116" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="117" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="118" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="119" count="2" type="cond" truecount="3" falsecount="2"/>
-        <line num="120" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="121" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="122" count="2" type="cond" truecount="1" falsecount="1"/>
-        <line num="123" count="2" type="stmt"/>
-        <line num="135" count="2" type="stmt"/>
-        <line num="142" count="0" type="stmt"/>
-        <line num="143" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="144" count="0" type="stmt"/>
-        <line num="145" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="146" count="0" type="stmt"/>
-        <line num="148" count="0" type="stmt"/>
-        <line num="150" count="0" type="stmt"/>
-        <line num="158" count="0" type="stmt"/>
-        <line num="159" count="0" type="stmt"/>
-        <line num="165" count="0" type="stmt"/>
-        <line num="173" count="0" type="stmt"/>
-        <line num="174" count="0" type="stmt"/>
-        <line num="182" count="0" type="stmt"/>
-        <line num="183" count="0" type="stmt"/>
-        <line num="184" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="185" count="0" type="stmt"/>
-        <line num="186" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="187" count="0" type="stmt"/>
-        <line num="188" count="0" type="stmt"/>
-        <line num="190" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="191" count="0" type="stmt"/>
-        <line num="196" count="0" type="stmt"/>
-        <line num="202" count="0" type="stmt"/>
-        <line num="210" count="0" type="stmt"/>
-        <line num="216" count="0" type="stmt"/>
+        <line num="118" count="2" type="stmt"/>
+        <line num="126" count="2" type="stmt"/>
+        <line num="127" count="2" type="stmt"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="137" count="0" type="stmt"/>
+        <line num="138" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="139" count="0" type="stmt"/>
+        <line num="140" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="141" count="0" type="stmt"/>
+        <line num="143" count="0" type="stmt"/>
+        <line num="145" count="0" type="stmt"/>
+        <line num="208" count="0" type="stmt"/>
+        <line num="209" count="0" type="stmt"/>
+        <line num="215" count="0" type="stmt"/>
         <line num="223" count="0" type="stmt"/>
-        <line num="231" count="0" type="stmt"/>
-        <line num="232" count="0" type="stmt"/>
-        <line num="233" count="0" type="stmt"/>
-        <line num="236" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="237" count="0" type="stmt"/>
-        <line num="243" count="0" type="stmt"/>
-        <line num="250" count="0" type="stmt"/>
-        <line num="258" count="0" type="stmt"/>
-        <line num="259" count="0" type="stmt"/>
-        <line num="260" count="0" type="stmt"/>
-        <line num="262" count="0" type="stmt"/>
-        <line num="273" count="0" type="stmt"/>
-        <line num="279" count="0" type="stmt"/>
-        <line num="280" count="0" type="stmt"/>
-        <line num="289" count="1" type="stmt"/>
+        <line num="224" count="0" type="stmt"/>
+        <line num="232" count="8" type="stmt"/>
+        <line num="233" count="8" type="stmt"/>
+        <line num="234" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="235" count="6" type="stmt"/>
+        <line num="237" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="238" count="4" type="stmt"/>
+        <line num="239" count="4" type="stmt"/>
+        <line num="240" count="4" type="stmt"/>
+        <line num="242" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="243" count="2" type="stmt"/>
+        <line num="249" count="2" type="stmt"/>
+        <line num="255" count="2" type="stmt"/>
+        <line num="263" count="2" type="stmt"/>
+        <line num="269" count="0" type="stmt"/>
+        <line num="276" count="0" type="stmt"/>
+        <line num="284" count="0" type="stmt"/>
+        <line num="285" count="0" type="stmt"/>
+        <line num="286" count="0" type="stmt"/>
+        <line num="289" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="290" count="0" type="stmt"/>
+        <line num="296" count="0" type="stmt"/>
+        <line num="303" count="0" type="stmt"/>
+        <line num="311" count="1" type="stmt"/>
+        <line num="312" count="1" type="stmt"/>
+        <line num="313" count="0" type="stmt"/>
+        <line num="315" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="319" count="0" type="stmt"/>
+        <line num="328" count="0" type="stmt"/>
+        <line num="334" count="1" type="stmt"/>
+        <line num="335" count="1" type="stmt"/>
+        <line num="344" count="1" type="stmt"/>
       </file>
       <file name="userController.js" path="/Users/santiagomariaamorin/Documents/MiEcommerce8/MiEcomerce8/api/controllers/userController.js">
         <metrics statements="85" coveredstatements="13" conditionals="49" coveredconditionals="0" methods="6" coveredmethods="0"/>
@@ -464,23 +462,23 @@
       </file>
     </package>
     <package name="MiEcomerce8.api.middleware">
-      <metrics statements="97" coveredstatements="50" conditionals="51" coveredconditionals="13" methods="9" coveredmethods="3"/>
+      <metrics statements="97" coveredstatements="53" conditionals="51" coveredconditionals="14" methods="9" coveredmethods="4"/>
       <file name="habilitarMod.js" path="/Users/santiagomariaamorin/Documents/MiEcommerce8/MiEcomerce8/api/middleware/habilitarMod.js">
         <metrics statements="17" coveredstatements="14" conditionals="12" coveredconditionals="10" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="4" count="6" type="stmt"/>
-        <line num="5" count="6" type="stmt"/>
-        <line num="6" count="6" type="stmt"/>
-        <line num="7" count="6" type="stmt"/>
-        <line num="8" count="6" type="stmt"/>
-        <line num="9" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="10" count="2" type="stmt"/>
-        <line num="11" count="4" type="cond" truecount="3" falsecount="2"/>
+        <line num="4" count="22" type="stmt"/>
+        <line num="5" count="22" type="stmt"/>
+        <line num="6" count="22" type="stmt"/>
+        <line num="7" count="22" type="stmt"/>
+        <line num="8" count="22" type="stmt"/>
+        <line num="9" count="22" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="7" type="stmt"/>
+        <line num="11" count="15" type="cond" truecount="3" falsecount="2"/>
         <line num="12" count="0" type="stmt"/>
-        <line num="13" count="4" type="cond" truecount="5" falsecount="0"/>
-        <line num="14" count="2" type="stmt"/>
-        <line num="16" count="2" type="stmt"/>
+        <line num="13" count="15" type="cond" truecount="5" falsecount="0"/>
+        <line num="14" count="7" type="stmt"/>
+        <line num="16" count="8" type="stmt"/>
         <line num="19" count="0" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
         <line num="29" count="1" type="stmt"/>
@@ -515,13 +513,13 @@
         <line num="14" count="0" type="stmt"/>
       </file>
       <file name="handleErrors.js" path="/Users/santiagomariaamorin/Documents/MiEcommerce8/MiEcomerce8/api/middleware/handleErrors.js">
-        <metrics statements="7" coveredstatements="3" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="7" coveredstatements="6" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="7" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="8" count="0" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
       </file>
       <file name="handleUsername.js" path="/Users/santiagomariaamorin/Documents/MiEcommerce8/MiEcomerce8/api/middleware/handleUsername.js">
@@ -572,17 +570,17 @@
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="6" count="12" type="stmt"/>
-        <line num="8" count="12" type="cond" truecount="1" falsecount="1"/>
-        <line num="9" count="12" type="stmt"/>
-        <line num="10" count="12" type="stmt"/>
-        <line num="11" count="12" type="stmt"/>
-        <line num="12" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="6" count="30" type="stmt"/>
+        <line num="8" count="30" type="cond" truecount="1" falsecount="1"/>
+        <line num="9" count="30" type="stmt"/>
+        <line num="10" count="30" type="stmt"/>
+        <line num="11" count="30" type="stmt"/>
+        <line num="12" count="30" type="cond" truecount="1" falsecount="1"/>
         <line num="13" count="0" type="stmt"/>
-        <line num="15" count="12" type="cond" truecount="1" falsecount="1"/>
-        <line num="17" count="12" type="stmt"/>
-        <line num="18" count="12" type="stmt"/>
-        <line num="19" count="12" type="stmt"/>
+        <line num="15" count="30" type="cond" truecount="1" falsecount="1"/>
+        <line num="17" count="30" type="stmt"/>
+        <line num="18" count="30" type="stmt"/>
+        <line num="19" count="30" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
         <line num="30" count="1" type="stmt"/>
       </file>
@@ -681,12 +679,12 @@
         <metrics statements="9" coveredstatements="7" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="5" count="12" type="stmt"/>
-        <line num="7" count="12" type="stmt"/>
-        <line num="11" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="5" count="30" type="stmt"/>
+        <line num="7" count="30" type="stmt"/>
+        <line num="11" count="30" type="cond" truecount="1" falsecount="1"/>
         <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
-        <line num="16" count="12" type="stmt"/>
+        <line num="16" count="30" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
       </file>
     </package>

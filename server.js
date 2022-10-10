@@ -63,4 +63,9 @@ const server = app.listen(PORT,async() => {
         console.error('Unable to connect to the database:', error);
         }
     })
+
+    /*const server = app.listen(0,async function(){
+        await sequelize.authenticate();
+        console.log("Listening on port " + this.address().port);
+    });*/
 module.exports = { app, server };

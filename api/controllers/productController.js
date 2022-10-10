@@ -148,7 +148,7 @@ const productController = {
             })
         }
     },
-
+/*
     editProduct2: async (req, res) => {
         try {
      
@@ -202,7 +202,7 @@ const productController = {
                 msg: 'Error interno del servidor'
             })
         }
-    },
+    },*/
 
     findMostWanted: (req, res) => {
         try{
@@ -309,8 +309,10 @@ const productController = {
 
     findKeyWord: async (req, res) => {
         try{
-            keyWord = req.query.q;
-            console.log(keyWord);
+            let keyWord = req.query.q;
+            console.log("papafi");
+            console.log(req.query);
+
 
             const retByKey = await db.Product.findAll(
                 
@@ -319,9 +321,7 @@ const productController = {
                 {description : {[Op.like] :'%' + keyWord + '%'}}
                 ]}
             }
-
             )
-
 
             res.status(200).json({
                 ok: true,
