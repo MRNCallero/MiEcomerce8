@@ -5,7 +5,14 @@ const db = require('../api/database/models');
 
 afterEach(()=>{
     server.close();
+
 })
+
+/*afterEach(async () =>{
+    await db.Categoria.destroy({where:{name:"Verdura"}});
+    await db.Product.destroy({where:{title:"Papas"}});
+})*/
+
 describe('GET api/v1/products', () => {
 
     test('Retorna el listado de los productos - Usuario GOD', async () => {
@@ -293,6 +300,10 @@ describe('DELETE api/v1/products/:id', () => {
         });
     });
 
+    /*afterEach(async () =>{
+        await db.Categoria.destroy({where:{name:"Verdura"}});
+        await db.Product.destroy({where:{title:"Papas"}});
+    })*/
 
     test('Borrado de productos - Usuario GOD', async () => {
 
@@ -486,6 +497,141 @@ describe('DELETE api/v1/products/:id', () => {
             error : expect.any(String)
         }))
 
+    });
+
+});
+
+
+
+describe('GET api/v1/products/search', () => {
+    let catAgregada;
+    let agregado;
+    
+
+    beforeAll(async ()  =>{
+        catAgregada = await db.Categoria.create({name : "Verdura"});
+
+        agregado = await db.Product.create({
+            title: "Papas",
+            price: 150,
+            mostwanted: true,
+            stock: 50,
+            description: "Verdura que perdura",
+            id_category: catAgregada.id
+        });
+    });
+
+    test('Busqueda de productos por KeyWord- Usuario GOD', async () => {
+
+        const tokenGod = await generateJWT({role: 'GOD'});   
+
+        const {body, statusCode} = await request(app).get('/api/v1/products/search').query({q:"Ver"}).auth(tokenGod, {type:"bearer"});
+
+        expect(statusCode).toBe(200);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            listado: expect.arrayContaining([
+                expect.objectContaining({
+                    id:expect.any(Number),
+                    price:expect.any(Number),
+                    mostwanted:expect.any(Number),
+                    stock:expect.any(Number),
+                    title:expect.any(String),
+                    description: expect.stringMatching(/ver/i),
+                    id_category: expect.any(Number)
+                }) || expect.objectContaining({
+                    id:expect.any(Number),
+                    price:expect.any(Number),
+                    mostwanted:expect.any(Number),
+                    stock:expect.any(Number),
+                    description:expect.any(String),
+                    title: expect.stringMatching(/ver/i),
+                    id_category: expect.any(Number)
+                })
+            ])
+        }))
+
+    });
+
+    test('Retorna msg error para edicion de busqueda de producto - Usuario GOD', async () => {
+
+        const tokenGod = await generateJWT({role: 'GOD'});   
+
+        const {body, statusCode} = await request(app).put("/api/v1/products/189").query({q:"Ver"}).auth(tokenGod, {type:"bearer"});
+       
+        expect(statusCode).toBe(404);
+        expect(body).toEqual(expect.objectContaining({
+            ok : expect.any(Boolean),
+            msg : expect.any(String),
+        }))
+
+    });
+
+    test('Busqueda de porductos por KeyWord  - Usuario ADMIN', async () => {
+
+        const tokenAdmin = await generateJWT({role: 'ADMIN'});   
+
+        const {body, statusCode} = await request(app).get('/api/v1/products/search?q=ore').auth(tokenAdmin, {type:"bearer"});
+
+
+        expect(statusCode).toBe(200);
+        //expect(body.listado).toContain('Ver');
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+            listado: expect.arrayContaining([
+                expect.objectContaining({
+                    id:expect.any(Number),
+                    price:expect.any(Number),
+                    mostwanted:expect.any(Number),
+                    stock:expect.any(Number),
+                    title:expect.any(String),
+                    description: expect.stringMatching(/ore/i),
+                    id_category: expect.any(Number)
+                }) || expect.objectContaining({
+                    id:expect.any(Number),
+                    price:expect.any(Number),
+                    mostwanted:expect.any(Number),
+                    stock:expect.any(Number),
+                    description:expect.any(String),
+                    title: expect.stringMatching(/ore/i),
+                    id_category: expect.any(Number)
+                })
+            ])
+        }))
+
+    });
+
+    test('Retorna msg error para busqueda de producto - Usuario ADMIN', async () => {
+        const tokenAdmin = await generateJWT({role: 'ADMIN'});   
+        const {body, statusCode} = await request(app).put("/api/v1/products/189").query({q:"Ver"}).auth(tokenAdmin, {type:"bearer"});  
+        expect(statusCode).toBe(404);
+        expect(body).toEqual(expect.objectContaining({
+            ok : expect.any(Boolean),
+            msg : expect.any(String),
+        }))
+    });
+
+    test('Busqueda de producto por KeyWord - No puede acceder - Usuario Guest', async () => {
+
+        const tokenGuest = await generateJWT({role: 'GUEST'});   
+
+        const {body, statusCode} = await request(app).put(`/api/v1/products/${agregado.id}`).query({q:"Ver"}).auth(tokenGuest, {type:"bearer"});
+        expect(statusCode).toBe(403);
+        expect(body).toEqual(expect.objectContaining({
+            error : expect.any(String)
+        }))
+
+    });
+
+    test('Retorna msg error para edicion de producto no existente - No puede acceder - Usuario GUEST', async () => {
+        const tokenGuest = await generateJWT({role: 'GUEST'});   
+        const {body, statusCode} = await request(app).put("/api/v1/products/189").query({q:"Ver"}).auth(tokenGuest, {type:"bearer"});  
+        expect(statusCode).toBe(403);
+        expect(body).toEqual(expect.objectContaining({
+            error : expect.any(String)
+        }))
     });
 
 });

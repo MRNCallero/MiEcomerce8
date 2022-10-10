@@ -139,8 +139,7 @@ afterEach(async () => {
     await db.Picture.destroy({where:{}})
     await db.Product.destroy({where:{}})
     await db.Categoria.destroy({where:{}})
-
-
+    server.close();
 });
 describe('POST /',() => {
     test('Debe devolver un código de estado 201, ok : true, msg : Usuario creado y el usuario creado ', async () => {
