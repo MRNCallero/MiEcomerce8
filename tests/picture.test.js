@@ -6,6 +6,18 @@ const db = require('../api/database/models');
 
 beforeEach( async() => {
 
+    const categoria1 = {
+        id:1,
+        name:"Bebida"
+    }
+    const categoria2 = {
+        id:2,
+        name:"Alfajores"
+    }
+    const categoria3 = {
+        id:3,
+        name:"Galletas"
+    }
 
     const cart = {
         id_user:1,
@@ -98,22 +110,29 @@ beforeEach( async() => {
     }
 
 
+    await db.Categoria.create(categoria1);
+    await db.Categoria.create(categoria2);
+    await db.Categoria.create(categoria3);
+
     //Productos
-    await db.Product.create(producto1)
-    await db.Product.create(producto2)
-    await db.Product.create(producto3)
+    await db.Product.create(producto1);
+    await db.Product.create(producto2);
+    await db.Product.create(producto3);
+
     //Picture
-    await db.Picture.create(picture)
-    await db.Picture.create(picture1)
-    await db.Picture.create(picture2)
+    await db.Picture.create(picture);
+    await db.Picture.create(picture1);
+    await db.Picture.create(picture2);
+
     //usuarios
-    await db.Usuario.create(user)
-    await db.Usuario.create(user2)
-    await db.Usuario.create(user3)
+    await db.Usuario.create(user);
+    await db.Usuario.create(user2);
+    await db.Usuario.create(user3);
+
     //cart
-    await db.Cart.create(cart)
-    await db.Cart.create(cart1)
-    await db.Cart.create(cart2)
+    await db.Cart.create(cart);
+    await db.Cart.create(cart1);
+    await db.Cart.create(cart2);
 
 
 });
@@ -123,6 +142,8 @@ afterEach(async () => {
     await db.Usuario.destroy({where:{}})
     await db.Picture.destroy({where:{}})
     await db.Product.destroy({where:{}})
+    await db.Categoria.destroy({where:{}})
+
 
 });
 
@@ -131,11 +152,10 @@ describe('GET pictures of product /api/v1/pictures', () => {
     test('Usuario GOD - RUTA /api/v1/pictures - Debe devolver una lista con todas las pictures de un producto', async ()=>{
         const token = await generateJWT({role: 'GOD'});
 
-        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:2}).auth(token, {type:"bearer"});
-
+        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:1}).auth(token, {type:"bearer"});
         expect(statusCode).toBe(200);
         expect(body).toEqual(expect.objectContaining({
-            ok:expect.any(Boolean),
+            ok:true,
             msg:expect.any(String),
             lista:expect.arrayContaining([
                 expect.objectContaining({
