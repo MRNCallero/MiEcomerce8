@@ -4,12 +4,13 @@ const pictureController = require('../controllers/picturesControllers');
 const middlewareIDinBody = require('../middleware/middlewareIDinBody');
 const habilitarMod = require('../middleware/habilitarMod');
 const verifyToken = require('../middleware/verifyToken');
-const habilitarVis = require('../middleware/habilitarVis');
 const handleErrors = require('../middleware/handleErrors');
 const productExist = require('../middleware/productExist')
 
 const { check } = require('express-validator');
 const { query } = require('express-validator');
+
+
 
 router.use(verifyToken);
 
@@ -28,9 +29,8 @@ router.post('/',habilitarMod,
     ],
     productExist,
     pictureController.create);
-router.put('/:id',habilitarMod,pictureController.edit);
+router.put('/:id',habilitarMod,productExist,pictureController.edit);
 
-router.put('/:id',habilitarMod,pictureController.edit);
 
 router.delete('/:id',habilitarMod,pictureController.delete);
 

@@ -135,8 +135,7 @@ beforeEach( async() => {
     await db.Cart.create(cart2);
 
 
-});
-    
+}); 
 afterEach(async () => {
     await db.Cart.destroy({where:{}})
     await db.Usuario.destroy({where:{}})
@@ -164,6 +163,16 @@ describe('GET pictures of product /api/v1/pictures', () => {
                     id_product:expect.any(Number)
                 })
             ])
+        }))
+    })
+    test('Usuario GOD - RUTA /api/v1/pictures - se pasa un string no un id numerico, deve devolver mensaje de error', async ()=>{
+        const token = await generateJWT({role: 'GOD'});
+
+        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:"asd"}).auth(token, {type:"bearer"});
+        expect(statusCode).toBe(400);
+        expect(body).toEqual(expect.objectContaining({
+            ok:false,
+            msg:expect.any(String),
         }))
     })
     test('Usuario GOD - RUTA /api/v1/pictures - Se pasanda un id que no existe devolver un mensaje informando que no existe el producto', async ()=>{
@@ -223,6 +232,16 @@ describe('GET pictures of product /api/v1/pictures', () => {
                     id_product:expect.any(Number)
                 })
             ])
+        }))
+    })
+    test('Usuario ADMIN - RUTA /api/v1/pictures - se pasa un string no un id numerico, deve devolver mensaje de error', async ()=>{
+        const token = await generateJWT({role: 'ADMIN'});
+
+        const {body, statusCode} = await request(app).get("/api/v1/pictures").query({product:"asd"}).auth(token, {type:"bearer"});
+        expect(statusCode).toBe(400);
+        expect(body).toEqual(expect.objectContaining({
+            ok:false,
+            msg:expect.any(String),
         }))
     })
     test('Usuario ADMIN - RUTA /api/v1/pictures - Se pasanda un id que no existe devolver un mensaje informando que no existe el producto', async ()=>{
@@ -346,6 +365,19 @@ describe('GET picture /api/v1/pictures/id', () => {
         
         const token = await generateJWT({role: 'GOD'});
         
+        const {body, statusCode} = await request(app).get("/api/v1/pictures/asd").auth(token, {type:"bearer"});
+        
+        expect(statusCode).toBe(400);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }))
+        //-----------------------------------------------
+    })
+    test('Usuario GOD - RUTA /api/v1/pictures/id - pasar id foto no existe', async ()=>{
+        
+        const token = await generateJWT({role: 'GOD'});
+        
         const {body, statusCode} = await request(app).get("/api/v1/pictures/100").auth(token, {type:"bearer"});
         
         expect(statusCode).toBe(404);
@@ -355,6 +387,7 @@ describe('GET picture /api/v1/pictures/id', () => {
         }))
         //-----------------------------------------------
     })
+    
     test('Usuario ADMIN - RUTA /api/v1/pictures/id - pasar id incorrecto', async ()=>{
         
         const token = await generateJWT({role: 'ADMIN'});
@@ -379,6 +412,18 @@ describe('GET picture /api/v1/pictures/id', () => {
 
         const {body, statusCode} = await request(app).get("/api/v1/pictures/asdasd").auth(token, {type:"bearer"});
 
+        expect(statusCode).toBe(400);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }))
+    })
+    test('Usuario GOD - RUTA /api/v1/pictures/id - pasar id foto no existe', async ()=>{
+        
+        const token = await generateJWT({role: 'GOD'});
+        
+        const {body, statusCode} = await request(app).get("/api/v1/pictures/100").auth(token, {type:"bearer"});
+        
         expect(statusCode).toBe(404);
         expect(body).toEqual(expect.objectContaining({
             ok:expect.any(Boolean),
@@ -410,6 +455,18 @@ describe('GET picture /api/v1/pictures/id', () => {
 
         const {body, statusCode} = await request(app).get("/api/v1/pictures/asdasd").auth(token, {type:"bearer"});
 
+        expect(statusCode).toBe(400);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }))
+    })
+    test('Usuario GOD - RUTA /api/v1/pictures/id - pasar id foto no existe', async ()=>{
+        
+        const token = await generateJWT({role: 'GOD'});
+        
+        const {body, statusCode} = await request(app).get("/api/v1/pictures/100").auth(token, {type:"bearer"});
+        
         expect(statusCode).toBe(404);
         expect(body).toEqual(expect.objectContaining({
             ok:expect.any(Boolean),
