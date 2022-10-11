@@ -265,7 +265,26 @@ describe('GET /', () => {
         }));
     });
     test('Debe devolver un código de estado 404, ok : false, msg : No se encontro lista de usuarios', async () => {
-      
+        await db.Cart.destroy({where:{}})
+        await db.Usuario.destroy({where:{}})
+        await db.Picture.destroy({where:{}})
+        await db.Product.destroy({where:{}})
+        await db.Categoria.destroy({where:{}})
+        const token = await generateToken({role:"GOD"});
+        const { statusCode, body } = await request(app).get('/api/v1/users').auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(404);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }))
+    });
+    test('Debe devolver un código de estado 401 ok:false, msg: Token invalido', async () => {
+        const { statusCode, body } = await request(app).get('/api/v1/users/');
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }));
     });
 });
 describe('GET /:id',() => {
@@ -345,7 +364,16 @@ describe('GET /:id',() => {
             ok:expect.any(Boolean),
             msg:expect.any(String)   
         }));
-    });  
+    1});  
+    test('Debe devolver un código de estado 401 ok:false, msg: Token invalido', async () => {
+        let i = 2;
+        const { statusCode, body } = await request(app).get('/api/v1/users/'+i);
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }));
+    });
 });
 describe('PUT /:id', () => {
     test('GOD: Debe devolver un código de estado 200 ok:true, msg: Usuario modificado correctamente y el usuario modificado', async () => {
@@ -443,6 +471,22 @@ describe('PUT /:id', () => {
             msg:expect.any(String),
         }));
     });
+    test('Debe devolver un código de estado 401 ok:false, msg: Token invalido', async () => {
+        let i = 2;
+        const data = {
+            "email":"comun@guest.com",
+            "username":"guest",
+            "password":"guest",
+            "firstname":"guest",
+            "lastname":"guest"
+         }
+         const { statusCode, body } = await request(app).put('/api/v1/users/'+i).send(data);
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }));
+    });
 });
 describe('DELETE /:id',() => {
     test('Debe devolver un código de estado 200 ok:true, msg: Usuario eliminado correctamente', async () => {
@@ -486,4 +530,14 @@ describe('DELETE /:id',() => {
                         msg:expect.any(String),
                     }));
     });
+    test('Debe devolver un código de estado 401 ok:false, msg: Token invalido', async () => {
+        let i = 2;
+        
+         const { statusCode, body } = await request(app).delete('/api/v1/users/'+i);
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }));
+    }); 
 });
