@@ -142,7 +142,7 @@ afterEach(async () => {
     server.close();
 });
 describe('POST /',() => {
-    test('Debe devolver un código de estado 201, ok : true, msg : Usuario creado y el usuario creado ', async () => {
+    test('VISITANTE:Debe devolver un código de estado 201, ok : true, msg : Usuario creado y el usuario creado ', async () => {
         const data = {
             "email":"guest2@guest.com",
             "username":"guest2",
@@ -167,7 +167,7 @@ describe('POST /',() => {
     });
 });
 describe('POST /login', () => {
-    test('Debe devolver un código de estado 200, succes : true, message : Authorized, id, username y role del usuario, y el token generado', async () => {
+    test('VISITANTE: Debe devolver un código de estado 200, succes : true, message : Authorized, id, username y role del usuario, y el token generado', async () => {
         const data = {
             "email":"guest@guest.com",
             "password":"guest"
@@ -185,7 +185,7 @@ describe('POST /login', () => {
             token: expect.any(String)
         }));
     });
-    test('Debe devolver un código de estado 401, succes : false, message : Unuthorized', async () => {
+    test('VISITANTE: Debe devolver un código de estado 401, succes : false, message : Unuthorized', async () => {
         const data = {
             "email":"guest@guest.com",
             "password":"12345"
@@ -197,7 +197,7 @@ describe('POST /login', () => {
             message:expect.any(String)
         }))
     });
-    test('Debe devolver un código de estado 400, succes : false, message : Es necesario el email y la contraseña', async () => {
+    test('VISITANTE: Debe devolver un código de estado 400, succes : false, message : Es necesario el email y la contraseña', async () => {
         const data = {
             "email":"guest@guest.com"
         }
@@ -265,11 +265,30 @@ describe('GET /', () => {
         }));
     });
     test('Debe devolver un código de estado 404, ok : false, msg : No se encontro lista de usuarios', async () => {
-      
+        await db.Cart.destroy({where:{}})
+        await db.Usuario.destroy({where:{}})
+        await db.Picture.destroy({where:{}})
+        await db.Product.destroy({where:{}})
+        await db.Categoria.destroy({where:{}})
+        const token = await generateToken({role:"GOD"});
+        const { statusCode, body } = await request(app).get('/api/v1/users').auth(token, {type:"bearer"});
+        expect(statusCode).toEqual(404);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }))
+    });
+    test('Debe devolver un código de estado 401 ok:false, msg: Token invalido', async () => {
+        const { statusCode, body } = await request(app).get('/api/v1/users/');
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }));
     });
 });
 describe('GET /:id',() => {
-    test('Debe devolver un código de estado 200 ok:true, msg: Usuarios id y el usuario buscado', async () => {
+    test('GOD Debe devolver un código de estado 200 ok:true, msg: Usuarios id y el usuario buscado', async () => {
         const token = await generateToken({role:"GOD"});
         let i = 2;
         const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
@@ -288,7 +307,7 @@ describe('GET /:id',() => {
                 })
         }));
     });
-    test('Debe devolver un código de estado 200 ok:true, msg: Usuarios id y el usuario buscado', async () => {
+    test('GUEST: Debe devolver un código de estado 200 ok:true, msg: Usuarios id y el usuario buscado', async () => {
         const token = await generateToken({id:3,role:"GUEST"});
         let i = 3;
         const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
@@ -307,7 +326,7 @@ describe('GET /:id',() => {
                 })
         }));
     });
-    test('Debe devolver un código de estado 200 ok:true, msg: Usuarios id y el usuario buscado', async () => {
+    test('ADMIN: Debe devolver un código de estado 200 ok:true, msg: Usuarios id y el usuario buscado', async () => {
         const token = await generateToken({role:"ADMIN"});
         let i = 2;
         const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
@@ -326,7 +345,7 @@ describe('GET /:id',() => {
                 })
         }));
     });
-    test('Debe devolver un código de estado 404, ok : false, msg : No se encontro usuario',  async () => {
+    test(' GOD: Debe devolver un código de estado 204, ok : false, msg : No se encontro usuario',  async () => {
         const token = await generateToken({role:"GOD"});
         let i = 200;
         const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
@@ -336,7 +355,7 @@ describe('GET /:id',() => {
             msg:expect.any(String)   
         }));
     });
-    test('Debe devolver un código de estado 404, ok : false, msg : No se encontro usuario', async () => {
+    test('ADMIN: Debe devolver un código de estado 404, ok : false, msg : No se encontro usuario', async () => {
         const token = await generateToken({role:"ADMIN"});
         let i = 200;
         const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
@@ -345,10 +364,19 @@ describe('GET /:id',() => {
             ok:expect.any(Boolean),
             msg:expect.any(String)   
         }));
-    });  
+    1});  
+    test('Debe devolver un código de estado 401 ok:false, msg: Token invalido', async () => {
+        let i = 2;
+        const { statusCode, body } = await request(app).get('/api/v1/users/'+i);
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }));
+    });
 });
 describe('PUT /:id', () => {
-    test('GOD Debe devolver un código de estado 200 ok:true, msg: Usuario modificado correctamente y el usuario modificado', async () => {
+    test('GOD: Debe devolver un código de estado 200 ok:true, msg: Usuario modificado correctamente y el usuario modificado', async () => {
         const token = await generateToken({role:"GOD"});
         const data = {
             "email":"comun@guest.com",
@@ -373,10 +401,10 @@ describe('PUT /:id', () => {
                 })
         }));
     });
-    test('GUEST Debe devolver un código de estado 200 ok:true, msg: Usuario modificado correctamente y el usuario modificado', async () => {
+    test('GUEST: Debe devolver un código de estado 200 ok:true, msg: Usuario modificado correctamente y el usuario modificado', async () => {
         const token = await generateToken({id:3,role:"GUEST"});
         const data = {
-            "email":"comun@guest.com",
+            "email":"comunGUEST@guest.com",
             "username":"guest",
             "password":"guest",
             "firstname":"guest",
@@ -384,7 +412,7 @@ describe('PUT /:id', () => {
             "role": "GUEST"
         }
         let i = 3;
-        const { statusCode, body } = await request(app).post('/api/v1/users/'+i).send(data).auth(token, {type:"bearer"});
+        const { statusCode, body } = await request(app).put('/api/v1/users/'+i).send(data).auth(token, {type:"bearer"});
         expect(statusCode).toEqual(200);
         expect(body).toEqual(expect.objectContaining({
             ok:expect.any(Boolean),
@@ -399,7 +427,7 @@ describe('PUT /:id', () => {
                 })
         }));
     });
-    test('Debe devolver un código de estado 404, ok : false, msg : Usuario no encontrado', async () => {
+    test('GOD: Debe devolver un código de estado 404, ok : false, msg : Usuario no encontrado', async () => {
         const token = await generateToken({role:"GOD"});
         const data = {
             "email":"guest2@guest2.com",
@@ -416,7 +444,7 @@ describe('PUT /:id', () => {
             msg:expect.any(String),
         }));
     });
-    test('Debe devolver un código de estado 401, ok : false, msg : Debe ingresaer al menos una campo que actualizar', async () => {
+    test('GOD: Debe devolver un código de estado 401, ok : false, msg : Debe ingresaer al menos una campo que actualizar', async () => {
         const token = await generateToken({role:"GOD"});
         let i = 3;
         const { statusCode, body } = await request(app).put('/api/v1/users/'+i).auth(token, {type:"bearer"});
@@ -426,7 +454,7 @@ describe('PUT /:id', () => {
             msg:expect.any(String),
         }));
     });
-    test('Debe devolver un código de estado 400, ok : false, msg : Debe ingresaer un id valido', async () => {
+    test('GOD: Debe devolver un código de estado 400, ok : false, msg : Debe ingresaer un id valido', async () => {
         const token = await generateToken({role:"GOD"});
         const data = {
             "email":"comun@guest.com",
@@ -438,6 +466,22 @@ describe('PUT /:id', () => {
         let i = 'm';
         const { statusCode, body } = await request(app).put('/api/v1/users/'+i).send(data).auth(token, {type:"bearer"});
         expect(statusCode).toEqual(400);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }));
+    });
+    test('Debe devolver un código de estado 401 ok:false, msg: Token invalido', async () => {
+        let i = 2;
+        const data = {
+            "email":"comun@guest.com",
+            "username":"guest",
+            "password":"guest",
+            "firstname":"guest",
+            "lastname":"guest"
+         }
+         const { statusCode, body } = await request(app).put('/api/v1/users/'+i).send(data);
+        expect(statusCode).toEqual(401);
         expect(body).toEqual(expect.objectContaining({
             ok:expect.any(Boolean),
             msg:expect.any(String),
@@ -486,4 +530,14 @@ describe('DELETE /:id',() => {
                         msg:expect.any(String),
                     }));
     });
+    test('Debe devolver un código de estado 401 ok:false, msg: Token invalido', async () => {
+        let i = 2;
+        
+         const { statusCode, body } = await request(app).delete('/api/v1/users/'+i);
+        expect(statusCode).toEqual(401);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }));
+    }); 
 });
