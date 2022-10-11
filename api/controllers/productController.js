@@ -139,14 +139,6 @@ const productController = {
                 console.log("No existe categoria")
             }
         } catch (error) {
-            console.log(error);
-            if(error){ //producto no encontrado
-                console.log(error);
-            }else if(error){//categoria no encontrada
-                console.log(error);
-            }else{ //error en updatee
-                console.log(error);
-            }
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'
