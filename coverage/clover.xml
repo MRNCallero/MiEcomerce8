@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1665430220803" clover="3.2.0">
-  <project timestamp="1665430220803" name="All files">
-    <metrics statements="604" coveredstatements="507" conditionals="242" coveredconditionals="158" methods="63" coveredmethods="57" elements="909" coveredelements="722" complexity="0" loc="604" ncloc="604" packages="7" files="25" classes="25"/>
+<coverage generated="1665494483735" clover="3.2.0">
+  <project timestamp="1665494483735" name="All files">
+    <metrics statements="604" coveredstatements="508" conditionals="242" coveredconditionals="162" methods="63" coveredmethods="56" elements="909" coveredelements="726" complexity="0" loc="604" ncloc="604" packages="7" files="25" classes="25"/>
     <package name="MiEcomerce8">
-      <metrics statements="31" coveredstatements="31" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="3"/>
-      <file name="server.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/server.js">
-        <metrics statements="31" coveredstatements="31" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="3"/>
+      <metrics statements="31" coveredstatements="31" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
+      <file name="server.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/server.js">
+        <metrics statements="31" coveredstatements="31" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -40,8 +40,8 @@
       </file>
     </package>
     <package name="MiEcomerce8.api.controllers">
-      <metrics statements="339" coveredstatements="250" conditionals="160" coveredconditionals="94" methods="33" coveredmethods="30"/>
-      <file name="cartController.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/controllers/cartController.js">
+      <metrics statements="339" coveredstatements="250" conditionals="160" coveredconditionals="95" methods="33" coveredmethods="30"/>
+      <file name="cartController.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/controllers/cartController.js">
         <metrics statements="84" coveredstatements="74" conditionals="23" coveredconditionals="21" methods="9" coveredmethods="9"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -128,7 +128,7 @@
         <line num="182" count="0" type="stmt"/>
         <line num="186" count="6" type="stmt"/>
       </file>
-      <file name="picturesControllers.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/controllers/picturesControllers.js">
+      <file name="picturesControllers.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/controllers/picturesControllers.js">
         <metrics statements="59" coveredstatements="48" conditionals="28" coveredconditionals="22" methods="5" coveredmethods="5"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -190,7 +190,7 @@
         <line num="165" count="0" type="stmt"/>
         <line num="170" count="6" type="stmt"/>
       </file>
-      <file name="productController.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/controllers/productController.js">
+      <file name="productController.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/controllers/productController.js">
         <metrics statements="110" coveredstatements="55" conditionals="67" coveredconditionals="18" methods="13" coveredmethods="10"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -303,8 +303,8 @@
         <line num="333" count="0" type="stmt"/>
         <line num="342" count="6" type="stmt"/>
       </file>
-      <file name="userController.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/controllers/userController.js">
-        <metrics statements="86" coveredstatements="73" conditionals="42" coveredconditionals="33" methods="6" coveredmethods="6"/>
+      <file name="userController.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/controllers/userController.js">
+        <metrics statements="86" coveredstatements="73" conditionals="42" coveredconditionals="34" methods="6" coveredmethods="6"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -356,23 +356,23 @@
         <line num="151" count="0" type="stmt"/>
         <line num="152" count="0" type="stmt"/>
         <line num="159" count="6" type="stmt"/>
-        <line num="160" count="4" type="stmt"/>
-        <line num="161" count="4" type="stmt"/>
-        <line num="162" count="4" type="stmt"/>
-        <line num="163" count="4" type="stmt"/>
-        <line num="164" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="165" count="3" type="stmt"/>
-        <line num="166" count="3" type="stmt"/>
-        <line num="167" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="168" count="2" type="cond" truecount="8" falsecount="0"/>
-        <line num="169" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="170" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="171" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="172" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="173" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="174" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="175" count="1" type="stmt"/>
-        <line num="176" count="1" type="stmt"/>
+        <line num="160" count="5" type="stmt"/>
+        <line num="161" count="5" type="stmt"/>
+        <line num="162" count="5" type="stmt"/>
+        <line num="163" count="5" type="stmt"/>
+        <line num="164" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="165" count="4" type="stmt"/>
+        <line num="166" count="4" type="stmt"/>
+        <line num="167" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="168" count="3" type="cond" truecount="8" falsecount="0"/>
+        <line num="169" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="170" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="171" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="172" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="173" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="174" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="175" count="2" type="stmt"/>
+        <line num="176" count="2" type="stmt"/>
         <line num="182" count="1" type="stmt"/>
         <line num="188" count="1" type="stmt"/>
         <line num="194" count="1" type="stmt"/>
@@ -394,9 +394,9 @@
       </file>
     </package>
     <package name="MiEcomerce8.api.database.config">
-      <metrics statements="3" coveredstatements="3" conditionals="20" coveredconditionals="12" methods="0" coveredmethods="0"/>
-      <file name="config.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/database/config/config.js">
-        <metrics statements="3" coveredstatements="3" conditionals="20" coveredconditionals="12" methods="0" coveredmethods="0"/>
+      <metrics statements="3" coveredstatements="3" conditionals="20" coveredconditionals="13" methods="0" coveredmethods="0"/>
+      <file name="config.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/database/config/config.js">
+        <metrics statements="3" coveredstatements="3" conditionals="20" coveredconditionals="13" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
         <line num="28" count="6" type="stmt"/>
@@ -404,7 +404,7 @@
     </package>
     <package name="MiEcomerce8.api.database.models">
       <metrics statements="59" coveredstatements="58" conditionals="9" coveredconditionals="7" methods="12" coveredmethods="12"/>
-      <file name="Cart.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/database/models/Cart.js">
+      <file name="Cart.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/database/models/Cart.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -413,7 +413,7 @@
         <line num="26" count="6" type="stmt"/>
         <line num="28" count="6" type="stmt"/>
       </file>
-      <file name="Categoria.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/database/models/Categoria.js">
+      <file name="Categoria.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/database/models/Categoria.js">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -424,7 +424,7 @@
         <line num="21" count="6" type="stmt"/>
         <line num="26" count="6" type="stmt"/>
       </file>
-      <file name="Usuario.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/database/models/Usuario.js">
+      <file name="Usuario.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/database/models/Usuario.js">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -436,7 +436,7 @@
         <line num="51" count="6" type="stmt"/>
         <line num="59" count="6" type="stmt"/>
       </file>
-      <file name="index.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/database/models/index.js">
+      <file name="index.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/database/models/index.js">
         <metrics statements="20" coveredstatements="19" conditionals="9" coveredconditionals="7" methods="3" coveredmethods="3"/>
         <line num="3" count="6" type="stmt"/>
         <line num="4" count="6" type="stmt"/>
@@ -459,7 +459,7 @@
         <line num="35" count="6" type="stmt"/>
         <line num="37" count="6" type="stmt"/>
       </file>
-      <file name="picture.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/database/models/picture.js">
+      <file name="picture.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/database/models/picture.js">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="4" count="6" type="stmt"/>
         <line num="6" count="6" type="stmt"/>
@@ -470,7 +470,7 @@
         <line num="30" count="6" type="stmt"/>
         <line num="36" count="6" type="stmt"/>
       </file>
-      <file name="product.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/database/models/product.js">
+      <file name="product.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/database/models/product.js">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -483,23 +483,23 @@
       </file>
     </package>
     <package name="MiEcomerce8.api.middleware">
-      <metrics statements="90" coveredstatements="85" conditionals="51" coveredconditionals="44" methods="9" coveredmethods="9"/>
-      <file name="habilitarMod.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/middleware/habilitarMod.js">
-        <metrics statements="12" coveredstatements="11" conditionals="12" coveredconditionals="10" methods="1" coveredmethods="1"/>
+      <metrics statements="90" coveredstatements="86" conditionals="51" coveredconditionals="46" methods="9" coveredmethods="9"/>
+      <file name="habilitarMod.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/middleware/habilitarMod.js">
+        <metrics statements="12" coveredstatements="12" conditionals="12" coveredconditionals="12" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
-        <line num="4" count="63" type="stmt"/>
-        <line num="5" count="63" type="stmt"/>
-        <line num="6" count="63" type="cond" truecount="2" falsecount="0"/>
+        <line num="4" count="64" type="stmt"/>
+        <line num="5" count="64" type="stmt"/>
+        <line num="6" count="64" type="cond" truecount="2" falsecount="0"/>
         <line num="7" count="37" type="stmt"/>
-        <line num="8" count="26" type="cond" truecount="3" falsecount="2"/>
-        <line num="9" count="0" type="stmt"/>
+        <line num="8" count="27" type="cond" truecount="5" falsecount="0"/>
+        <line num="9" count="1" type="stmt"/>
         <line num="10" count="26" type="cond" truecount="5" falsecount="0"/>
         <line num="11" count="16" type="stmt"/>
         <line num="13" count="10" type="stmt"/>
         <line num="20" count="6" type="stmt"/>
       </file>
-      <file name="habilitarVis.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/middleware/habilitarVis.js">
+      <file name="habilitarVis.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/middleware/habilitarVis.js">
         <metrics statements="8" coveredstatements="8" conditionals="7" coveredconditionals="7" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -510,7 +510,7 @@
         <line num="11" count="2" type="stmt"/>
         <line num="15" count="6" type="stmt"/>
       </file>
-      <file name="handleEmail.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/middleware/handleEmail.js">
+      <file name="handleEmail.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/middleware/handleEmail.js">
         <metrics statements="12" coveredstatements="11" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -525,7 +525,7 @@
         <line num="12" count="1" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
       </file>
-      <file name="handleErrors.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/middleware/handleErrors.js">
+      <file name="handleErrors.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/middleware/handleErrors.js">
         <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -535,7 +535,7 @@
         <line num="11" count="19" type="stmt"/>
         <line num="15" count="6" type="stmt"/>
       </file>
-      <file name="handleUsername.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/middleware/handleUsername.js">
+      <file name="handleUsername.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/middleware/handleUsername.js">
         <metrics statements="11" coveredstatements="10" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -549,7 +549,7 @@
         <line num="11" count="0" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
       </file>
-      <file name="middlewareIDinBody.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/middleware/middlewareIDinBody.js">
+      <file name="middlewareIDinBody.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/middleware/middlewareIDinBody.js">
         <metrics statements="11" coveredstatements="10" conditionals="10" coveredconditionals="9" methods="1" coveredmethods="1"/>
         <line num="3" count="14" type="stmt"/>
         <line num="4" count="14" type="cond" truecount="4" falsecount="0"/>
@@ -563,7 +563,7 @@
         <line num="16" count="0" type="stmt"/>
         <line num="22" count="6" type="stmt"/>
       </file>
-      <file name="productExist.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/middleware/productExist.js">
+      <file name="productExist.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/middleware/productExist.js">
         <metrics statements="13" coveredstatements="12" conditionals="10" coveredconditionals="9" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -579,7 +579,7 @@
         <line num="25" count="10" type="stmt"/>
         <line num="28" count="6" type="stmt"/>
       </file>
-      <file name="verifyToken.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/middleware/verifyToken.js">
+      <file name="verifyToken.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/middleware/verifyToken.js">
         <metrics statements="16" coveredstatements="16" conditionals="6" coveredconditionals="5" methods="2" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -601,7 +601,7 @@
     </package>
     <package name="MiEcomerce8.api.routes">
       <metrics statements="73" coveredstatements="73" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="cartRoutes.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/routes/cartRoutes.js">
+      <file name="cartRoutes.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/routes/cartRoutes.js">
         <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -617,7 +617,7 @@
         <line num="15" count="6" type="stmt"/>
         <line num="22" count="6" type="stmt"/>
       </file>
-      <file name="pictureRoutes.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/routes/pictureRoutes.js">
+      <file name="pictureRoutes.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/routes/pictureRoutes.js">
         <metrics statements="19" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -639,7 +639,7 @@
         <line num="35" count="6" type="stmt"/>
         <line num="37" count="6" type="stmt"/>
       </file>
-      <file name="productRoutes.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/routes/productRoutes.js">
+      <file name="productRoutes.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/routes/productRoutes.js">
         <metrics statements="21" coveredstatements="21" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -663,7 +663,7 @@
         <line num="44" count="6" type="stmt"/>
         <line num="47" count="6" type="stmt"/>
       </file>
-      <file name="userRoutes.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/api/routes/userRoutes.js">
+      <file name="userRoutes.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/api/routes/userRoutes.js">
         <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -689,7 +689,7 @@
     </package>
     <package name="MiEcomerce8.helpers">
       <metrics statements="9" coveredstatements="7" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="3"/>
-      <file name="generateJWT.js" path="/Users/marianonicolashernandez/Library/CloudStorage/GoogleDrive-mariano.escobal@cencosud.com/Mi unidad/Capacitacion/bootCampl/spreen2/MiEcomerce8/helpers/generateJWT.js">
+      <file name="generateJWT.js" path="/Users/marianocallero/Desktop/sprint III/MiEcomerce8/helpers/generateJWT.js">
         <metrics statements="9" coveredstatements="7" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="3"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
