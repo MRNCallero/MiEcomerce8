@@ -15,9 +15,15 @@ const productController = {
                     include: [{association: "productocategoria", attributes:["name"]},{association: "picturesproduct", attributes: ['id','url', 'description']}]
                 })
                 .then(resultado => {
+                    if(resultado.length == 0){
+                        return res.status(200).json({
+                            ok: true,
+                            msg: 'Listado de productos vacio',
+                        })
+                    }
                     res.status(200).json({
                         ok: true,
-                        msg: 'Listado de usuarios',
+                        msg: 'Listado de productos',
                         lista: resultado
                     })
                 })
@@ -212,6 +218,12 @@ const productController = {
                 },
                 include: [{association: "productocategoria", attributes:["name"]},{association: "picturesproduct", attributes: ['id','url', 'description']}]
             }).then(resultado => {
+                if(resultado.length == 0){
+                    return res.status(200).json({
+                        ok: true,
+                        msg: "El listado esta vacio"
+                    })
+                }
                 res.status(200).json({
                     ok: true,
                     msg: 'Listado de productos con mostwanted en 1',
@@ -287,14 +299,14 @@ const productController = {
                 include: [{association: 'productocategoria', where: {name: {[Op.like] :'%' + cat + '%'}}},{association: 'picturesproduct'}]
             }).then(result => {
                 if(result.length > 0){
-                    res.status(200).json({
+                    return res.status(200).json({
                         ok: true,
                         msg: 'Productos encontrados correctamente',
                         listado: result
                     })  
                 }else{
-                    res.status(404).json({
-                        ok:false,
+                    return res.status(200).json({
+                        ok:true,
                         msg: 'No se encontraron productos con esa categoria'
                     })
                 }

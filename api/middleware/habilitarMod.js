@@ -10,7 +10,7 @@ const habilitarMod = ( req,res,next)=> {
     } else if (((req.originalUrl.includes('pictures') || req.originalUrl.includes('products')) && role == "ADMIN")){
         next();
     }else{
-        res.status(400).json({
+        res.status(403).json({
             ok:false,
             error: "No tienes las credenciales necesarias para acceder"
         })
