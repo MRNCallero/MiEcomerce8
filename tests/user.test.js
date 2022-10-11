@@ -345,7 +345,7 @@ describe('GET /:id',() => {
                 })
         }));
     });
-    test(' GOD: Debe devolver un código de estado 404, ok : false, msg : No se encontro usuario',  async () => {
+    test(' GOD: Debe devolver un código de estado 204, ok : false, msg : No se encontro usuario',  async () => {
         const token = await generateToken({role:"GOD"});
         let i = 200;
         const { statusCode, body } = await request(app).get('/api/v1/users/'+i).auth(token, {type:"bearer"});
