@@ -107,7 +107,6 @@ const productController = {
 
     editProduct: async (req, res) => {
         try {
-     
             const idProd = req.params.id;
             let prod = await db.Product.findByPk(idProd);
             if(prod == undefined){
@@ -140,14 +139,6 @@ const productController = {
                 console.log("No existe categoria")
             }
         } catch (error) {
-            console.log(error);
-            if(error){ //producto no encontrado
-                console.log(error);
-            }else if(error){//categoria no encontrada
-                console.log(error);
-            }else{ //error en updatee
-                console.log(error);
-            }
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'
@@ -335,11 +326,18 @@ const productController = {
             }
             )
 
-            res.status(200).json({
-                ok: true,
-                msg: 'Productos encontrados correctamente',
-                listado: retByKey
-            })
+            if (retByKey.length > 0){
+                res.status(200).json({
+                    ok: true,
+                    msg: 'Productos encontrados correctamente',
+                    listado: retByKey
+                })
+            }else{
+                res.status(404).json({
+                    ok: false,
+                    msg: 'No se encontraron productos para su busqueda'
+                })
+            }
         }catch(err){
             console.log(err);
             res.status(500).json({
