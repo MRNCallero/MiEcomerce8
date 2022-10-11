@@ -8,9 +8,9 @@ const productExist  = async (req,res,next)=>{
     else if(req.body.id_product && !req.idProducto){
         idProduct = req.body.id_product;
     }else{
-        return res.status(404).json({
+        return res.status(400).json({
         ok: false,
-        msg: `Error pasando ID`
+        msg: `Error tomando ID en middleware`
     });}
 
     const exist = await db.Product.findOne({
