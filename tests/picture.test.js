@@ -4,7 +4,7 @@ const generateJWT = require('../helpers/generateJWT');
 const db = require('../api/database/models');
 
 
-beforeEach( async() => {
+beforeEach(async() => {
 
     const categoria1 = {
         id:1,
@@ -136,7 +136,7 @@ beforeEach( async() => {
 
 
 }); 
-afterEach(async () => {
+afterEach(async() => {
     await db.Cart.destroy({where:{}})
     await db.Usuario.destroy({where:{}})
     await db.Picture.destroy({where:{}})
@@ -501,7 +501,7 @@ describe('POST picture /api/v1/pictures', () => {
          };
          const {body,statusCode} = await request(app).post('/api/v1/pictures').send(data).auth(token, {type:"bearer"});
    
-         expect(statusCode).toEqual(400);
+         expect(statusCode).toEqual(403);
          expect(body).toEqual(expect.objectContaining({
                 error:expect.any(String)
             })
@@ -722,7 +722,7 @@ describe('PUT picture /api/v1/pictures', () => {
         }
         const {body,statusCode} = await request(app).put("/api/v1/pictures/1").send(pictureEdit).auth(token, {type:"bearer"});
 
-        expect(statusCode).toBe(400);
+        expect(statusCode).toBe(403);
         expect(body).toEqual(expect.objectContaining({
                 ok:false,
                 error:expect.any(String)
@@ -951,7 +951,7 @@ describe('DELETE picture /api/v1/pictures', () => {
         }
         const {body,statusCode} = await request(app).delete("/api/v1/pictures/1").send(pictureEdit).auth(token, {type:"bearer"});
 
-        expect(statusCode).toBe(400);
+        expect(statusCode).toBe(403);
         expect(body).toEqual(expect.objectContaining({
                 ok:false,
                 error:expect.any(String)
