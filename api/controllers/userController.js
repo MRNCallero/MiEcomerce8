@@ -61,7 +61,7 @@ let listaUsuarios =  async(req,res)=>{
     try{
         let users = []
         users = await db.Usuario.findAll({attributes: ['id','email','username','first_name','last_name','profilepic','role']});
-        if(users!==[]){
+        if(users.length > 0){
                 res.status(200).json({
                 "ok": true,
                 "msg": "Lista de usuarios",
