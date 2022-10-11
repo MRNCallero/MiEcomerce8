@@ -107,7 +107,6 @@ const productController = {
 
     editProduct: async (req, res) => {
         try {
-     
             const idProd = req.params.id;
             let prod = await db.Product.findByPk(idProd);
             if(prod == undefined){
@@ -335,11 +334,18 @@ const productController = {
             }
             )
 
-            res.status(200).json({
-                ok: true,
-                msg: 'Productos encontrados correctamente',
-                listado: retByKey
-            })
+            if (retByKey.length > 0){
+                res.status(200).json({
+                    ok: true,
+                    msg: 'Productos encontrados correctamente',
+                    listado: retByKey
+                })
+            }else{
+                res.status(404).json({
+                    ok: false,
+                    msg: 'No se encontraron productos para su busqueda'
+                })
+            }
         }catch(err){
             console.log(err);
             res.status(500).json({
