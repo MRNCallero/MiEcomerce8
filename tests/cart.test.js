@@ -454,99 +454,77 @@ describe('PUT Carts', () => {
         )
     })
 
-    test('GOD puede ver cualquier carrito, carrito vacio', async () => {
-        const token = await generateJWT({role: 'GOD'});
-
-        const cart = await getCart(2);
-        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 2).auth(token, {type:"bearer"});
-
-        expect(statusCode).toEqual(200);
-        expect(cart.length).toEqual(0);
-        expect(body).toEqual(
-            expect.objectContaining({
-                message:"Cart is empty",
-                ok:true
-            })
-        )
-    })
-
-    test('ADMIN puede ver cualquier carrito', async () => {
+    test('ADMIN no puede editar carritos de otras personas', async () => {
         const token = await generateJWT({role: 'ADMIN'});
 
-        // const cart = await getCart(1);
-        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 3).auth(token, {type:"bearer"});
-
-        expect(statusCode).toEqual(200);
-        expect(body).toEqual(
-            expect.arrayContaining([
-                expect.objectContaining({
-                    date:expect.any(String),
-                    quantity:expect.any(Number),
-                    product:expect.objectContaining({
-                        title:expect.any(String),
-                        price:expect.any(Number),
-                        mostwanted:expect.any(Number),
-                        stock:expect.any(Number),
-                        description:expect.any(String),
-                        id_category:expect.any(Number)
-                    })
-                })
-            ])
-        )
-    })
-
-    test('ADMIN puede ver cualquier carrito, carrito vacio', async () => {
-        const token = await generateJWT({role: 'ADMIN'});
-
-        const cart = await getCart(1);
-        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 1).auth(token, {type:"bearer"});
-
-        expect(statusCode).toEqual(200);
-        expect(cart.length).toEqual(0);
-        expect(body).toEqual(
-            expect.objectContaining({
-                message:"Cart is empty",
-                ok:true
-            })
-        )
-    })
-
-
-    test('GUEST puede ver su carrito', async () => {
-        const token = await generateJWT({id: 3, role: 'GUEST'});
-
-        // const cart = await getCart(1);
-        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 3).auth(token, {type:"bearer"});
-
-        expect(statusCode).toEqual(200);
-        expect(body).toEqual(
-            expect.arrayContaining([
-                expect.objectContaining({
-                    date:expect.any(String),
-                    quantity:expect.any(Number),
-                    product:expect.objectContaining({
-                        title:expect.any(String),
-                        price:expect.any(Number),
-                        mostwanted:expect.any(Number),
-                        stock:expect.any(Number),
-                        description:expect.any(String),
-                        id_category:expect.any(Number)
-                    })
-                })
-            ])
-        )
-    })
-
-    test('GUEST no puede ver otros carritos', async () => {
-        const token = await generateJWT({id: 3, role: 'GUEST'});
-
-        const { statusCode, body } = await request(app).get('/api/v1/carts/' + 1).auth(token, {type:"bearer"});
+        const beforeCart = await getCart(3);
+        const { statusCode, body } = await request(app).put('/api/v1/carts/' + 3).send(newCart).auth(token, {type:"bearer"});
+        const afterCart = await getCart(3);
 
         expect(statusCode).toEqual(403);
+        expect(beforeCart).toEqual(afterCart);
+
+    })
+
+    test('ADMIN puede editar su carrito', async () => {
+        const token = await generateJWT({id:2, role: 'ADMIN'});
+
+        const { statusCode, body } = await request(app).put('/api/v1/carts/' + 2).send(newCart).auth(token, {type:"bearer"});
+        const cart = await getCart(2);
+
+        expect(statusCode).toEqual(201);
         expect(body).toEqual(
-            expect.objectContaining({
-                error: "No tienes las credenciales necesarias para acceder"
-            })
+            expect.arrayContaining([
+                expect.objectContaining({
+                    date:cart[0].date || cart[1].date,
+                    quantity:cart[0].quantity || cart[1].quantity,
+                    product:expect.objectContaining({
+                        title:cart[0].product.title || cart[1].product.title,
+                        price:cart[0].product.price || cart[1].product.price,
+                        mostwanted:cart[0].product.mostwanted || cart[1].product.mostwanted,
+                        stock:cart[0].product.stock || cart[1].product.stock,
+                        description:cart[0].product.description || cart[1].product.description,
+                        id_category:cart[0].product.id_category || cart[1].product.id_category
+                    })
+                })
+            ])
+        )
+    })
+
+
+    test('GUEST no puede editar otro carrito', async () => {
+        const token = await generateJWT({id: 3, role: 'GUEST'});
+
+        const beforeCart = await getCart(2);
+        const { statusCode, body } = await request(app).put('/api/v1/carts/' + 4).send(newCart).auth(token, {type:"bearer"});
+        const afterCart = await getCart(2);
+
+        expect(statusCode).toEqual(403);
+        expect(beforeCart).toEqual(afterCart);
+    })
+
+    test('GUEST puede editar su carritos', async () => {
+        const token = await generateJWT({id: 3, role: 'GUEST'});
+
+        const { statusCode, body } = await request(app).put('/api/v1/carts/' + 3).send(newCart).auth(token, {type:"bearer"});
+        const cart = await getCart(3);
+
+        expect(statusCode).toEqual(201);
+        expect(body).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    date:cart[0].date || cart[1].date,
+                    quantity:cart[0].quantity || cart[1].quantity,
+                    product:expect.objectContaining({
+                        title:cart[0].product.title || cart[1].product.title,
+                        price:cart[0].product.price || cart[1].product.price,
+                        mostwanted:cart[0].product.mostwanted || cart[1].product.mostwanted,
+                        stock:cart[0].product.stock || cart[1].product.stock,
+                        description:cart[0].product.description || cart[1].product.description,
+                        id_category:cart[0].product.id_category || cart[1].product.id_category
+                    })
+                })
+            ])
         )
     })
 
