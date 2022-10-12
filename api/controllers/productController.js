@@ -31,7 +31,6 @@ const productController = {
                 productController.findCategory(req, res);
             }
         }catch(err){
-            console.log(err);
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'
@@ -58,7 +57,6 @@ const productController = {
                 })
             }
         }catch(err){
-            console.log(err);
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'
@@ -97,7 +95,6 @@ const productController = {
                     })
                 })
             }catch(err){
-                console.log(err);
                 res.status(500).json({
                     ok: false,
                     msg: 'Error interno del servidor'
@@ -223,7 +220,6 @@ const productController = {
             })
             
         }catch(err){
-            console.log(err);
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'
@@ -269,13 +265,6 @@ const productController = {
                 })
             }
         }catch(err){
-            console.log(err);
-            /*if (err.parent.code.includes("REFERENCED")){
-                return res.status(400).json({
-                    ok: false,
-                    msg: 'Imposible borrar producto. Un usuario o mas lo tiene en su carrito'
-                })
-            }*/
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'
@@ -339,7 +328,6 @@ const productController = {
                 })
             }
         }catch(err){
-            console.log(err);
             res.status(500).json({
                 ok: false,
                 msg: 'Error interno del servidor'

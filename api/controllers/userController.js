@@ -49,7 +49,6 @@ let loginUsuario = async (req,res)=>{
             })
         }
     }catch(err){
-        console.log(err)
         res.status(500).json({
             success: false,
             message: "Server Error",
@@ -75,7 +74,6 @@ let listaUsuarios =  async(req,res)=>{
             });
         }
     }catch(e){
-        console.log(e);
         res.status(500).json({
             "ok": false,
             "msg": "Server Error"
@@ -109,7 +107,6 @@ let verUsuario = async (req,res)=>{
         }
         
     }catch(e){
-        console.log(e);
         res.status(500).json({
             "ok": false,
             "msg": "Server Error"
@@ -148,7 +145,6 @@ let crearUsuario = async (req,res)=>{
             })
         
     }catch(e){
-        console.log(e);
         res.status(500).json({
             "ok": false,
             "msg": "Server Error"
@@ -197,7 +193,6 @@ let modificarUsuario = async(req,res)=>{
             });
         }
     }catch(e){
-        console.log(e);
         res.status(500).json({
             "ok": false,
             "msg": "Server Error"
@@ -229,7 +224,6 @@ let eliminarUsuario = async (req,res)=>{
             });
         }
     }catch(e){
-        console.log(e);
         res.status(500).json({
             "ok": false,
             "msg": "Server Error"
