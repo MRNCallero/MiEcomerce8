@@ -344,6 +344,30 @@ describe('PUT api/v1/products/:id', () => {
 
     });
 
+    test('Edicion de productos con categoria NO existente- Usuario GOD', async () => {
+
+        const tokenGod = await generateJWT({role: 'GOD'});   
+
+        const producto5 = {
+            title : "Papas rusticas",
+            price: 190,
+            mostwanted: false,
+            stock: 80,
+            description: "Tuberculo",
+            id_category: 867
+        }
+
+        const {body, statusCode} = await request(app).put(`/api/v1/products/4`).send(producto5).auth(tokenGod, {type:"bearer"});
+
+
+        expect(statusCode).toBe(404);
+        expect(body).toEqual(expect.objectContaining({
+            ok:expect.any(Boolean),
+            msg:expect.any(String),
+        }))
+
+    });
+
     test('Retorna msg error para edicion de producto no existente - Usuario GOD', async () => {
 
         const tokenGod = await generateJWT({role: 'GOD'});   

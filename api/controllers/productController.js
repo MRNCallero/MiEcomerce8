@@ -133,7 +133,10 @@ const productController = {
                 })
                 
             }else{
-                console.log("No existe categoria")
+                res.status(404).json({
+                    ok: false,
+                    msg: 'Categoria a modificar no existe'
+                })
             }
         } catch (error) {
             res.status(500).json({
